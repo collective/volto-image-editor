@@ -1,0 +1,49 @@
+{
+  "name": "@plone-collective/volto-image-editor",
+  "version": "1.0.0-alpha.0",
+  "description": "An image editor to be used with Plone and Volto.",
+  "main": "src/index.ts",
+  "license": "MIT",
+  "keywords": [
+    "volto-addon",
+    "volto",
+    "plone",
+    "react"
+  ],
+  "author": "Simples Consultoria",
+  "homepage": "https://github.com/simplesconsultoria/volto-image-editor#readme",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:simplesconsultoria/volto-image-editor"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "i18n": "rm -rf build/messages && NODE_ENV=production i18n --addon",
+    "dry-release": "release-it --dry-run",
+    "release": "release-it",
+    "release-major-alpha": "release-it major --preRelease=alpha",
+    "release-alpha": "release-it --preRelease=alpha"
+  },
+  "addons": [],
+  "dependencies": {
+    "context-filter-polyfill": "0.3.23",
+    "react-advanced-cropper": "0.20.1",
+    "@plone/components": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-aria-components": "*",
+    "classnames": "*",
+    "advanced-cropper": "~0.17.1",
+    "@plone/registry": "workspace:*",
+    "@plone/types": "workspace:*"
+  },
+  "devDependencies": {
+    "@plone/scripts": "workspace:*",
+    "@types/node": "^20.2.5",
+    "release-it": "^17.1.1"
+  }
+}

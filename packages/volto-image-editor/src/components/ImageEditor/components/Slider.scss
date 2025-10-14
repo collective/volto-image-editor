@@ -1,0 +1,107 @@
+@import '../../../theme/constants';
+
+.image-editor-slider {
+  display: flex;
+  width: 100%;
+  max-width: 380px;
+  height: 20px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-right: 16px;
+  padding-left: 16px;
+  border-radius: 10px;
+  background: rgba(#1b1a21, 0.4);
+  cursor: pointer;
+
+  &__wrapper {
+    display: flex;
+    width: 100%;
+    max-width: 400px;
+    align-items: center;
+  }
+
+  &__line {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 2px;
+    align-items: center;
+    background: rgba(white, 0.5);
+  }
+
+  &__fill {
+    position: absolute;
+    height: 2px;
+    flex-basis: auto;
+    flex-direction: column;
+    flex-shrink: 0;
+    align-self: stretch;
+    background: white;
+  }
+
+  &__dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: white;
+    transform: translate(-50%, -50%);
+  }
+
+  &__value {
+    position: absolute;
+    top: -20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 10px;
+    font-weight: 500;
+    transform: translate(-50%);
+    transition-duration: 0.5s;
+    transition-property: font-size, opacity;
+    vertical-align: bottom;
+  }
+
+  &__handler {
+    position: absolute;
+    display: flex;
+    width: 2px;
+    height: 8px;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    transition-duration: 0.2s;
+    transition-property: height;
+
+    &:hover {
+      height: 10px;
+    }
+    &--focus {
+      height: 10px;
+    }
+    &--hidden {
+      height: 4px;
+    }
+  }
+
+  &__inner-circle {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: $theme-color;
+    box-shadow:
+      rgba($theme-color, 0.2) 0px 0px 7px,
+      rgba($theme-color, 0.15) 0px 1px 3px 1px;
+    transform: scale(1);
+    transition-duration: 0.1s;
+    transition-property: transform;
+
+    &--focus {
+      transform: scale(1.2);
+    }
+  }
+}

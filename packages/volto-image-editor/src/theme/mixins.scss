@@ -1,0 +1,91 @@
+@import './constants';
+
+@mixin desktop() {
+  @media (max-width: $maximum) {
+    @content;
+  }
+}
+
+@mixin tablet() {
+  @media (max-width: $desktop) {
+    @content;
+  }
+}
+
+@mixin mobile() {
+  @media (max-width: $tablet) {
+    @content;
+  }
+}
+
+@mixin small-mobile() {
+  @media (max-width: $mobile) {
+    @content;
+  }
+}
+
+@mixin large-desktop() {
+  @media (min-width: $maximum - 1) {
+    @content;
+  }
+}
+
+@mixin max-width($width) {
+  @media (max-width: $width) {
+    @content;
+  }
+}
+
+@mixin reset-browsers-button-styles {
+  border: none;
+  background: none;
+  color: inherit;
+  &:focus {
+    outline: none;
+  }
+}
+
+@mixin reset-browsers-input-styles {
+  border: none;
+  background: none;
+  &:focus {
+    outline: none;
+  }
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+  }
+
+  &[type='number'] {
+    -moz-appearance: textfield; /* Firefox */
+  }
+}
+
+@mixin center-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin circle {
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+@mixin container {
+  max-width: $maximum;
+  padding-right: $container-padding;
+  padding-left: $container-padding;
+  margin: 0 auto;
+  @include desktop() {
+    max-width: $desktop;
+  }
+  @include tablet() {
+    max-width: $tablet;
+  }
+  @include mobile() {
+    max-width: 100%;
+  }
+}

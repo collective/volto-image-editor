@@ -1,0 +1,30 @@
+@import '../../../theme/mixins';
+
+.image-editor-button {
+  display: flex;
+  width: 46px;
+  height: 46px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: currentColor;
+  cursor: pointer;
+  fill: #88888b;
+  outline: none;
+  transition: 0.5s;
+  &--active {
+    background: rgba(white, 0.03);
+    fill: currentColor;
+  }
+  &:hover,
+  &:focus {
+    background: rgba(white, 0.03);
+  }
+  @include small-mobile() {
+    width: 32px;
+    height: 32px;
+  }
+}

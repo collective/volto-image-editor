@@ -1,0 +1,13 @@
+.react-aria-ModalOverlay {
+  .react-aria-Modal.image-cropper-modal {
+    max-width: 90vw;
+    background-color: black;
+    .react-aria-Dialog {
+      width: 90vw;
+      height: 90vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}

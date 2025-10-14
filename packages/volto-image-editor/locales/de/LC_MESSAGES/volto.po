@@ -1,0 +1,47 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language: de\n"
+"Language-Team: \n"
+"Content-Type: \n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. Default: "Choose a file"
+#: components/Widgets/FileWidget
+msgid "Choose a file"
+msgstr ""
+
+#. Default: "Drop file here to replace the existing file"
+#: components/Widgets/FileWidget
+msgid "Drop file here to replace the existing file"
+msgstr ""
+
+#. Default: "Drop file here to upload a new file"
+#: components/Widgets/FileWidget
+msgid "Drop file here to upload a new file"
+msgstr ""
+
+#. Default: "Drop files here ..."
+#: components/Widgets/FileWidget
+msgid "Drop files here ..."
+msgstr ""
+
+#. Default: "File is not of the accepted type {accept}"
+#: components/Widgets/FileWidget
+msgid "File is not of the accepted type {accept}"
+msgstr ""
+
+#. Default: "Replace existing file"
+#: components/Widgets/FileWidget
+msgid "Replace existing file"
+msgstr ""
+
+#. Default: "The file you uploaded exceeded the maximum allowed size of {size} bytes"
+#: components/Widgets/FileWidget
+msgid "The file you uploaded exceeded the maximum allowed size of {size} bytes"
+msgstr ""
