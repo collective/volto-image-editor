@@ -28,18 +28,19 @@
   },
   "addons": [],
   "dependencies": {
+    "@plone/components": "workspace:*",
     "context-filter-polyfill": "0.3.23",
     "react-advanced-cropper": "0.20.1",
-    "@plone/components": "workspace:*"
+    "react-icons": "^5.5.0"
   },
   "peerDependencies": {
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-aria-components": "*",
-    "classnames": "*",
-    "advanced-cropper": "~0.17.1",
     "@plone/registry": "workspace:*",
-    "@plone/types": "workspace:*"
+    "@plone/types": "workspace:*",
+    "advanced-cropper": "~0.17.1",
+    "classnames": "*",
+    "react": "18.2.0",
+    "react-aria-components": "*",
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
     "@plone/scripts": "workspace:*",

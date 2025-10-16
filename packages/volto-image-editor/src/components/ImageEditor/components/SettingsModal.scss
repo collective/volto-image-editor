@@ -1,0 +1,373 @@
+.image-editor-settings-modal {
+  &__toggle {
+    position: absolute;
+    top: 20px;
+    left: 80px;
+    background: rgba(white, 0.1);
+    border: 1px solid rgba(white, 0.2);
+    color: white;
+    font-size: 16px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 100;
+
+    &:hover {
+      background: rgba(white, 0.2);
+    }
+
+    &.active {
+      background: rgba(white, 0.3);
+    }
+  }
+
+  &__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  &__content {
+    background: #2b2a3050;
+    width: 100%;
+    max-height: 100%;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: scaleIn 0.2s ease-out;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(white, 0.1);
+    background: #1f1e24;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: white;
+  }
+
+  &__close {
+    background: transparent;
+    border: none;
+    color: rgba(white, 0.7);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(white, 0.1);
+      color: white;
+    }
+  }
+
+  &__body {
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  &__footer {
+    padding: 16px 24px;
+    border-top: 1px solid rgba(white, 0.1);
+    background: #1f1e24;
+  }
+
+  &__apply {
+    width: 100%;
+    background: #4caf50;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #45a049;
+    }
+  }
+
+  &__section {
+    margin-bottom: 20px;
+  }
+
+  &__label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(white, 0.9);
+
+    input[type='checkbox'] {
+      margin-right: 8px;
+    }
+  }
+
+  &__select {
+    width: 100%;
+    padding: 10px 14px;
+    background: #1f1e24;
+    border: 1px solid rgba(white, 0.2);
+    border-radius: 6px;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+
+    option {
+      background: #2b2a30;
+      color: white;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: #4caf50;
+    }
+  }
+
+  &__input {
+    width: 100%;
+    padding: 10px 14px;
+    background: transparent;
+    border: 1px solid rgba(white, 0.2);
+    appearance: textfield;
+    -moz-appearance: textfield;
+    border-radius: 6px;
+    color: white;
+    font-size: 14px;
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &::placeholder {
+      color: rgba(white, 0.5);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: #4caf50;
+    }
+  }
+
+  &__checkbox {
+    transform: scale(1.2);
+    accent-color: #4caf50;
+  }
+
+  &__range {
+    width: 100%;
+    height: 6px;
+    background: rgba(white, 0.2);
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+
+    &::-webkit-slider-thumb {
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #4caf50;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      transition: all 0.2s ease;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+
+    &::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #4caf50;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  &__divider {
+    height: 1px;
+    background: rgba(white, 0.1);
+    margin: 24px 0;
+  }
+
+  &__subtitle {
+    margin: 0 0 16px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(white, 0.9);
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      transform: scale(0.9);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    // &__content {
+    //   height: 95vh;
+    // }
+
+    &__body {
+      padding: 20px;
+    }
+
+    &__header,
+    &__footer {
+      padding: 16px 20px;
+    }
+
+    &__row {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    &__icon-scroll {
+      gap: 12px;
+    }
+
+    &__icon-option {
+      min-width: 70px;
+      padding: 10px 6px 6px;
+
+      svg {
+        width: 28px;
+        height: 28px;
+        margin-bottom: 6px;
+      }
+
+      span {
+        font-size: 11px;
+      }
+    }
+  }
+
+  &__icon-scroll {
+    display: flex;
+    overflow-x: auto;
+    gap: 16px;
+    margin-top: 12px;
+    padding: 8px 0;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(white, 0.3) rgba(white, 0.1);
+
+    &::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba(white, 0.1);
+      border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(white, 0.3);
+      border-radius: 3px;
+    }
+  }
+
+  &__icon-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 80px;
+    padding: 12px 8px 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 8px;
+
+    svg {
+      width: 32px;
+      height: 32px;
+      color: rgba(white, 0.6);
+      margin-bottom: 8px;
+      transition: all 0.2s ease;
+    }
+
+    span {
+      font-size: 12px;
+      color: rgba(white, 0.7);
+      font-weight: 500;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    &:hover {
+      background: rgba(white, 0.05);
+
+      svg {
+        color: rgba(white, 0.9);
+        transform: scale(1.1);
+      }
+
+      span {
+        color: rgba(white, 0.9);
+      }
+    }
+
+    &.active {
+      svg {
+        color: #4caf50;
+      }
+
+      span {
+        color: #4caf50;
+      }
+
+      &:hover {
+        svg {
+          color: #66bb6a;
+        }
+
+        span {
+          color: #66bb6a;
+        }
+      }
+    }
+  }
+}

@@ -1,15 +1,15 @@
 @import '../../../theme/constants';
 
 .image-editor-slider {
+  position: relative;
   display: flex;
   width: 100%;
   max-width: 380px;
-  height: 20px;
+  height: 40px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-right: 16px;
-  padding-left: 16px;
+  padding: 20px 16px;
   border-radius: 10px;
   background: rgba(#1b1a21, 0.4);
   cursor: pointer;
@@ -21,6 +21,50 @@
     align-items: center;
   }
 
+  &__ticks {
+    position: absolute;
+    top: -15px;
+    left: 0;
+    right: 0;
+    height: 30px;
+    pointer-events: none;
+  }
+
+  &__tick {
+    position: absolute;
+    width: 2px;
+    height: 6px;
+    background: rgba(white, 0.4);
+    transform: translateX(-50%);
+    cursor: pointer;
+    pointer-events: auto;
+
+    &--center {
+      background: rgba(white, 0.8);
+      height: 8px;
+    }
+
+    &:hover {
+      background: white;
+    }
+  }
+
+  &__tick-label {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    color: rgba(white, 0.6);
+    white-space: nowrap;
+    user-select: none;
+
+    .image-editor-slider__tick--center & {
+      color: rgba(white, 0.9);
+      font-weight: 500;
+    }
+  }
+
   &__line {
     position: relative;
     display: flex;
@@ -28,8 +72,12 @@
     height: 2px;
     align-items: center;
     background: rgba(white, 0.5);
-  }
+    cursor: pointer;
 
+    &:hover {
+      background: rgba(white, 0.7);
+    }
+  }
   &__fill {
     position: absolute;
     height: 2px;

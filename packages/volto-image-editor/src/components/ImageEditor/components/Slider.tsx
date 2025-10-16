@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import cn from 'classnames';
 import './Slider.scss';
 
@@ -9,56 +9,71 @@ interface Props {
   showValue?: boolean;
 }
 
-export class Slider extends PureComponent<Props> {
-  line = React.createRef<HTMLDivElement>();
+export const Slider: React.FC<Props> = ({
+  className,
+  onChange,
+  value = 0,
+  showValue = true,
+}) => {
+  const lineRef = useRef<HTMLDivElement>(null);
+  const [focus, setFocus] = useState(false);
+  const [width, setWidth] = useState(0);
 
-  state = {
-    focus: false,
-    width: 0,
-  };
+  // Convert between display value (-100 to 100) and internal value (-1 to 1)
+  const displayValue = Math.round(value * 100);
+  const internalValueToDisplay = (val: number) => Math.round(val * 100);
+  const displayValueToInternal = (val: number) => val / 100;
 
-  componentDidMount() {
-    window.addEventListener('resize', this.recalculateWidth);
-    window.addEventListener('orientationchange', this.recalculateWidth);
-
-    window.addEventListener('mouseup', this.onStop, { passive: false });
-    window.addEventListener('mousemove', this.onDrag, { passive: false });
-    window.addEventListener('touchmove', this.onDrag, { passive: false });
-    window.addEventListener('touchend', this.onStop, { passive: false });
-
-    const line = this.line.current;
+  const recalculateWidth = useCallback(() => {
+    const line = lineRef.current;
     if (line) {
-      line.addEventListener('mousedown', this.onStart);
-      line.addEventListener('touchstart', this.onStart);
+      setWidth(line.clientWidth);
     }
+  }, []);
 
-    this.recalculateWidth();
-  }
-  componentWillUnmount() {
-    window.removeEventListener('mouseup', this.onStop);
-    window.removeEventListener('mousemove', this.onDrag);
-    window.removeEventListener('touchmove', this.onDrag);
-    window.removeEventListener('touchend', this.onStop);
+  const onDrag = useCallback(
+    (e: MouseEvent | TouchEvent) => {
+      if (focus && onChange) {
+        const position = 'touches' in e ? e.touches[0].clientX : e.clientX;
+        const line = lineRef.current;
 
-    window.removeEventListener('resize', this.recalculateWidth);
-    window.removeEventListener('orientationchange', this.recalculateWidth);
+        if (line) {
+          const { left, width } = line.getBoundingClientRect();
 
-    const line = this.line.current;
-    if (line) {
-      line.removeEventListener('mousedown', this.onStart);
-      line.removeEventListener('touchstart', this.onStart);
-    }
-  }
-  onDrag = (e: MouseEvent | TouchEvent) => {
-    const { onChange } = this.props;
-    if (this.state.focus) {
-      const position = 'touches' in e ? e.touches[0].clientX : e.clientX;
-      const line = this.line.current;
+          onChange(
+            Math.max(
+              -1,
+              Math.min(1, (2 * (position - left - width / 2)) / width),
+            ),
+          );
+        }
+        e.preventDefault?.();
+      }
+    },
+    [focus, onChange],
+  );
 
-      if (line) {
-        const { left, width } = line.getBoundingClientRect();
+  const onStop = useCallback(() => {
+    setFocus(false);
+  }, []);
 
-        if (onChange) {
+  const onStart = useCallback(
+    (e: MouseEvent | TouchEvent) => {
+      setFocus(true);
+      onDrag(e);
+    },
+    [onDrag],
+  );
+
+  // Handle direct click on slider line
+  const onLineClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (onChange && !focus) {
+        const line = lineRef.current;
+        if (line) {
+          const { left, width } = line.getBoundingClientRect();
+          const position = e.clientX;
+
           onChange(
             Math.max(
               -1,
@@ -67,54 +82,98 @@ export class Slider extends PureComponent<Props> {
           );
         }
       }
-      if (e.preventDefault) {
-        e.preventDefault();
-      }
-    }
-  };
-  onStop = () => {
-    this.setState({
-      focus: false,
-    });
-  };
-  onStart = (e: MouseEvent | TouchEvent) => {
-    this.setState({
-      focus: true,
-    });
-    this.onDrag(e);
-  };
-  recalculateWidth = () => {
-    const line = this.line.current;
-    if (line) {
-      this.setState({
-        width: line.clientWidth,
-      });
-    }
-  };
-  render() {
-    const { value = 0, className } = this.props;
+    },
+    [onChange, focus],
+  );
 
-    const handleInsideDot = this.state.width
-      ? Math.abs(value) <= 16 / this.state.width
-      : true;
+  useEffect(() => {
+    const handleResize = () => recalculateWidth();
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('orientationchange', handleResize);
 
-    const fillWidth = `${Math.abs(value) * 50}%`;
+    recalculateWidth();
 
-    const fillLeft = `${50 * (1 - Math.abs(Math.min(0, value)))}%`;
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleResize);
+    };
+  }, [recalculateWidth]);
 
-    const formattedValue = `${value > 0 ? '+' : ''}${Math.round(100 * value)}`;
+  useEffect(() => {
+    if (!focus) return;
 
-    return (
-      <div className={cn('image-editor-slider', className)} ref={this.line}>
-        <div className="image-editor-slider__line">
+    const handleMouseUp = () => onStop();
+    const handleMouseMove = (e: MouseEvent) => onDrag(e);
+    const handleTouchEnd = () => onStop();
+    const handleTouchMove = (e: TouchEvent) => onDrag(e);
+
+    window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('touchmove', handleTouchMove);
+    window.addEventListener('touchend', handleTouchEnd);
+
+    return () => {
+      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [focus, onStop, onDrag]);
+
+  useEffect(() => {
+    const line = lineRef.current;
+    if (!line) return;
+
+    const handleMouseDown = (e: MouseEvent) => onStart(e);
+    const handleTouchStart = (e: TouchEvent) => onStart(e);
+
+    line.addEventListener('mousedown', handleMouseDown);
+    line.addEventListener('touchstart', handleTouchStart);
+
+    return () => {
+      line.removeEventListener('mousedown', handleMouseDown);
+      line.removeEventListener('touchstart', handleTouchStart);
+    };
+  }, [onStart]);
+
+  const handleInsideDot = width ? Math.abs(value) <= 16 / width : true;
+  const fillWidth = `${Math.abs(value) * 50}%`;
+  const fillLeft = `${50 * (1 - Math.abs(Math.min(0, value)))}%`;
+  const formattedValue = `${displayValue > 0 ? '+' : ''}${displayValue}`;
+
+  return (
+    <div className={cn('image-editor-slider', className)} ref={lineRef}>
+      {/* Tick marks for easier value selection */}
+      <div className="image-editor-slider__ticks">
+        {[-100, -50, 0, 50, 100].map((tickValue) => (
           <div
-            className="image-editor-slider__fill"
-            style={{
-              width: fillWidth,
-              left: fillLeft,
+            key={tickValue}
+            className={cn(
+              'image-editor-slider__tick',
+              tickValue === 0 && 'image-editor-slider__tick--center',
+            )}
+            style={{ left: `${(tickValue + 100) / 2}%` }}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (onChange) {
+                onChange(displayValueToInternal(tickValue));
+              }
             }}
-          />
-          <div className="image-editor-slider__dot" />
+          >
+            <span className="image-editor-slider__tick-label">{tickValue}</span>
+          </div>
+        ))}
+      </div>
+      <div className="image-editor-slider__line" onClick={onLineClick}>
+        <div
+          className="image-editor-slider__fill"
+          style={{
+            width: fillWidth,
+            left: fillLeft,
+          }}
+        />
+        <div className="image-editor-slider__dot" />
+        {showValue && (
           <div
             className={cn(
               'image-editor-slider__value',
@@ -126,18 +185,18 @@ export class Slider extends PureComponent<Props> {
           >
             {formattedValue}
           </div>
-          <div
-            className={cn(
-              'image-editor-slider__handler',
-              this.state.focus && 'image-editor-slider__handler--focus',
-              handleInsideDot && 'image-editor-slider__handler--hidden',
-            )}
-            style={{
-              left: `${value * 50 + 50}%`,
-            }}
-          />
-        </div>
+        )}
+        <div
+          className={cn(
+            'image-editor-slider__handler',
+            focus && 'image-editor-slider__handler--focus',
+            handleInsideDot && 'image-editor-slider__handler--hidden',
+          )}
+          style={{
+            left: `${value * 50 + 50}%`,
+          }}
+        />
       </div>
-    );
-  }
-}
+    </div>
+  );
+};

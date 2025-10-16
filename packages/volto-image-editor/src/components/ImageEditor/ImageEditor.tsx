@@ -1,12 +1,23 @@
 import React, { useState, useRef } from 'react';
 import cn from 'classnames';
-import { Cropper, CropperPreview } from 'react-advanced-cropper';
-import type { CropperRef, CropperPreviewRef } from 'react-advanced-cropper';
+import {
+  Cropper,
+  CropperPreview,
+  RectangleStencil,
+  CircleStencil,
+} from 'react-advanced-cropper';
+import type {
+  CropperRef,
+  CropperPreviewRef,
+  ImageRestriction,
+} from 'react-advanced-cropper';
 import { AdjustablePreviewBackground } from './components/AdjustablePreviewBackground';
 import { Navigation } from './components/Navigation';
 import { Slider } from './components/Slider';
 import { AdjustableCropperBackground } from './components/AdjustableCropperBackground';
 import { Button } from './components/Button';
+import { SettingsModal } from './components/SettingsModal';
+import type { ImageSettings } from './types/ImageSettings';
 import { ResetIcon } from '@plone-collective/volto-image-editor/icons/ResetIcon';
 import './ImageEditor.scss';
 
@@ -20,6 +31,8 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
   const previewRef = useRef<CropperPreviewRef>(null);
 
   const [mode, setMode] = useState('crop');
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [hasRotationChanges, setHasRotationChanges] = useState(false);
 
   const [adjustments, setAdjustments] = useState({
     brightness: 0,
@@ -28,25 +41,42 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
     contrast: 0,
   });
 
+  const [imageSettings, setImageSettings] = useState<ImageSettings>({
+    // Cropper settings
+    aspectRatio: 'free',
+    imageRestriction: 'fill-area' as ImageRestriction,
+    stencilType: 'rectangle',
+    minWidth: 50,
+    minHeight: 50,
+    maxCropWidth: undefined,
+    maxCropHeight: undefined,
+    scalable: true,
+    stencilGrid: false,
+  });
+
   const onAction = (action: string) => {
     switch (action) {
       case 'rotate-left':
         rotate(-90);
+        setHasRotationChanges(true);
         break;
       case 'rotate-right':
         rotate(90);
+        setHasRotationChanges(true);
         break;
       case 'flip-horizontal':
         flip(true, false);
+        setHasRotationChanges(true);
         break;
       case 'flip-vertical':
         flip(false, true);
+        setHasRotationChanges(true);
         break;
     }
   };
 
   const onChangeValue = (value: number) => {
-    if (mode in adjustments) {
+    if (mode && mode in adjustments) {
       setAdjustments((previousValue) => ({
         ...previousValue,
         [mode]: value,
@@ -62,12 +92,67 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
       saturation: 0,
       contrast: 0,
     });
+    // Reset cropper transformations
+    if (cropperRef.current) {
+      cropperRef.current.reset();
+    }
+  };
+
+  const onResetRotation = () => {
+    // Reset only rotation and flip transformations
+    if (cropperRef.current) {
+      // Get current coordinates to preserve crop area
+      const coordinates = cropperRef.current.getCoordinates();
+      cropperRef.current.reset();
+      // Restore crop area if it existed
+      if (coordinates && coordinates.width > 0 && coordinates.height > 0) {
+        cropperRef.current.setCoordinates(coordinates);
+      }
+    }
+    setHasRotationChanges(false);
   };
 
   const onSave = () => {
     if (cropperRef.current) {
-      const newData = cropperRef.current.getCanvas()?.toDataURL();
-      onImageSave(newData);
+      const canvas = cropperRef.current.getCanvas();
+      if (canvas) {
+        // Apply size constraints if specified
+        let finalCanvas = canvas;
+
+        if (imageSettings.maxWidth || imageSettings.maxHeight) {
+          const tempCanvas = document.createElement('canvas');
+          const ctx = tempCanvas.getContext('2d');
+
+          if (ctx) {
+            let { width, height } = canvas;
+
+            // Calculate new dimensions
+            if (imageSettings.maxWidth && width > imageSettings.maxWidth) {
+              const ratio = imageSettings.maxWidth / width;
+              width = imageSettings.maxWidth;
+              height = imageSettings.maintainAspectRatio
+                ? height * ratio
+                : height;
+            }
+
+            if (imageSettings.maxHeight && height > imageSettings.maxHeight) {
+              const ratio = imageSettings.maxHeight / height;
+              height = imageSettings.maxHeight;
+              width = imageSettings.maintainAspectRatio ? width * ratio : width;
+            }
+
+            tempCanvas.width = width;
+            tempCanvas.height = height;
+            ctx.drawImage(canvas, 0, 0, width, height);
+            finalCanvas = tempCanvas;
+          }
+        }
+
+        // Convert to desired format
+        const mimeType = `image/${imageSettings.format}`;
+        const newData = finalCanvas.toDataURL(mimeType, imageSettings.quality);
+        onImageSave(newData);
+      }
     }
   };
 
@@ -86,9 +171,18 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
     previewRef.current?.update(cropper);
   };
 
-  const changed = Object.values(adjustments).some((el) => Math.floor(el * 100));
+  const changed = Object.values(adjustments).some(
+    (el: number) => Math.abs(el) > 0.01,
+  );
 
   const cropperEnabled = mode === 'crop';
+
+  // Convert aspect ratio string to number or null
+  const getAspectRatio = (): number | undefined => {
+    if (imageSettings.aspectRatio === 'free') return undefined;
+    const [width, height] = imageSettings.aspectRatio.split(':').map(Number);
+    return width / height;
+  };
 
   return (
     <div className={'image-editor'}>
@@ -96,28 +190,45 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
         <Cropper
           src={src}
           ref={cropperRef}
+          stencilComponent={
+            imageSettings.stencilType === 'circle'
+              ? CircleStencil
+              : RectangleStencil
+          }
           stencilProps={{
             movable: cropperEnabled,
             resizable: cropperEnabled,
             lines: cropperEnabled,
             handlers: cropperEnabled,
+            grid: imageSettings.stencilGrid,
+            aspectRatio:
+              imageSettings.aspectRatio === 'free'
+                ? undefined
+                : getAspectRatio(),
             overlayClassName: cn(
               'image-editor__cropper-overlay',
               !cropperEnabled && 'image-editor__cropper-overlay--faded',
             ),
           }}
+          sizeRestrictions={{
+            minWidth: imageSettings.minWidth,
+            minHeight: imageSettings.minHeight,
+            maxWidth: imageSettings.maxCropWidth,
+            maxHeight: imageSettings.maxCropHeight,
+          }}
+          imageRestriction={imageSettings.imageRestriction}
           backgroundWrapperProps={{
-            scaleImage: cropperEnabled,
+            scaleImage: cropperEnabled && imageSettings.scalable,
             moveImage: cropperEnabled,
           }}
           backgroundComponent={AdjustableCropperBackground}
           backgroundProps={adjustments}
           onUpdate={onUpdate}
         />
-        {mode !== 'crop' && (
+        {mode !== 'crop' && mode && mode in adjustments && (
           <Slider
             className="image-editor__slider"
-            value={adjustments[mode]}
+            value={adjustments[mode as keyof typeof adjustments]}
             onChange={onChangeValue}
           />
         )}
@@ -136,10 +247,19 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
         >
           <ResetIcon />
         </Button>
+
+        <SettingsModal
+          settings={imageSettings}
+          onChange={setImageSettings}
+          isOpen={settingsOpen}
+          onToggle={() => setSettingsOpen(!settingsOpen)}
+        />
       </div>
       <Navigation
         mode={mode}
         onAction={onAction}
+        onResetRotation={onResetRotation}
+        hasRotationChanges={hasRotationChanges}
         onChange={setMode}
         onSave={onSave}
         onCancel={onCancel}
