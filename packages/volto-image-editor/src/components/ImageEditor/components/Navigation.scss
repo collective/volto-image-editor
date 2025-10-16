@@ -10,8 +10,8 @@
   background: #1b1a21;
   &__button {
     &--disabled {
-      opacity: 0.4;
       cursor: not-allowed;
+      opacity: 0.4;
       pointer-events: none;
     }
   }
@@ -23,9 +23,9 @@
   &__buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
     align-items: center;
     justify-content: center;
+    gap: 8px;
   }
   &__upload-input {
     display: none;

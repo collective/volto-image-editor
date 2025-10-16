@@ -10,9 +10,32 @@
   align-items: center;
   justify-content: center;
   padding: 20px 16px;
-  border-radius: 10px;
-  background: rgba(#1b1a21, 0.4);
+  border-radius: 12px;
+  background: rgba(#343338, 0.5);
   cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px rgba(white, 0.3);
+  }
+
+  &:hover:not(&--disabled) {
+    background: rgba(#504f54, 0.6);
+  }
+
+  &--active {
+    background: rgba(#626164, 0.7);
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+
+    * {
+      cursor: not-allowed !important;
+    }
+  }
 
   &__wrapper {
     display: flex;
@@ -23,45 +46,48 @@
 
   &__ticks {
     position: absolute;
-    top: -15px;
-    left: 0;
+    top: -8px;
     right: 0;
-    height: 30px;
+    left: 0;
+    height: 16px;
     pointer-events: none;
   }
 
   &__tick {
     position: absolute;
-    width: 2px;
-    height: 6px;
-    background: rgba(white, 0.4);
-    transform: translateX(-50%);
+    width: 1px;
+    height: 4px;
+    background: rgba(white, 0.3);
     cursor: pointer;
     pointer-events: auto;
+    transform: translateX(-50%);
+    transition: all 0.15s ease;
 
     &--center {
-      background: rgba(white, 0.8);
-      height: 8px;
+      width: 2px;
+      height: 6px;
+      background: rgba(white, 0.6);
     }
 
     &:hover {
-      background: white;
+      height: 6px;
+      background: rgba(white, 0.8);
+
+      &.image-editor-slider__tick--center {
+        height: 8px;
+      }
     }
-  }
 
-  &__tick-label {
-    position: absolute;
-    top: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 10px;
-    color: rgba(white, 0.6);
-    white-space: nowrap;
-    user-select: none;
+    .image-editor-slider--disabled & {
+      &:hover {
+        height: 4px;
+        background: rgba(white, 0.3);
 
-    .image-editor-slider__tick--center & {
-      color: rgba(white, 0.9);
-      font-weight: 500;
+        &.image-editor-slider__tick--center {
+          height: 6px;
+          background: rgba(white, 0.6);
+        }
+      }
     }
   }
 
@@ -69,13 +95,28 @@
     position: relative;
     display: flex;
     width: 100%;
-    height: 2px;
+    height: 3px;
     align-items: center;
-    background: rgba(white, 0.5);
+    border-radius: 2px;
+    background: rgba(white, 0.4);
     cursor: pointer;
+    transition: all 0.2s ease;
 
     &:hover {
+      height: 4px;
+      background: rgba(white, 0.6);
+    }
+
+    .image-editor-slider--active & {
+      height: 4px;
       background: rgba(white, 0.7);
+    }
+
+    .image-editor-slider--disabled & {
+      &:hover {
+        height: 3px;
+        background: rgba(white, 0.4);
+      }
     }
   }
   &__fill {
@@ -85,71 +126,106 @@
     flex-direction: column;
     flex-shrink: 0;
     align-self: stretch;
+    border-radius: 2px;
     background: white;
+    transition: all 0.2s ease;
   }
 
   &__dot {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     transform: translate(-50%, -50%);
+    transition: all 0.2s ease;
+
+    .image-editor-slider--active & {
+      width: 12px;
+      height: 12px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+    }
   }
 
   &__value {
     position: absolute;
-    top: -20px;
+    top: -30px;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.8);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     color: white;
-    font-size: 10px;
-    font-weight: 500;
+    font-size: 11px;
+    font-weight: 600;
     transform: translate(-50%);
-    transition-duration: 0.5s;
-    transition-property: font-size, opacity;
-    vertical-align: bottom;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+
+    &--hidden {
+      opacity: 0;
+      transform: translate(-50%) scale(0.8);
+    }
   }
 
   &__handler {
     position: absolute;
+    top: 50%;
     display: flex;
-    width: 2px;
-    height: 8px;
+    width: 20px;
+    height: 20px;
     align-items: center;
     justify-content: center;
+    border-radius: 50%;
     background-color: white;
-    transition-duration: 0.2s;
-    transition-property: height;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    cursor: grab;
+    transform: translate(-50%, -50%);
+    transition: all 0.2s ease;
 
     &:hover {
-      height: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transform: translate(-50%, -50%) scale(1.1);
     }
+
     &--focus {
-      height: 10px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+      cursor: grabbing;
+      transform: translate(-50%, -50%) scale(1.2);
     }
+
     &--hidden {
-      height: 4px;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.5);
     }
-  }
 
-  &__inner-circle {
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background-color: $theme-color;
-    box-shadow:
-      rgba($theme-color, 0.2) 0px 0px 7px,
-      rgba($theme-color, 0.15) 0px 1px 3px 1px;
-    transform: scale(1);
-    transition-duration: 0.1s;
-    transition-property: transform;
+    .image-editor-slider--disabled & {
+      &:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        transform: translate(-50%, -50%);
+      }
+    }
 
-    &--focus {
-      transform: scale(1.2);
+    @media (max-width: 768px), (hover: none) {
+      width: 24px;
+      height: 24px;
+
+      &:hover,
+      &--focus {
+        transform: translate(-50%, -50%) scale(1.15);
+      }
+
+      .image-editor-slider--disabled & {
+        &:hover,
+        &--focus {
+          transform: translate(-50%, -50%);
+        }
+      }
     }
   }
 }

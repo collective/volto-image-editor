@@ -21,7 +21,6 @@ import type { ImageSettings } from './types/ImageSettings';
 import { ResetIcon } from '@plone-collective/volto-image-editor/icons/ResetIcon';
 import './ImageEditor.scss';
 
-// The polyfill for Safari browser. The dynamic require is needed to work with SSR
 if (typeof window !== 'undefined') {
   require('context-filter-polyfill');
 }
@@ -42,7 +41,6 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
   });
 
   const [imageSettings, setImageSettings] = useState<ImageSettings>({
-    // Cropper settings
     aspectRatio: 'free',
     imageRestriction: 'fill-area' as ImageRestriction,
     stencilType: 'rectangle',
@@ -50,7 +48,7 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
     minHeight: 50,
     maxCropWidth: undefined,
     maxCropHeight: undefined,
-    scalable: true,
+    scalable: false,
     stencilGrid: false,
   });
 
@@ -92,19 +90,15 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
       saturation: 0,
       contrast: 0,
     });
-    // Reset cropper transformations
     if (cropperRef.current) {
       cropperRef.current.reset();
     }
   };
 
   const onResetRotation = () => {
-    // Reset only rotation and flip transformations
     if (cropperRef.current) {
-      // Get current coordinates to preserve crop area
       const coordinates = cropperRef.current.getCoordinates();
       cropperRef.current.reset();
-      // Restore crop area if it existed
       if (coordinates && coordinates.width > 0 && coordinates.height > 0) {
         cropperRef.current.setCoordinates(coordinates);
       }
@@ -116,7 +110,6 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
     if (cropperRef.current) {
       const canvas = cropperRef.current.getCanvas();
       if (canvas) {
-        // Apply size constraints if specified
         let finalCanvas = canvas;
 
         if (imageSettings.maxWidth || imageSettings.maxHeight) {
@@ -126,7 +119,6 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
           if (ctx) {
             let { width, height } = canvas;
 
-            // Calculate new dimensions
             if (imageSettings.maxWidth && width > imageSettings.maxWidth) {
               const ratio = imageSettings.maxWidth / width;
               width = imageSettings.maxWidth;
@@ -148,7 +140,6 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
           }
         }
 
-        // Convert to desired format
         const mimeType = `image/${imageSettings.format}`;
         const newData = finalCanvas.toDataURL(mimeType, imageSettings.quality);
         onImageSave(newData);
@@ -177,7 +168,6 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
 
   const cropperEnabled = mode === 'crop';
 
-  // Convert aspect ratio string to number or null
   const getAspectRatio = (): number | undefined => {
     if (imageSettings.aspectRatio === 'free') return undefined;
     const [width, height] = imageSettings.aspectRatio.split(':').map(Number);

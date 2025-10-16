@@ -1,5 +1,7 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions, jsx-a11y/label-has-associated-control */
 import React, { FC } from 'react';
 import cn from 'classnames';
+import { defineMessages, useIntl } from 'react-intl';
 import { Button } from './Button';
 import { SettingsIcon } from '@plone-collective/volto-image-editor/icons/SettingsIcon';
 import type { ImageSettings } from '../types/ImageSettings';
@@ -26,6 +28,113 @@ import {
 } from '@plone-collective/volto-image-editor/icons/StencilIcons';
 import './SettingsModal.scss';
 
+const messages = defineMessages({
+  editorSettings: {
+    id: 'Editor Settings',
+    defaultMessage: 'Editor Settings',
+  },
+  aspectRatio: {
+    id: 'Aspect Ratio',
+    defaultMessage: 'Aspect Ratio',
+  },
+  freeAspectRatio: {
+    id: 'Free aspect ratio',
+    defaultMessage: 'Free',
+  },
+  square: {
+    id: 'Square (1:1)',
+    defaultMessage: '1:1',
+  },
+  photo: {
+    id: 'Photo (3:4)',
+    defaultMessage: '3:4',
+  },
+  monitor: {
+    id: 'Monitor (4:3)',
+    defaultMessage: '4:3',
+  },
+  widescreen: {
+    id: 'Widescreen (16:9)',
+    defaultMessage: '16:9',
+  },
+  mobile: {
+    id: 'Mobile (9:16)',
+    defaultMessage: '9:16',
+  },
+  landscape: {
+    id: 'Landscape (2:1)',
+    defaultMessage: '2:1',
+  },
+  ultraWide: {
+    id: 'Ultra Wide (21:9)',
+    defaultMessage: '21:9',
+  },
+  portrait: {
+    id: 'Portrait (1:2)',
+    defaultMessage: '1:2',
+  },
+  imageRestriction: {
+    id: 'Image Restriction',
+    defaultMessage: 'Image Restriction',
+  },
+  fitArea: {
+    id: 'Fit Area',
+    defaultMessage: 'Fit',
+  },
+  fillArea: {
+    id: 'Fill Area',
+    defaultMessage: 'Fill',
+  },
+  stencilRestriction: {
+    id: 'Stencil',
+    defaultMessage: 'Stencil',
+  },
+  noRestriction: {
+    id: 'No Restriction',
+    defaultMessage: 'Free',
+  },
+  stencilType: {
+    id: 'Stencil Type',
+    defaultMessage: 'Stencil Type',
+  },
+  rectangle: {
+    id: 'Rectangle',
+    defaultMessage: 'Rectangle',
+  },
+  circle: {
+    id: 'Circle',
+    defaultMessage: 'Circle',
+  },
+  minDimensions: {
+    id: 'Minimum Dimensions',
+    defaultMessage: 'Minimum Dimensions',
+  },
+  minWidth: {
+    id: 'Min width',
+    defaultMessage: 'Min width',
+  },
+  minHeight: {
+    id: 'Min height',
+    defaultMessage: 'Min height',
+  },
+  maxCropDimensions: {
+    id: 'Maximum Crop Dimensions',
+    defaultMessage: 'Maximum Crop Dimensions',
+  },
+  maxWidth: {
+    id: 'Max width',
+    defaultMessage: 'Max width',
+  },
+  maxHeight: {
+    id: 'Max height',
+    defaultMessage: 'Max height',
+  },
+  stencilGrid: {
+    id: 'Stencil Grid',
+    defaultMessage: 'Stencil Grid',
+  },
+});
+
 interface Props {
   className?: string;
   settings: ImageSettings;
@@ -41,6 +150,8 @@ export const SettingsModal: FC<Props> = ({
   isOpen,
   onToggle,
 }) => {
+  const intl = useIntl();
+
   const handleSettingChange = (key: keyof ImageSettings, value: any) => {
     onChange({
       ...settings,
@@ -56,7 +167,6 @@ export const SettingsModal: FC<Props> = ({
 
   return (
     <>
-      {/* Settings Button */}
       <Button
         className={cn('image-editor-settings-modal__toggle', className)}
         onClick={onToggle}
@@ -65,16 +175,29 @@ export const SettingsModal: FC<Props> = ({
         <SettingsIcon />
       </Button>
 
-      {/* Cropper Modal */}
       {isOpen && (
         <div
           className="image-editor-settings-modal__overlay"
+          tabIndex={-1}
           onClick={handleBackdropClick}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') {
+              onToggle();
+            }
+          }}
         >
-          <div className="image-editor-settings-modal__content">
+          <div
+            className="image-editor-settings-modal__content"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="settings-modal-title"
+          >
             <div className="image-editor-settings-modal__header">
-              <h2 className="image-editor-settings-modal__title">
-                Configurações do Editor
+              <h2
+                id="settings-modal-title"
+                className="image-editor-settings-modal__title"
+              >
+                {intl.formatMessage(messages.editorSettings)}
               </h2>
               <Button
                 className="image-editor-settings-modal__close"
@@ -87,107 +210,203 @@ export const SettingsModal: FC<Props> = ({
             <div className="image-editor-settings-modal__body">
               {/* Aspect Ratio */}
               <div className="image-editor-settings-modal__section">
-                <label className="image-editor-settings-modal__label">
-                  Proporção (Aspect Ratio)
-                </label>
-                <div className="image-editor-settings-modal__icon-scroll">
+                <div
+                  className="image-editor-settings-modal__label"
+                  id="aspect-ratio-label"
+                >
+                  {intl.formatMessage(messages.aspectRatio)}
+                </div>
+                <div
+                  className="image-editor-settings-modal__icon-scroll"
+                  role="group"
+                  aria-labelledby="aspect-ratio-label"
+                >
                   <div
                     className={cn(
                       'image-editor-settings-modal__icon-option',
                       settings.aspectRatio === 'free' && 'active',
                     )}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={intl.formatMessage(messages.freeAspectRatio)}
+                    aria-pressed={settings.aspectRatio === 'free'}
                     onClick={() => handleSettingChange('aspectRatio', 'free')}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleSettingChange('aspectRatio', 'free');
+                      }
+                    }}
                   >
                     <FreeIcon />
-                    <span>Livre</span>
+                    <span>{intl.formatMessage(messages.freeAspectRatio)}</span>
                   </div>
                   <div
                     className={cn(
                       'image-editor-settings-modal__icon-option',
                       settings.aspectRatio === '1:1' && 'active',
                     )}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={intl.formatMessage(messages.square)}
+                    aria-pressed={settings.aspectRatio === '1:1'}
                     onClick={() => handleSettingChange('aspectRatio', '1:1')}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleSettingChange('aspectRatio', '1:1');
+                      }
+                    }}
                   >
                     <SquareIcon />
-                    <span>1:1</span>
+                    <span>{intl.formatMessage(messages.square)}</span>
                   </div>
                   <div
                     className={cn(
                       'image-editor-settings-modal__icon-option',
                       settings.aspectRatio === '3:4' && 'active',
                     )}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={intl.formatMessage(messages.photo)}
+                    aria-pressed={settings.aspectRatio === '3:4'}
                     onClick={() => handleSettingChange('aspectRatio', '3:4')}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleSettingChange('aspectRatio', '3:4');
+                      }
+                    }}
                   >
                     <PhotoIcon />
-                    <span>3:4</span>
+                    <span>{intl.formatMessage(messages.photo)}</span>
                   </div>
                   <div
                     className={cn(
                       'image-editor-settings-modal__icon-option',
                       settings.aspectRatio === '4:3' && 'active',
                     )}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={intl.formatMessage(messages.monitor)}
+                    aria-pressed={settings.aspectRatio === '4:3'}
                     onClick={() => handleSettingChange('aspectRatio', '4:3')}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleSettingChange('aspectRatio', '4:3');
+                      }
+                    }}
                   >
                     <MonitorIcon />
-                    <span>4:3</span>
+                    <span>{intl.formatMessage(messages.monitor)}</span>
                   </div>
                   <div
                     className={cn(
                       'image-editor-settings-modal__icon-option',
                       settings.aspectRatio === '16:9' && 'active',
                     )}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={intl.formatMessage(messages.widescreen)}
+                    aria-pressed={settings.aspectRatio === '16:9'}
                     onClick={() => handleSettingChange('aspectRatio', '16:9')}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleSettingChange('aspectRatio', '16:9');
+                      }
+                    }}
                   >
                     <WidescreenIcon />
-                    <span>16:9</span>
+                    <span>{intl.formatMessage(messages.widescreen)}</span>
                   </div>
                   <div
                     className={cn(
                       'image-editor-settings-modal__icon-option',
                       settings.aspectRatio === '9:16' && 'active',
                     )}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={intl.formatMessage(messages.mobile)}
+                    aria-pressed={settings.aspectRatio === '9:16'}
                     onClick={() => handleSettingChange('aspectRatio', '9:16')}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleSettingChange('aspectRatio', '9:16');
+                      }
+                    }}
                   >
                     <MobileIcon />
-                    <span>9:16</span>
+                    <span>{intl.formatMessage(messages.mobile)}</span>
                   </div>
                   <div
                     className={cn(
                       'image-editor-settings-modal__icon-option',
                       settings.aspectRatio === '2:1' && 'active',
                     )}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={intl.formatMessage(messages.landscape)}
+                    aria-pressed={settings.aspectRatio === '2:1'}
                     onClick={() => handleSettingChange('aspectRatio', '2:1')}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleSettingChange('aspectRatio', '2:1');
+                      }
+                    }}
                   >
                     <LandscapeIcon />
-                    <span>2:1</span>
+                    <span>{intl.formatMessage(messages.landscape)}</span>
                   </div>
                   <div
                     className={cn(
                       'image-editor-settings-modal__icon-option',
                       settings.aspectRatio === '21:9' && 'active',
                     )}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={intl.formatMessage(messages.ultraWide)}
+                    aria-pressed={settings.aspectRatio === '21:9'}
                     onClick={() => handleSettingChange('aspectRatio', '21:9')}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleSettingChange('aspectRatio', '21:9');
+                      }
+                    }}
                   >
                     <UltraWideIcon />
-                    <span>21:9</span>
+                    <span>{intl.formatMessage(messages.ultraWide)}</span>
                   </div>
                   <div
                     className={cn(
                       'image-editor-settings-modal__icon-option',
                       settings.aspectRatio === '1:2' && 'active',
                     )}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={intl.formatMessage(messages.portrait)}
+                    aria-pressed={settings.aspectRatio === '1:2'}
                     onClick={() => handleSettingChange('aspectRatio', '1:2')}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleSettingChange('aspectRatio', '1:2');
+                      }
+                    }}
                   >
                     <PortraitIcon />
-                    <span>1:2</span>
+                    <span>{intl.formatMessage(messages.portrait)}</span>
                   </div>
                 </div>
               </div>
 
-              {/* Image Restriction */}
               <div className="image-editor-settings-modal__section">
                 <label className="image-editor-settings-modal__label">
-                  Restrição da Imagem
+                  {intl.formatMessage(messages.imageRestriction)}
                 </label>
                 <div className="image-editor-settings-modal__icon-scroll">
                   <div
@@ -200,7 +419,7 @@ export const SettingsModal: FC<Props> = ({
                     }
                   >
                     <FitAreaIcon />
-                    <span>Ajustar</span>
+                    <span>{intl.formatMessage(messages.fitArea)}</span>
                   </div>
                   <div
                     className={cn(
@@ -212,7 +431,7 @@ export const SettingsModal: FC<Props> = ({
                     }
                   >
                     <FillAreaIcon />
-                    <span>Preencher</span>
+                    <span>{intl.formatMessage(messages.fillArea)}</span>
                   </div>
                   <div
                     className={cn(
@@ -224,7 +443,9 @@ export const SettingsModal: FC<Props> = ({
                     }
                   >
                     <StencilIcon />
-                    <span>Stencil</span>
+                    <span>
+                      {intl.formatMessage(messages.stencilRestriction)}
+                    </span>
                   </div>
                   <div
                     className={cn(
@@ -236,15 +457,14 @@ export const SettingsModal: FC<Props> = ({
                     }
                   >
                     <NoRestrictionIcon />
-                    <span>Livre</span>
+                    <span>{intl.formatMessage(messages.noRestriction)}</span>
                   </div>
                 </div>
               </div>
 
-              {/* Stencil Type */}
               <div className="image-editor-settings-modal__section">
                 <label className="image-editor-settings-modal__label">
-                  Tipo de Stencil
+                  {intl.formatMessage(messages.stencilType)}
                 </label>
                 <div className="image-editor-settings-modal__icon-scroll">
                   <div
@@ -257,7 +477,7 @@ export const SettingsModal: FC<Props> = ({
                     }
                   >
                     <RectangleStencilIcon />
-                    <span>Retângulo</span>
+                    <span>{intl.formatMessage(messages.rectangle)}</span>
                   </div>
                   <div
                     className={cn(
@@ -267,15 +487,14 @@ export const SettingsModal: FC<Props> = ({
                     onClick={() => handleSettingChange('stencilType', 'circle')}
                   >
                     <CircleStencilIcon />
-                    <span>Círculo</span>
+                    <span>{intl.formatMessage(messages.circle)}</span>
                   </div>
                 </div>
               </div>
 
-              {/* Min/Max Dimensions */}
               <div className="image-editor-settings-modal__section">
                 <label className="image-editor-settings-modal__label">
-                  Dimensões Mínimas
+                  {intl.formatMessage(messages.minDimensions)}
                 </label>
                 <div className="image-editor-settings-modal__row">
                   <input
@@ -288,7 +507,7 @@ export const SettingsModal: FC<Props> = ({
                       )
                     }
                     className="image-editor-settings-modal__input"
-                    placeholder="Largura min"
+                    placeholder={intl.formatMessage(messages.minWidth)}
                     min="0"
                   />
                   <input
@@ -301,7 +520,7 @@ export const SettingsModal: FC<Props> = ({
                       )
                     }
                     className="image-editor-settings-modal__input"
-                    placeholder="Altura min"
+                    placeholder={intl.formatMessage(messages.minHeight)}
                     min="0"
                   />
                 </div>
@@ -309,7 +528,7 @@ export const SettingsModal: FC<Props> = ({
 
               <div className="image-editor-settings-modal__section">
                 <label className="image-editor-settings-modal__label">
-                  Dimensões Máximas do Crop
+                  {intl.formatMessage(messages.maxCropDimensions)}
                 </label>
                 <div className="image-editor-settings-modal__row">
                   <input
@@ -322,7 +541,7 @@ export const SettingsModal: FC<Props> = ({
                       )
                     }
                     className="image-editor-settings-modal__input"
-                    placeholder="Largura max"
+                    placeholder={intl.formatMessage(messages.maxWidth)}
                     min="1"
                   />
                   <input
@@ -335,25 +554,10 @@ export const SettingsModal: FC<Props> = ({
                       )
                     }
                     className="image-editor-settings-modal__input"
-                    placeholder="Altura max"
+                    placeholder={intl.formatMessage(messages.maxHeight)}
                     min="1"
                   />
                 </div>
-              </div>
-
-              {/* Options */}
-              <div className="image-editor-settings-modal__section">
-                <label className="image-editor-settings-modal__label">
-                  <input
-                    type="checkbox"
-                    checked={settings.scalable}
-                    onChange={(e) =>
-                      handleSettingChange('scalable', e.target.checked)
-                    }
-                    className="image-editor-settings-modal__checkbox"
-                  />
-                  Imagem Escalável
-                </label>
               </div>
 
               <div className="image-editor-settings-modal__section">
@@ -366,7 +570,7 @@ export const SettingsModal: FC<Props> = ({
                     }
                     className="image-editor-settings-modal__checkbox"
                   />
-                  Grade no Stencil
+                  {intl.formatMessage(messages.stencilGrid)}
                 </label>
               </div>
             </div>

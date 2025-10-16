@@ -1,17 +1,17 @@
 .image-editor-settings-modal {
   &__toggle {
     position: absolute;
+    z-index: 100;
     top: 20px;
     left: 80px;
-    background: rgba(white, 0.1);
-    border: 1px solid rgba(white, 0.2);
-    color: white;
-    font-size: 16px;
     padding: 8px 12px;
+    border: 1px solid rgba(white, 0.2);
     border-radius: 4px;
+    background: rgba(white, 0.1);
+    color: white;
     cursor: pointer;
+    font-size: 16px;
     transition: all 0.2s ease;
-    z-index: 100;
 
     &:hover {
       background: rgba(white, 0.2);
@@ -24,33 +24,33 @@
 
   &__overlay {
     position: absolute;
+    z-index: 9999;
     top: 0;
     left: 0;
+    display: flex;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 9999;
     animation: fadeIn 0.2s ease-out;
+    background: rgba(0, 0, 0, 0.8);
   }
 
   &__content {
-    background: #2b2a3050;
+    display: flex;
+    overflow: hidden;
     width: 100%;
     max-height: 100%;
-    overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-    animation: scaleIn 0.2s ease-out;
-    display: flex;
     flex-direction: column;
+    animation: scaleIn 0.2s ease-out;
+    background: #2b2a3050;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   }
 
   &__header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     padding: 20px 24px;
     border-bottom: 1px solid rgba(white, 0.1);
     background: #1f1e24;
@@ -58,19 +58,19 @@
 
   &__title {
     margin: 0;
+    color: white;
     font-size: 20px;
     font-weight: 600;
-    color: white;
   }
 
   &__close {
-    background: transparent;
-    border: none;
-    color: rgba(white, 0.7);
-    font-size: 24px;
-    cursor: pointer;
     padding: 4px 8px;
+    border: none;
     border-radius: 4px;
+    background: transparent;
+    color: rgba(white, 0.7);
+    cursor: pointer;
+    font-size: 24px;
     transition: all 0.2s ease;
 
     &:hover {
@@ -80,9 +80,9 @@
   }
 
   &__body {
+    flex: 1;
     padding: 24px;
     overflow-y: auto;
-    flex: 1;
   }
 
   &__footer {
@@ -93,14 +93,14 @@
 
   &__apply {
     width: 100%;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
     background: #4caf50;
     color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 6px;
+    cursor: pointer;
     font-size: 16px;
     font-weight: 500;
-    cursor: pointer;
     transition: all 0.2s ease;
 
     &:hover {
@@ -115,9 +115,9 @@
   &__label {
     display: block;
     margin-bottom: 8px;
+    color: rgba(white, 0.9);
     font-size: 14px;
     font-weight: 500;
-    color: rgba(white, 0.9);
 
     input[type='checkbox'] {
       margin-right: 8px;
@@ -127,12 +127,12 @@
   &__select {
     width: 100%;
     padding: 10px 14px;
-    background: #1f1e24;
     border: 1px solid rgba(white, 0.2);
     border-radius: 6px;
+    background: #1f1e24;
     color: white;
-    font-size: 14px;
     cursor: pointer;
+    font-size: 14px;
 
     option {
       background: #2b2a30;
@@ -140,24 +140,24 @@
     }
 
     &:focus {
-      outline: none;
       border-color: #4caf50;
+      outline: none;
     }
   }
 
   &__input {
     width: 100%;
     padding: 10px 14px;
-    background: transparent;
     border: 1px solid rgba(white, 0.2);
-    appearance: textfield;
-    -moz-appearance: textfield;
     border-radius: 6px;
+    -moz-appearance: textfield;
+    appearance: textfield;
+    background: transparent;
     color: white;
     font-size: 14px;
     &::-webkit-inner-spin-button {
-      -webkit-appearance: none;
       margin: 0;
+      -webkit-appearance: none;
     }
 
     &::placeholder {
@@ -165,32 +165,32 @@
     }
 
     &:focus {
-      outline: none;
       border-color: #4caf50;
+      outline: none;
     }
   }
 
   &__checkbox {
-    transform: scale(1.2);
     accent-color: #4caf50;
+    transform: scale(1.2);
   }
 
   &__range {
     width: 100%;
     height: 6px;
-    background: rgba(white, 0.2);
     border-radius: 3px;
-    outline: none;
+    background: rgba(white, 0.2);
     cursor: pointer;
+    outline: none;
 
     &::-webkit-slider-thumb {
-      appearance: none;
       width: 20px;
       height: 20px;
       border-radius: 50%;
+      appearance: none;
       background: #4caf50;
-      cursor: pointer;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
       transition: all 0.2s ease;
 
       &:hover {
@@ -201,31 +201,31 @@
     &::-moz-range-thumb {
       width: 20px;
       height: 20px;
+      border: none;
       border-radius: 50%;
       background: #4caf50;
-      cursor: pointer;
-      border: none;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
     }
   }
 
   &__row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
     gap: 12px;
+    grid-template-columns: 1fr 1fr;
   }
 
   &__divider {
     height: 1px;
-    background: rgba(white, 0.1);
     margin: 24px 0;
+    background: rgba(white, 0.1);
   }
 
   &__subtitle {
     margin: 0 0 16px 0;
+    color: rgba(white, 0.9);
     font-size: 16px;
     font-weight: 600;
-    color: rgba(white, 0.9);
   }
 
   @keyframes fadeIn {
@@ -239,20 +239,16 @@
 
   @keyframes scaleIn {
     from {
-      transform: scale(0.9);
       opacity: 0;
+      transform: scale(0.9);
     }
     to {
-      transform: scale(1);
       opacity: 1;
+      transform: scale(1);
     }
   }
 
   @media (max-width: 768px) {
-    // &__content {
-    //   height: 95vh;
-    // }
-
     &__body {
       padding: 20px;
     }
@@ -263,8 +259,8 @@
     }
 
     &__row {
-      grid-template-columns: 1fr;
       gap: 8px;
+      grid-template-columns: 1fr;
     }
 
     &__icon-scroll {
@@ -289,49 +285,49 @@
 
   &__icon-scroll {
     display: flex;
-    overflow-x: auto;
-    gap: 16px;
-    margin-top: 12px;
     padding: 8px 0;
-    scrollbar-width: thin;
+    margin-top: 12px;
+    gap: 16px;
+    overflow-x: auto;
     scrollbar-color: rgba(white, 0.3) rgba(white, 0.1);
+    scrollbar-width: thin;
 
     &::-webkit-scrollbar {
       height: 6px;
     }
 
     &::-webkit-scrollbar-track {
-      background: rgba(white, 0.1);
       border-radius: 3px;
+      background: rgba(white, 0.1);
     }
 
     &::-webkit-scrollbar-thumb {
-      background: rgba(white, 0.3);
       border-radius: 3px;
+      background: rgba(white, 0.3);
     }
   }
 
   &__icon-option {
     display: flex;
+    min-width: 80px;
     flex-direction: column;
     align-items: center;
-    min-width: 80px;
     padding: 12px 8px 8px;
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
-    border-radius: 8px;
 
     svg {
       width: 32px;
       height: 32px;
-      color: rgba(white, 0.6);
       margin-bottom: 8px;
+      color: rgba(white, 0.6);
       transition: all 0.2s ease;
     }
 
     span {
-      font-size: 12px;
       color: rgba(white, 0.7);
+      font-size: 12px;
       font-weight: 500;
       text-align: center;
       white-space: nowrap;

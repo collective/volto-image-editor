@@ -2,9 +2,9 @@
 @import '../../theme/constants';
 
 .image-editor {
+  width: 100%;
   border: solid 1px #2b2a30;
   color: $theme-color;
-  width: 100%;
   &__preview {
     position: absolute;
     top: 20px;
@@ -18,10 +18,10 @@
   &__cropper {
     position: relative;
     display: flex;
-    align-items: center;
-    justify-content: center;
     height: 500px;
     max-height: 100vh;
+    align-items: center;
+    justify-content: center;
     background: #0f0e13;
   }
   &__slider {

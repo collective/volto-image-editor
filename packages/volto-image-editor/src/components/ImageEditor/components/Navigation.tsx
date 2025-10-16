@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
+import { defineMessages, useIntl } from 'react-intl';
 import Icon from '@plone/volto/components/theme/Icon/Icon';
 import CancelSVG from '@plone/volto/icons/clear.svg';
 import SaveSVG from '@plone/volto/icons/save.svg';
@@ -15,6 +16,13 @@ import { FlipVerticalIcon } from '@plone-collective/volto-image-editor/icons/Fli
 import { ResetRotationIcon } from '@plone-collective/volto-image-editor/icons/ResetRotationIcon';
 import { Button } from './Button';
 import './Navigation.scss';
+
+const messages = defineMessages({
+  resetRotationAndFlip: {
+    id: 'Reset rotation and flip',
+    defaultMessage: 'Reset rotation and flip',
+  },
+});
 
 interface Props {
   className?: string;
@@ -46,6 +54,8 @@ export const Navigation: FC<Props> = ({
   hasRotationChanges,
   mode,
 }) => {
+  const intl = useIntl();
+
   const setMode = (mode: string) => () => {
     onChange?.(mode);
   };
@@ -96,7 +106,7 @@ export const Navigation: FC<Props> = ({
           )}
           onClick={onResetRotation}
           disabled={!hasRotationChanges}
-          title="Reset rotação e flip"
+          title={intl.formatMessage(messages.resetRotationAndFlip)}
         >
           <ResetRotationIcon />
         </Button>

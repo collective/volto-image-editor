@@ -22,7 +22,6 @@ function parseDataURL(
 
   const [, contentType, encoding, data] = match;
 
-  // Derive a simple filename based on the MIME type
   const extension = contentType.split('/')[1] || 'bin';
   const filename = value?.filename
     ? value.filename
@@ -56,7 +55,6 @@ const ImageEditorWrapper = ({ value, setData }) => {
   const onClose = () => setOpen(false);
   const onImageSave = (newData) => {
     setOpen(false);
-    // newData is a base64 string
     const newValue = parseDataURL(newData, value);
     setData(newValue);
   };

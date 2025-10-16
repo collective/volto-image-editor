@@ -18,4 +18,6 @@ export interface ImageSettings {
   maxCropHeight?: number;
   scalable: boolean;
   stencilGrid: boolean;
+  minScale: number;
+  maxScale: number;
 }
