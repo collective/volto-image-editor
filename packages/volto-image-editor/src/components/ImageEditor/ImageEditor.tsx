@@ -1,16 +1,13 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useLayoutEffect } from 'react';
 import cn from 'classnames';
 import {
   Cropper,
   CropperPreview,
   RectangleStencil,
   CircleStencil,
-} from 'react-advanced-cropper';
-import type {
-  CropperRef,
-  CropperPreviewRef,
   ImageRestriction,
 } from 'react-advanced-cropper';
+import type { CropperRef, CropperPreviewRef } from 'react-advanced-cropper';
 import { AdjustablePreviewBackground } from './components/AdjustablePreviewBackground';
 import { Navigation } from './components/Navigation';
 import { Slider } from './components/Slider';
@@ -42,14 +39,16 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
 
   const [imageSettings, setImageSettings] = useState<ImageSettings>({
     aspectRatio: 'free',
-    imageRestriction: 'fill-area' as ImageRestriction,
+    imageRestriction: 'fit-area',
     stencilType: 'rectangle',
     minWidth: 50,
     minHeight: 50,
     maxCropWidth: undefined,
     maxCropHeight: undefined,
-    scalable: false,
+    scalable: true,
     stencilGrid: false,
+    minScale: 0.1,
+    maxScale: 3,
   });
 
   const onAction = (action: string) => {
@@ -105,6 +104,16 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
     }
     setHasRotationChanges(false);
   };
+
+  useLayoutEffect(() => {
+    const timer = setTimeout(() => {
+      if (cropperRef.current) {
+        onResetRotation();
+      }
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [src]);
 
   const onSave = () => {
     if (cropperRef.current) {
@@ -174,6 +183,21 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
     return width / height;
   };
 
+  const getImageRestriction = () => {
+    switch (imageSettings.imageRestriction) {
+      case 'fill-area':
+        return ImageRestriction.fillArea;
+      case 'fit-area':
+        return ImageRestriction.fitArea;
+      case 'stencil':
+        return ImageRestriction.stencil;
+      case 'none':
+        return ImageRestriction.none;
+      default:
+        return ImageRestriction.fillArea;
+    }
+  };
+
   return (
     <div className={'image-editor'}>
       <div className="image-editor__cropper">
@@ -206,7 +230,7 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
             maxWidth: imageSettings.maxCropWidth,
             maxHeight: imageSettings.maxCropHeight,
           }}
-          imageRestriction={imageSettings.imageRestriction}
+          imageRestriction={getImageRestriction()}
           backgroundWrapperProps={{
             scaleImage: cropperEnabled && imageSettings.scalable,
             moveImage: cropperEnabled,
@@ -214,6 +238,11 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
           backgroundComponent={AdjustableCropperBackground}
           backgroundProps={adjustments}
           onUpdate={onUpdate}
+          onReady={() => {
+            if (cropperRef.current) {
+              cropperRef.current.refresh();
+            }
+          }}
         />
         {mode !== 'crop' && mode && mode in adjustments && (
           <Slider
