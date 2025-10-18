@@ -2,26 +2,30 @@
 
 .image-editor-navigation {
   display: flex;
-  height: 84px;
+  height: 100%;
   align-items: center;
   justify-content: space-between;
-  padding-right: 16px;
-  padding-left: 16px;
+  padding: 16px;
   border-top: solid 1px #2b2a30;
   background: #1b1a21;
   &__button {
-    margin-right: 8px;
-    margin-left: 8px;
-
-    @include small-mobile() {
-      margin-right: 4px;
-      margin-left: 4px;
+    &--disabled {
+      cursor: not-allowed;
+      opacity: 0.4;
+      pointer-events: none;
     }
+  }
+
+  &__reset-rotation {
+    border-left: 1px solid rgba(white, 0.1);
+    margin-left: 12px;
   }
   &__buttons {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
+    gap: 8px;
   }
   &__upload-input {
     display: none;

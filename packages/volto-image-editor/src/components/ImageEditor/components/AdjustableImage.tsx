@@ -69,7 +69,6 @@ export const AdjustableImage = forwardRef<HTMLCanvasElement, Props>(
           className={cn('adjustable-image-element', className)}
           style={style}
         />
-        1{' '}
         <CropperSource
           key={`${src}-img`}
           ref={imageRef}

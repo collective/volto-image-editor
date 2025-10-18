@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import cn from 'classnames';
 import './Slider.scss';
 
@@ -7,137 +7,316 @@ interface Props {
   onChange?: (value: number) => void;
   value?: number;
   showValue?: boolean;
+  min?: number;
+  max?: number;
+  step?: number;
+  disabled?: boolean;
 }
 
-export class Slider extends PureComponent<Props> {
-  line = React.createRef<HTMLDivElement>();
+export const Slider: React.FC<Props> = ({
+  className,
+  onChange,
+  value = 0,
+  showValue = true,
+  min = -1,
+  max = 1,
+  step = 0.01,
+  disabled = false,
+}) => {
+  const lineRef = useRef<HTMLDivElement>(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const [focus, setFocus] = useState(false);
+  const [width, setWidth] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
 
-  state = {
-    focus: false,
-    width: 0,
-  };
+  const displayValue = Math.round(value * 100);
+  const internalValueToDisplay = (val: number) => Math.round(val * 100);
 
-  componentDidMount() {
-    window.addEventListener('resize', this.recalculateWidth);
-    window.addEventListener('orientationchange', this.recalculateWidth);
-
-    window.addEventListener('mouseup', this.onStop, { passive: false });
-    window.addEventListener('mousemove', this.onDrag, { passive: false });
-    window.addEventListener('touchmove', this.onDrag, { passive: false });
-    window.addEventListener('touchend', this.onStop, { passive: false });
-
-    const line = this.line.current;
+  const recalculateWidth = useCallback(() => {
+    const line = lineRef.current;
     if (line) {
-      line.addEventListener('mousedown', this.onStart);
-      line.addEventListener('touchstart', this.onStart);
+      setWidth(line.clientWidth);
     }
+  }, []);
 
-    this.recalculateWidth();
-  }
-  componentWillUnmount() {
-    window.removeEventListener('mouseup', this.onStop);
-    window.removeEventListener('mousemove', this.onDrag);
-    window.removeEventListener('touchmove', this.onDrag);
-    window.removeEventListener('touchend', this.onStop);
+  const clampValue = useCallback(
+    (val: number) => Math.max(min, Math.min(max, val)),
+    [min, max],
+  );
 
-    window.removeEventListener('resize', this.recalculateWidth);
-    window.removeEventListener('orientationchange', this.recalculateWidth);
+  const snapToStep = useCallback(
+    (val: number) => Math.round(val / step) * step,
+    [step],
+  );
 
-    const line = this.line.current;
-    if (line) {
-      line.removeEventListener('mousedown', this.onStart);
-      line.removeEventListener('touchstart', this.onStart);
-    }
-  }
-  onDrag = (e: MouseEvent | TouchEvent) => {
-    const { onChange } = this.props;
-    if (this.state.focus) {
-      const position = 'touches' in e ? e.touches[0].clientX : e.clientX;
-      const line = this.line.current;
+  const onDrag = useCallback(
+    (e: MouseEvent | TouchEvent) => {
+      if ((focus || isDragging) && onChange && !disabled) {
+        const position = 'touches' in e ? e.touches[0].clientX : e.clientX;
+        const line = lineRef.current;
 
-      if (line) {
-        const { left, width } = line.getBoundingClientRect();
-
-        if (onChange) {
-          onChange(
-            Math.max(
-              -1,
-              Math.min(1, (2 * (position - left - width / 2)) / width),
-            ),
+        if (line) {
+          const { left, width } = line.getBoundingClientRect();
+          const normalizedPosition = (position - left) / width;
+          const newValue = clampValue(
+            snapToStep(min + normalizedPosition * (max - min)),
           );
+
+          onChange(newValue);
+        }
+        e.preventDefault?.();
+      }
+    },
+    [focus, isDragging, onChange, disabled, clampValue, snapToStep, min, max],
+  );
+
+  const onStop = useCallback(() => {
+    setFocus(false);
+    setIsDragging(false);
+  }, []);
+
+  const onStart = useCallback(
+    (e: MouseEvent | TouchEvent) => {
+      if (disabled) return;
+      setFocus(true);
+      setIsDragging(true);
+      onDrag(e);
+    },
+    [onDrag, disabled],
+  );
+
+  const onSliderClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (onChange && !focus && !disabled && !isDragging) {
+        const line = lineRef.current;
+        if (line) {
+          const { left, width } = line.getBoundingClientRect();
+          const position = e.clientX;
+
+          if (position >= left && position <= left + width) {
+            const normalizedPosition = (position - left) / width;
+            const newValue = clampValue(
+              snapToStep(min + normalizedPosition * (max - min)),
+            );
+
+            onChange(newValue);
+          }
         }
       }
-      if (e.preventDefault) {
-        e.preventDefault();
+    },
+    [onChange, focus, disabled, isDragging, clampValue, snapToStep, min, max],
+  );
+
+  const onKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (disabled || !onChange) return;
+
+      let newValue = value;
+      const largeStep = step * 10;
+
+      switch (e.key) {
+        case 'ArrowLeft':
+        case 'ArrowDown':
+          newValue = clampValue(value - step);
+          break;
+        case 'ArrowRight':
+        case 'ArrowUp':
+          newValue = clampValue(value + step);
+          break;
+        case 'PageDown':
+          newValue = clampValue(value - largeStep);
+          break;
+        case 'PageUp':
+          newValue = clampValue(value + largeStep);
+          break;
+        case 'Home':
+          newValue = min;
+          break;
+        case 'End':
+          newValue = max;
+          break;
+        case ' ':
+        case 'Enter':
+          newValue = 0;
+          break;
+        default:
+          return;
       }
-    }
-  };
-  onStop = () => {
-    this.setState({
-      focus: false,
-    });
-  };
-  onStart = (e: MouseEvent | TouchEvent) => {
-    this.setState({
-      focus: true,
-    });
-    this.onDrag(e);
-  };
-  recalculateWidth = () => {
-    const line = this.line.current;
-    if (line) {
-      this.setState({
-        width: line.clientWidth,
-      });
-    }
-  };
-  render() {
-    const { value = 0, className } = this.props;
 
-    const handleInsideDot = this.state.width
-      ? Math.abs(value) <= 16 / this.state.width
-      : true;
+      e.preventDefault();
+      onChange(snapToStep(newValue));
+    },
+    [disabled, onChange, value, step, clampValue, snapToStep, min, max],
+  );
 
-    const fillWidth = `${Math.abs(value) * 50}%`;
+  useEffect(() => {
+    const handleResize = () => recalculateWidth();
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('orientationchange', handleResize);
 
-    const fillLeft = `${50 * (1 - Math.abs(Math.min(0, value)))}%`;
+    recalculateWidth();
 
-    const formattedValue = `${value > 0 ? '+' : ''}${Math.round(100 * value)}`;
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleResize);
+    };
+  }, [recalculateWidth]);
 
-    return (
-      <div className={cn('image-editor-slider', className)} ref={this.line}>
-        <div className="image-editor-slider__line">
+  useEffect(() => {
+    if (!focus) return;
+
+    const handleMouseUp = () => onStop();
+    const handleMouseMove = (e: MouseEvent) => onDrag(e);
+    const handleTouchEnd = () => onStop();
+    const handleTouchMove = (e: TouchEvent) => onDrag(e);
+
+    window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('touchmove', handleTouchMove);
+    window.addEventListener('touchend', handleTouchEnd);
+
+    return () => {
+      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [focus, onStop, onDrag]);
+
+  useEffect(() => {
+    const line = lineRef.current;
+    if (!line) return;
+
+    const handleMouseDown = (e: MouseEvent) => onStart(e);
+    const handleTouchStart = (e: TouchEvent) => onStart(e);
+
+    line.addEventListener('mousedown', handleMouseDown);
+    line.addEventListener('touchstart', handleTouchStart);
+
+    return () => {
+      line.removeEventListener('mousedown', handleMouseDown);
+      line.removeEventListener('touchstart', handleTouchStart);
+    };
+  }, [onStart]);
+
+  const normalizedValue = (value - min) / (max - min);
+  const centerNormalized = (0 - min) / (max - min);
+  const handleInsideDot = width
+    ? Math.abs(normalizedValue - centerNormalized) <= 16 / width
+    : true;
+
+  const fillWidth = `${Math.abs(normalizedValue - centerNormalized) * 100}%`;
+  const fillLeft =
+    normalizedValue < centerNormalized
+      ? `${normalizedValue * 100}%`
+      : `${centerNormalized * 100}%`;
+
+  const formattedValue = `${displayValue > 0 ? '+' : ''}${displayValue}`;
+
+  return (
+    <div
+      className={cn(
+        'image-editor-slider',
+        className,
+        disabled && 'image-editor-slider--disabled',
+        (focus || isDragging) && 'image-editor-slider--active',
+      )}
+      ref={sliderRef}
+      tabIndex={disabled ? -1 : 0}
+      role="slider"
+      aria-valuemin={internalValueToDisplay(min)}
+      aria-valuemax={internalValueToDisplay(max)}
+      aria-valuenow={displayValue}
+      aria-disabled={disabled}
+      onKeyDown={onKeyDown}
+      onClick={onSliderClick}
+    >
+      <div className="image-editor-slider__ticks">
+        {[-1, -0.5, 0, 0.5, 1].map((tickValue) => (
           <div
-            className="image-editor-slider__fill"
-            style={{
-              width: fillWidth,
-              left: fillLeft,
+            key={tickValue}
+            className={cn(
+              'image-editor-slider__tick',
+              tickValue === 0 && 'image-editor-slider__tick--center',
+            )}
+            style={{ left: `${((tickValue - min) / (max - min)) * 100}%` }}
+            role="button"
+            tabIndex={disabled ? -1 : 0}
+            aria-label={`Set value to ${Math.round(tickValue * 100)}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (onChange && !disabled) {
+                onChange(snapToStep(tickValue));
+              }
+            }}
+            onKeyDown={(e) => {
+              if ((e.key === 'Enter' || e.key === ' ') && !disabled) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (onChange) {
+                  onChange(snapToStep(tickValue));
+                }
+              }
             }}
           />
-          <div className="image-editor-slider__dot" />
+        ))}
+      </div>
+      <div className="image-editor-slider__line" ref={lineRef}>
+        <div
+          className="image-editor-slider__fill"
+          style={{
+            width: fillWidth,
+            left: fillLeft,
+          }}
+        />
+        <div className="image-editor-slider__dot" />
+        {showValue && (
           <div
             className={cn(
               'image-editor-slider__value',
               handleInsideDot && 'image-editor-slider__value--hidden',
             )}
             style={{
-              left: `${Math.abs(value * 50 + 50)}%`,
+              left: `${normalizedValue * 100}%`,
             }}
           >
             {formattedValue}
           </div>
-          <div
-            className={cn(
-              'image-editor-slider__handler',
-              this.state.focus && 'image-editor-slider__handler--focus',
-              handleInsideDot && 'image-editor-slider__handler--hidden',
-            )}
-            style={{
-              left: `${value * 50 + 50}%`,
-            }}
-          />
-        </div>
+        )}
+        <div
+          className={cn(
+            'image-editor-slider__handler',
+            (focus || isDragging) && 'image-editor-slider__handler--focus',
+            handleInsideDot && 'image-editor-slider__handler--hidden',
+          )}
+          style={{
+            left: `${normalizedValue * 100}%`,
+          }}
+          role="button"
+          tabIndex={disabled ? -1 : 0}
+          aria-label={`Slider handle, current value: ${formattedValue}`}
+          onMouseDown={(e) => {
+            e.stopPropagation();
+          }}
+          onKeyDown={(e) => {
+            if (
+              e.key === 'ArrowLeft' ||
+              e.key === 'ArrowRight' ||
+              e.key === 'ArrowUp' ||
+              e.key === 'ArrowDown' ||
+              e.key === 'Home' ||
+              e.key === 'End' ||
+              e.key === ' ' ||
+              e.key === 'Enter'
+            ) {
+              e.stopPropagation();
+              if (sliderRef.current) {
+                sliderRef.current.focus();
+              }
+            }
+          }}
+        />
       </div>
-    );
-  }
-}
+    </div>
+  );
+};

@@ -2,6 +2,7 @@
 @import '../../theme/constants';
 
 .image-editor {
+  width: 100%;
   border: solid 1px #2b2a30;
   color: $theme-color;
   &__preview {
@@ -16,8 +17,11 @@
   }
   &__cropper {
     position: relative;
+    display: flex;
     height: 500px;
     max-height: 100vh;
+    align-items: center;
+    justify-content: center;
     background: #0f0e13;
   }
   &__slider {
