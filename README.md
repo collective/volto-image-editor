@@ -4,7 +4,7 @@ An image editor, based on [React Advanced Image Cropper](https://www.npmjs.com/p
 
 [![npm](https://img.shields.io/npm/v/@plone-collective/volto-image-editor)](https://www.npmjs.com/package/@plone-collective/volto-image-editor)
 [![](https://img.shields.io/badge/-Storybook-ff4785?logo=Storybook&logoColor=white&style=flat-square)](https://simplesconsultoria.github.io/volto-image-editor/)
-[![Code analysis checks](https://github.com/simplesconsultoria/volto-image-editor/actions/workflows/main.yml/badge.svg)](https://github.com/simplesconsultoria/volto-image-editor/actions/workflows/main.yml)
+[![Code analysis checks](https://github.com/collective/volto-image-editor/actions/workflows/main.yml/badge.svg)](https://github.com/collective/volto-image-editor/actions/workflows/main.yml)
 
 ## Features
 
@@ -69,7 +69,7 @@ Development for this add-on uses pnpm workspaces, the latest `mrs-developer`, an
 1.  Clone this repository, then change your working directory.
 
     ```shell
-    git clone git@github.com:simplesconsultoria/volto-image-editor.git
+    git clone git@github.com:collective/volto-image-editor.git
     cd volto-image-editor
     ```
 

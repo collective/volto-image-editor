@@ -11,10 +11,10 @@
     "react"
   ],
   "author": "Simples Consultoria",
-  "homepage": "https://github.com/simplesconsultoria/volto-image-editor#readme",
+  "homepage": "https://github.com/collective/volto-image-editor#readme",
   "repository": {
     "type": "git",
-    "url": "git@github.com:simplesconsultoria/volto-image-editor"
+    "url": "git@github.com:collective/volto-image-editor"
   },
   "publishConfig": {
     "access": "public"

@@ -3,7 +3,7 @@
   "version": "1.0.0-alpha.0",
   "description": "An image editor to be used with Plone and Volto.",
   "author": "Simples Consultoria",
-  "homepage": "https://github.com/simplesconsultoria/volto-image-editor",
+  "homepage": "https://github.com/collective/volto-image-editor",
   "license": "MIT",
   "keywords": [
     "volto-addon",
