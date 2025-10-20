@@ -1,0 +1,20 @@
+{
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+  "eslint.workingDirectories": ["."],
+  "files.encoding": "utf8",
+  "stylelint.enable": true,
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  "[css][less][scss]": {
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.stylelint": "explicit"
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "editor.formatOnSave": false
+  }
+}

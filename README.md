@@ -1,89 +1,60 @@
 # Volto Image Editor (@plone-collective/volto-image-editor)
 
-An image editor to be used with Plone and Volto.
+An image editor, based on [React Advanced Image Cropper](https://www.npmjs.com/package/react-advanced-cropper), to be used with Plone and Volto.
 
 [![npm](https://img.shields.io/npm/v/@plone-collective/volto-image-editor)](https://www.npmjs.com/package/@plone-collective/volto-image-editor)
 [![](https://img.shields.io/badge/-Storybook-ff4785?logo=Storybook&logoColor=white&style=flat-square)](https://simplesconsultoria.github.io/volto-image-editor/)
-[![Code analysis checks](https://github.com/simplesconsultoria/volto-image-editor/actions/workflows/code.yml/badge.svg)](https://github.com/simplesconsultoria/volto-image-editor/actions/workflows/code.yml)
-[![Unit tests](https://github.com/simplesconsultoria/volto-image-editor/actions/workflows/unit.yml/badge.svg)](https://github.com/simplesconsultoria/volto-image-editor/actions/workflows/unit.yml)
+[![Code analysis checks](https://github.com/simplesconsultoria/volto-image-editor/actions/workflows/main.yml/badge.svg)](https://github.com/simplesconsultoria/volto-image-editor/actions/workflows/main.yml)
 
 ## Features
 
-<!-- List your awesome features here -->
 
-## Installation
+This add-on modifies Volto's File widget, providing an image editor with the following actions:
 
-To install your project, you must choose the method appropriate to your version of Volto.
+- Crops the image. Supports many aspect ratios
+- Rotates the image in 90-degree increments
+- Flips the image horizontally or vertically
+- Adjusts the image saturation
+- Adjusts the image brightness
+- Adjusts the image contrast
+- Adjusts the image hue
 
 
-### Volto 18 and later
 
-Add `@plone-collective/volto-image-editor` to your `package.json`:
+## 🚀 Installation
+
+> **Note:** This add-on requires Volto 18 or newer. Follow your project's official workflow for dependency management.
+
+
+To install this add-on, edit the `package.json` of your policy package (usually located in `packages/<policy-package>/package.json`):
 
 ```json
-"dependencies": {
-    "@plone-collective/volto-image-editor": "*"
-}
-```
-
-Add `@plone-collective/volto-image-editor` to your `volto.config.js`:
-
-```javascript
-const addons = ['@plone-collective/volto-image-editor'];
-```
-
-If this package provides a Volto theme, and you want to activate it, then add the following to your `volto.config.js`:
-
-```javascript
-const theme = '@plone-collective/volto-image-editor';
-```
-
-### Volto 17 and earlier
-
-Create a new Volto project (you can skip this step if you already have one):
-
-```
-npm install -g yo @plone/generator-volto
-yo @plone/volto my-volto-project --addon @plone-collective/volto-image-editor
-cd my-volto-project
-```
-
-Add `@plone-collective/volto-image-editor` to your package.json:
-
-```JSON
 "addons": [
     "@plone-collective/volto-image-editor"
 ],
-
 "dependencies": {
     "@plone-collective/volto-image-editor": "*"
 }
 ```
 
-Download and install the new add-on by running:
-
-```
-yarn install
-```
-
-Start volto with:
-
-```
-yarn start
-```
+After editing, follow your project's standard process to update dependencies and rebuild.
 
 ## Test installation
 
-Visit http://localhost:3000/ in a browser, login, and check the awesome new features.
+Visit http://localhost:3000/ in a browser, log in, and verify that the image editor features are available in the File widget.
 
+## Internationalization (i18n)
+
+All UI strings in this add-on are translatable. Use the provided `make i18n` command to extract and sync translation messages.
 
 ## Development
 
-The development of this add-on is done in isolation using a new approach using pnpm workspaces and latest `mrs-developer` and other Volto core improvements.
-For this reason, it only works with pnpm and Volto 18 (currently in alpha).
+
+Development for this add-on uses pnpm workspaces, the latest `mrs-developer`, and Volto core improvements. It is compatible only with pnpm and Volto 18.
 
 
-### Prerequisites ✅
+
+### Prerequisites
 
 -   An [operating system](https://6.docs.plone.org/install/create-project-cookieplone.html#prerequisites-for-installation) that runs all the requirements mentioned.
 -   [nvm](https://6.docs.plone.org/install/create-project-cookieplone.html#nvm)
@@ -92,7 +63,8 @@ For this reason, it only works with pnpm and Volto 18 (currently in alpha).
 -   [Git](https://6.docs.plone.org/install/create-project-cookieplone.html#git)
 -   [Docker](https://docs.docker.com/get-started/get-docker/) (optional)
 
-### Installation 🔧
+
+### Installation
 
 1.  Clone this repository, then change your working directory.
 
@@ -108,7 +80,7 @@ For this reason, it only works with pnpm and Volto 18 (currently in alpha).
     ```
 
 
-### Make convenience commands
+### Make Convenience Commands
 
 Run `make help` to list the available commands.
 
@@ -136,86 +108,88 @@ acceptance-test                  Start Cypress in interactive mode
 ci-acceptance-test               Run cypress tests in headless mode for CI
 ```
 
-### Development environment set up
+### Development Environment Setup
 
-Install package requirements.
+Install package requirements:
 
 ```shell
 make install
 ```
 
-### Start developing
+### Start Developing
 
-Start the backend.
+Start the backend:
 
 ```shell
 make backend-docker-start
 ```
 
-In a separate terminal session, start the frontend.
+In a separate terminal session, start the frontend:
 
 ```shell
 make start
 ```
 
-### Lint code
+### Lint Code
 
-Run ESlint, Prettier, and Stylelint in analyze mode.
+Run ESLint, Prettier, and Stylelint in analyze mode:
 
 ```shell
 make lint
 ```
 
-### Format code
+### Format Code
 
-Run ESlint, Prettier, and Stylelint in fix mode.
+Run ESLint, Prettier, and Stylelint in fix mode:
 
 ```shell
 make format
 ```
 
-### i18n
+### Internationalization (i18n)
 
-Extract the i18n messages to locales.
+Extract the i18n messages to locales:
 
 ```shell
 make i18n
 ```
 
-### Unit tests
+### Unit Tests
 
-Run unit tests.
+Run unit tests:
 
 ```shell
 make test
 ```
 
-### Run Cypress tests
+### Run Cypress Tests
 
-Run each of these steps in separate terminal sessions.
+Run each of these steps in separate terminal sessions:
 
-In the first session, start the frontend in development mode.
+In the first session, start the frontend in development mode:
 
 ```shell
 make acceptance-frontend-dev-start
 ```
 
-In the second session, start the backend acceptance server.
+In the second session, start the backend acceptance server:
 
 ```shell
 make acceptance-backend-start
 ```
 
-In the third session, start the Cypress interactive test runner.
+In the third session, start the Cypress interactive test runner:
 
 ```shell
 make acceptance-test
 ```
 
+
 ## License
 
-The project is licensed under the MIT license.
+This project is licensed under the MIT license.
 
-## Credits and acknowledgements 🙏
+
+## Credits and acknowledgements
 
 Generated using [Cookieplone (0.9.9)](https://github.com/plone/cookieplone) and [cookieplone-templates (62683ae)](https://github.com/plone/cookieplone-templates/commit/62683aec96c2b6454cc32e06e57910fab3d52425) on 2025-10-14 23:13:02.127574. A special thanks to all contributors and supporters!

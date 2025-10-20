@@ -1,1 +1,1 @@
-Implement a widget to edit Images in Volto. @ericof
+Implement a widget to edit Images in Volto. @Humanaice
