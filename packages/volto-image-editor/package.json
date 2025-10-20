@@ -45,6 +45,6 @@
   "devDependencies": {
     "@plone/scripts": "workspace:*",
     "@types/node": "^20.2.5",
-    "release-it": "^17.1.1"
+    "release-it": "^19.0.5"
   }
 }
