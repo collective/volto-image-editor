@@ -6,7 +6,7 @@ An image editor, based on [React Advanced Image Cropper](https://www.npmjs.com/p
 [![](https://img.shields.io/badge/-Storybook-ff4785?logo=Storybook&logoColor=white&style=flat-square)](https://simplesconsultoria.github.io/volto-image-editor/)
 [![Code analysis checks](https://github.com/collective/volto-image-editor/actions/workflows/main.yml/badge.svg)](https://github.com/collective/volto-image-editor/actions/workflows/main.yml)
 
-## Features
+## ✨ Features
 
 
 This add-on modifies Volto's File widget, providing an image editor with the following actions:
@@ -39,22 +39,21 @@ To install this add-on, edit the `package.json` of your policy package (usually 
 
 After editing, follow your project's standard process to update dependencies and rebuild.
 
-## Test installation
+## 🧪 Test Installation
 
 Visit http://localhost:3000/ in a browser, log in, and verify that the image editor features are available in the File widget.
 
-## Internationalization (i18n)
+## 🌍 Internationalization (i18n)
 
 All UI strings in this add-on are translatable. Use the provided `make i18n` command to extract and sync translation messages.
 
-## Development
+## 🛠️ Development
 
 
 Development for this add-on uses pnpm workspaces, the latest `mrs-developer`, and Volto core improvements. It is compatible only with pnpm and Volto 18.
 
 
-
-### Prerequisites
+### 📋 Prerequisites
 
 -   An [operating system](https://6.docs.plone.org/install/create-project-cookieplone.html#prerequisites-for-installation) that runs all the requirements mentioned.
 -   [nvm](https://6.docs.plone.org/install/create-project-cookieplone.html#nvm)
@@ -64,7 +63,7 @@ Development for this add-on uses pnpm workspaces, the latest `mrs-developer`, an
 -   [Docker](https://docs.docker.com/get-started/get-docker/) (optional)
 
 
-### Installation
+### 📦 Installation
 
 1.  Clone this repository, then change your working directory.
 
@@ -80,7 +79,7 @@ Development for this add-on uses pnpm workspaces, the latest `mrs-developer`, an
     ```
 
 
-### Make Convenience Commands
+### 🧰 Make Convenience Commands
 
 Run `make help` to list the available commands.
 
@@ -108,7 +107,7 @@ acceptance-test                  Start Cypress in interactive mode
 ci-acceptance-test               Run cypress tests in headless mode for CI
 ```
 
-### Development Environment Setup
+### 🏗️ Development Environment Setup
 
 Install package requirements:
 
@@ -116,7 +115,7 @@ Install package requirements:
 make install
 ```
 
-### Start Developing
+### 🚦 Start Developing
 
 Start the backend:
 
@@ -130,7 +129,7 @@ In a separate terminal session, start the frontend:
 make start
 ```
 
-### Lint Code
+### 🧹 Lint Code
 
 Run ESLint, Prettier, and Stylelint in analyze mode:
 
@@ -138,7 +137,7 @@ Run ESLint, Prettier, and Stylelint in analyze mode:
 make lint
 ```
 
-### Format Code
+### 🎨 Format Code
 
 Run ESLint, Prettier, and Stylelint in fix mode:
 
@@ -146,7 +145,7 @@ Run ESLint, Prettier, and Stylelint in fix mode:
 make format
 ```
 
-### Internationalization (i18n)
+### 🌍 Internationalization (i18n)
 
 Extract the i18n messages to locales:
 
@@ -154,7 +153,7 @@ Extract the i18n messages to locales:
 make i18n
 ```
 
-### Unit Tests
+### 🧪 Unit Tests
 
 Run unit tests:
 
@@ -162,7 +161,7 @@ Run unit tests:
 make test
 ```
 
-### Run Cypress Tests
+### 🧪 Run Cypress Tests
 
 Run each of these steps in separate terminal sessions:
 
@@ -185,11 +184,26 @@ make acceptance-test
 ```
 
 
-## License
+## 📄 License
 
 This project is licensed under the MIT license.
 
 
-## Credits and acknowledgements
+## 🙏 Credits and Acknowledgements
+
+The development of this add-on was supported by:
+
+<center>
+<div>
+<img src="https://raw.githubusercontent.com/collective/volto-image-editor/refs/heads/main/docs/docs/_static/ifpb-icon.svg" style="max-height:50px">
+<h3>Instituto Federal da Paraíba</h3>
+</a>
+</div>
+<div>
+<img src="https://raw.githubusercontent.com/collective/volto-image-editor/refs/heads/main/docs/docs/_static/logo-simples.svg" style="max-height:50px">
+<h3>Simples Consultoria</h3>
+</a>
+</div>
+</center>
 
 Generated using [Cookieplone (0.9.9)](https://github.com/plone/cookieplone) and [cookieplone-templates (62683ae)](https://github.com/plone/cookieplone-templates/commit/62683aec96c2b6454cc32e06e57910fab3d52425) on 2025-10-14 23:13:02.127574. A special thanks to all contributors and supporters!
