@@ -1,6 +1,5 @@
 .*project
 .settings/
-.vscode
 *~
 acceptance/cypress/videos/
 acceptance/node_modules
