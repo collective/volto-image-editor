@@ -193,17 +193,17 @@ This project is licensed under the MIT license.
 
 The development of this add-on was supported by:
 
-<center>
-<div>
-<img src="https://raw.githubusercontent.com/collective/volto-image-editor/refs/heads/main/docs/docs/_static/ifpb-icon.svg" style="max-height:50px">
-<h3>Instituto Federal da Paraíba</h3>
-</a>
+<div style="text-align:center;">
+    <div>
+        <img src="https://raw.githubusercontent.com/collective/volto-image-editor/refs/heads/main/docs/docs/_static/ifpb-icon.svg" height="50px" style="max-height:50px">
+        <h3>Instituto Federal da Paraíba</h3>
+    </a>
+    </div>
+    <div>
+        <img src="https://raw.githubusercontent.com/collective/volto-image-editor/refs/heads/main/docs/docs/_static/logo-simples.svg"  height="50px" style="max-height:50px">
+        <h3>Simples Consultoria</h3>
+        </a>
+    </div>
 </div>
-<div>
-<img src="https://raw.githubusercontent.com/collective/volto-image-editor/refs/heads/main/docs/docs/_static/logo-simples.svg" style="max-height:50px">
-<h3>Simples Consultoria</h3>
-</a>
-</div>
-</center>
 
 Generated using [Cookieplone (0.9.9)](https://github.com/plone/cookieplone) and [cookieplone-templates (62683ae)](https://github.com/plone/cookieplone-templates/commit/62683aec96c2b6454cc32e06e57910fab3d52425) on 2025-10-14 23:13:02.127574. A special thanks to all contributors and supporters!
