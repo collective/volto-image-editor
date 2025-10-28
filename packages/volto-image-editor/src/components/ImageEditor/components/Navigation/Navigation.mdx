@@ -1,0 +1,453 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as NavigationStories from './Navigation.stories';
+
+<Meta of={NavigationStories} />
+
+# Navigation
+
+Main toolbar of the image editor, providing quick access to all editing modes, transformations and save/cancel actions.
+
+## Overview
+
+The `Navigation` component manages the editor's control interface, allowing switching between modes (crop, adjustments), applying transformations (rotation, flip) and finalizing the edit.
+
+---
+
+## Examples
+
+### Default
+
+Initial state with "crop" mode active and no transformations applied.
+
+<Canvas of={NavigationStories.Default} />
+
+### Brightness Mode
+
+Demonstrates the editor with "brightness" mode pre-selected.
+
+<Canvas of={NavigationStories.BrightnessMode} />
+
+---
+
+## How to Use
+
+### Basic
+
+```tsx
+import { Navigation } from '@plone-collective/volto-image-editor/components/ImageEditor/components/Navigation';
+
+function MyEditor() {
+  const [mode, setMode] = useState('crop');
+  const [hasChanges, setHasChanges] = useState(false);
+
+  return (
+    <Navigation
+      mode={mode}
+      onChange={setMode}
+      onSave={handleSave}
+      onCancel={handleCancel}
+      onAction={handleAction}
+      onResetRotation={() => setHasChanges(false)}
+      hasRotationChanges={hasChanges}
+    />
+  );
+}
+```
+
+### Complete
+
+```tsx
+function EditorWithNavigation() {
+  const [mode, setMode] = useState('crop');
+  const [rotations, setRotations] = useState([]);
+
+  const handleAction = (action) => {
+    switch (action) {
+      case 'rotate-left':
+        applyRotation(-90);
+        setRotations([...rotations, -90]);
+        break;
+      case 'rotate-right':
+        applyRotation(90);
+        setRotations([...rotations, 90]);
+        break;
+      case 'flip-horizontal':
+        applyFlip('horizontal');
+        setRotations([...rotations, 'flip-h']);
+        break;
+      case 'flip-vertical':
+        applyFlip('vertical');
+        setRotations([...rotations, 'flip-v']);
+        break;
+    }
+  };
+
+  const resetRotations = () => {
+    setRotations([]);
+    resetImageTransforms();
+  };
+
+  return (
+    <Navigation
+      mode={mode}
+      onChange={setMode}
+      onAction={handleAction}
+      onResetRotation={resetRotations}
+      hasRotationChanges={rotations.length > 0}
+      onSave={() => saveImage()}
+      onCancel={() => closeEditor()}
+    />
+  );
+}
+```
+
+---
+
+## Available Modes
+
+### Crop
+
+- **Value**: `'crop'`
+- **Icon**: CropIcon
+- **Description**: Activates crop mode
+- **Behavior**:
+  - Enables stencil movement and resizing
+  - Allows image zoom and pan
+  - Disables adjustment sliders
+
+### Brightness
+
+- **Value**: `'brightness'`
+- **Icon**: BrightnessIcon
+- **Description**: Adjusts image brightness
+- **Range**: -1 to 1 (-100% to +100%)
+- **Behavior**:
+  - Disables stencil interaction
+  - Shows slider for adjustment
+  - Real-time preview
+
+### Contrast
+
+- **Value**: `'contrast'`
+- **Icon**: ContrastIcon
+- **Description**: Adjusts contrast
+- **Range**: -1 to 1
+- **Use**: Increase/decrease color difference
+
+### Saturation
+
+- **Value**: `'saturation'`
+- **Icon**: SaturationIcon
+- **Description**: Adjusts color saturation
+- **Range**: -1 to 1
+- **Use**: From grayscale (-1) to vibrant colors (+1)
+
+### Hue
+
+- **Value**: `'hue'`
+- **Icon**: HueIcon
+- **Description**: Rotates the color wheel
+- **Range**: -1 to 1 (0° to 360°)
+- **Use**: Change color tone
+
+---
+
+## Transformation Actions
+
+### Rotate Left
+
+```tsx
+onAction('rotate-left');
+```
+
+- Rotates image 90° counterclockwise
+- Preserves current crop (when possible)
+- Marks `hasRotationChanges` as `true`
+
+### Rotate Right
+
+```tsx
+onAction('rotate-right');
+```
+
+- Rotates image 90° clockwise
+- Preserves current crop
+- Marks `hasRotationChanges` as `true`
+
+### Flip Horizontal
+
+```tsx
+onAction('flip-horizontal');
+```
+
+- Mirrors image horizontally
+- Maintains vertical orientation
+- Marks `hasRotationChanges` as `true`
+
+### Flip Vertical
+
+```tsx
+onAction('flip-vertical');
+```
+
+- Mirrors image vertically
+- Maintains horizontal orientation
+- Marks `hasRotationChanges` as `true`
+
+### Reset Rotation
+
+```tsx
+onResetRotation();
+```
+
+- Undoes all rotations and flips
+- Keeps applied crop
+- Only appears when `hasRotationChanges={true}`
+
+---
+
+## Toolbar Layout
+
+```
+┌────────────────────────────────────────────────────────────────┐
+│ [Crop] [⟲] [⟳] [⇄] [⇅] [↻] [Sat] [Bright] [Contrast] [Hue]   │
+│                                                                 │
+│                                      [Cancel] [Save]            │
+└────────────────────────────────────────────────────────────────┘
+   └─────┬─────┘  └──────┬──────┘  └─────────┬─────────┘  └─┬─┘
+     Mode      Transformations      Adjustments          Actions
+```
+
+### Logical Groups
+
+1. **Mode**: Crop (single in group)
+2. **Transformations**: Rotate Left/Right, Flip H/V, Reset
+3. **Adjustments**: Saturation, Brightness, Contrast, Hue
+4. **Actions**: Cancel, Save
+
+---
+
+## Keyboard Shortcuts (Suggested Implementation)
+
+Although not natively implemented, you can add:
+
+```tsx
+function NavigationWithShortcuts({ ...props }) {
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.ctrlKey || e.metaKey) {
+        switch (e.key) {
+          case 's':
+            e.preventDefault();
+            props.onSave();
+            break;
+          case 'Escape':
+            props.onCancel();
+            break;
+        }
+      }
+
+      // Without modifiers
+      switch (e.key) {
+        case 'c':
+          props.onChange('crop');
+          break;
+        case 'b':
+          props.onChange('brightness');
+          break;
+        case 'r':
+          props.onAction('rotate-right');
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [props]);
+
+  return <Navigation {...props} />;
+}
+```
+
+---
+
+## Visual State
+
+### Mode Buttons
+
+```scss
+// Normal state
+.image-editor-navigation__button {
+  opacity: 0.7;
+}
+
+// Active state
+.image-editor-navigation__button.image-editor-button--active {
+  opacity: 1;
+  background: #3b82f6;
+  color: white;
+}
+```
+
+### Reset Rotation
+
+```scss
+// Disabled (no changes)
+.image-editor-navigation__reset-rotation {
+  &.image-editor-navigation__button--disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+}
+```
+
+---
+
+## Props
+
+### mode
+
+- **Type**: `string`
+- **Description**: Currently active mode ('crop', 'brightness', etc)
+- **Example**: `mode="brightness"`
+
+### onChange
+
+- **Type**: `(mode: string) => void`
+- **Description**: Callback when mode changes
+- **Example**: `onChange={(m) => setMode(m)}`
+
+### onSave
+
+- **Type**: `() => void`
+- **Required**: ✅
+- **Description**: Callback when clicking Save
+- **Example**: `onSave={() => saveImage()}`
+
+### onCancel
+
+- **Type**: `() => void`
+- **Required**: ✅
+- **Description**: Callback when clicking Cancel
+- **Example**: `onCancel={() => closeEditor()}`
+
+### onAction
+
+- **Type**: `(action: string) => void`
+- **Description**: Callback for transformation actions
+- **Actions**:
+  - `'rotate-left'`
+  - `'rotate-right'`
+  - `'flip-horizontal'`
+  - `'flip-vertical'`
+- **Example**: `onAction={(a) => applyTransform(a)}`
+
+### onResetRotation
+
+- **Type**: `() => void`
+- **Description**: Callback to reset transformations
+- **Example**: `onResetRotation={() => resetTransforms()}`
+
+### hasRotationChanges
+
+- **Type**: `boolean`
+- **Default**: `false`
+- **Description**: Indicates if transformations are applied (shows reset button)
+- **Example**: `hasRotationChanges={transforms.length > 0}`
+
+### className
+
+- **Type**: `string`
+- **Description**: Additional CSS classes
+
+---
+
+## Typical Workflow
+
+### 1. Initial Crop
+
+```tsx
+// User starts in crop mode
+<Navigation mode="crop" onChange={setMode} ... />
+// Adjusts stencil to desired area
+```
+
+### 2. Apply Transformations
+
+```tsx
+// Rotate if needed
+onAction('rotate-right');
+// Adjust crop again if needed
+```
+
+### 3. Adjust Colors
+
+```tsx
+// Switch to adjustments
+onChange('brightness'); // Adjust brightness
+onChange('contrast'); // Adjust contrast
+onChange('saturation'); // Adjust saturation
+```
+
+### 4. Finalize
+
+```tsx
+// Save or cancel
+onSave(); // Export edited image
+onCancel(); // Discard changes
+```
+
+---
+
+## Best Practices
+
+### Do
+
+- Provide clear visual feedback of active mode
+- Disable reset when there are no transformations
+- Keep mode state consistent
+- Implement confirmation before canceling changes
+- Use consistent and recognizable icons
+
+### Avoid
+
+- Don't allow multiple active modes simultaneously
+- Don't hide the cancel button
+- Avoid mode changes without visual feedback
+- Don't lose transformation history when switching modes
+
+---
+
+## Accessibility
+
+### Implemented
+
+- All buttons have labels via icons + tooltip
+- Reset button disabled when not applicable
+- Clear visual states (hover, active, disabled)
+
+### Recommendations
+
+```tsx
+<Navigation
+  // Add descriptive aria-labels
+  aria-label="Image editor toolbar"
+/>
+
+// On each button internally:
+<Button
+  aria-label="Rotate image 90 degrees left"
+  aria-pressed={mode === 'crop'}
+>
+  <RotateLeftIcon />
+</Button>
+```
+
+---
+
+## Related Components
+
+- **ImageEditor**: Uses Navigation as main toolbar
+- **Button**: Base component for all buttons
+- **Slider**: Appears when adjustment mode is active
+- **SettingsModal**: Accessible via button in navigation (not shown in these examples)

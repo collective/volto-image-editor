@@ -8,6 +8,8 @@ An image editor, based on [React Advanced Image Cropper](https://www.npmjs.com/p
 
 ## ✨ Features
 
+![Demo](https://raw.githubusercontent.com/collective/volto-image-editor/refs/heads/main/docs/docs/_static/volto-image-editor.gif)
+
 
 This add-on modifies Volto's File widget, providing an image editor with the following actions:
 

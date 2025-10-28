@@ -1,0 +1,1 @@
+Add gif to README. @humanaice

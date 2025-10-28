@@ -1,0 +1,613 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as ImageEditorWrapperStories from './ImageEditorWrapper.stories';
+
+<Meta of={ImageEditorWrapperStories} />
+
+# ImageEditorWrapper
+
+Modal wrapper component that integrates the image editor with Plone/Volto widgets. Provides seamless integration with form fields and handles data format conversion.
+
+## Overview
+
+`ImageEditorWrapper` wraps the complete `ImageEditor` in a modal dialog, managing the lifecycle of opening/closing the editor and converting between Plone's data format and data URLs. It's specifically designed for use in Plone content type forms.
+
+---
+
+## Examples
+
+### Default
+
+Complete integration showing the edit button, modal editor, and preview of saved results.
+
+<Canvas of={ImageEditorWrapperStories.Default} />
+
+### Without Initial Image
+
+Demonstrates async image loading scenario (common when fetching content).
+
+<Canvas of={ImageEditorWrapperStories.WithoutInitialImage} />
+
+---
+
+## How to Use
+
+### Basic Integration
+
+```tsx
+import ImageEditorWrapper from '@plone-collective/volto-image-editor/components/ImageEditor/Wrapper/ImageEditorWrapper';
+
+function ImageField() {
+  const [value, setValue] = useState({
+    download: 'http://example.com/image.jpg',
+    filename: 'photo.jpg',
+    'content-type': 'image/jpeg',
+  });
+
+  return <ImageEditorWrapper value={value} setData={setValue} />;
+}
+```
+
+### In Volto Widget
+
+```tsx
+import ImageEditorWrapper from '@plone-collective/volto-image-editor/components/ImageEditor/Wrapper/ImageEditorWrapper';
+
+const ImageWidget = (props) => {
+  const { id, value, onChange } = props;
+
+  return (
+    <div>
+      <label htmlFor={id}>Image</label>
+
+      {/* Show current image if exists */}
+      {value?.download && (
+        <img
+          src={value.download}
+          alt={value.filename}
+          style={{ maxWidth: 400, marginBottom: 16 }}
+        />
+      )}
+
+      {/* Editor button */}
+      <ImageEditorWrapper
+        value={value}
+        setData={(newValue) => onChange(id, newValue)}
+      />
+    </div>
+  );
+};
+```
+
+### With Custom Button Text
+
+```tsx
+<ImageEditorWrapper
+  value={value}
+  setData={setValue}
+  buttonText="Crop and Edit Photo"
+/>
+```
+
+---
+
+## Data Flow
+
+### Input Format (Plone Widget Value)
+
+The component expects a Plone-style image object:
+
+```tsx
+{
+  download: 'http://plone.site/image.jpg', // Public URL of image
+  filename: 'photo.jpg',                   // Original filename
+  'content-type': 'image/jpeg',           // MIME type
+}
+```
+
+### Output Format (After Editing)
+
+After editing and saving, the component returns:
+
+```tsx
+{
+  data: '/9j/4AAQSkZJRg...',              // Base64 encoded image (without prefix)
+  filename: 'photo.jpg',                   // Preserved filename
+  'content-type': 'image/jpeg',           // Preserved content type
+  encoding: 'base64',                      // Encoding indicator
+}
+```
+
+### Conversion Process
+
+1. **Opening Editor**:
+
+   ```
+   Plone URL → Fetch image → Convert to data URL → Pass to ImageEditor
+   ```
+
+2. **Saving**:
+   ```
+   ImageEditor data URL → Remove data:image/jpeg;base64, prefix →
+   → Create Plone format → Call setData
+   ```
+
+---
+
+## Features
+
+### 🎬 Modal Integration
+
+- Opens editor in `@plone/components` Modal
+- Backdrop click and ESC key to close
+- Confirmation before closing with unsaved changes
+- Full-screen mode on mobile
+
+### 🔄 Data Format Conversion
+
+- Automatically converts Plone format to data URLs
+- Strips base64 prefix when saving
+- Preserves filename and content-type
+- Handles both initial load and updates
+
+### 🖼️ Image Loading
+
+- Fetches images from remote URLs
+- Handles CORS properly with crossOrigin
+- Loading states during fetch
+- Error handling for failed loads
+
+### 💾 Save Handling
+
+- Converts edited canvas to base64
+- Updates widget value via `setData` callback
+- Closes modal automatically on save
+- Maintains metadata (filename, content-type)
+
+---
+
+## Workflow
+
+### 1. Initial State
+
+```tsx
+// Widget has image value
+value = {
+  download: 'http://site.com/image.jpg',
+  filename: 'photo.jpg',
+  'content-type': 'image/jpeg',
+};
+```
+
+### 2. User Clicks "Edit Image"
+
+```tsx
+// Modal opens, image is loaded and converted
+Modal shows ImageEditor with data URL
+```
+
+### 3. User Edits Image
+
+```tsx
+// User performs:
+- Crop
+- Rotate/Flip
+- Color adjustments (brightness, contrast, etc.)
+- Settings changes
+```
+
+### 4. User Saves
+
+```tsx
+// Editor generates final image
+const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+
+// Wrapper converts to Plone format
+const base64 = dataUrl.replace(/^data:image\/\w+;base64,/, '');
+const newValue = {
+  data: base64,
+  filename: 'photo.jpg',
+  'content-type': 'image/jpeg',
+  encoding: 'base64',
+};
+
+// Callback updates form
+setData(newValue);
+
+// Modal closes
+```
+
+### 5. Backend Processing
+
+```tsx
+// Plone backend receives base64 data
+POST /api/content
+{
+  image: {
+    data: '...',
+    filename: 'photo.jpg',
+    'content-type': 'image/jpeg',
+    encoding: 'base64'
+  }
+}
+```
+
+---
+
+## Props
+
+### value
+
+- **Type**: `PloneImageValue | null`
+- **Required**: ✅
+- **Description**: Current image value in Plone format
+
+```tsx
+interface PloneImageValue {
+  download?: string; // URL to image
+  filename: string; // Image filename
+  'content-type': string; // MIME type
+  data?: string; // Base64 data (after edit)
+  encoding?: 'base64'; // Encoding type
+}
+```
+
+### setData
+
+- **Type**: `(value: PloneImageValue) => void`
+- **Required**: ✅
+- **Description**: Callback to update widget value after editing
+
+```tsx
+const handleSetData = (newValue) => {
+  // Update form field
+  onChange('image', newValue);
+
+  // Or update state
+  setValue(newValue);
+};
+```
+
+### buttonText
+
+- **Type**: `string`
+- **Default**: `'Edit image'`
+- **Description**: Text for the edit button
+
+```tsx
+<ImageEditorWrapper value={value} setData={setValue} buttonText="Crop Photo" />
+```
+
+### className
+
+- **Type**: `string`
+- **Description**: Additional CSS classes for the wrapper container
+
+---
+
+## Styling
+
+### Button Styling
+
+```scss
+.image-editor-wrapper {
+  &__button {
+    // Edit button styles
+    padding: 8px 16px;
+    background: #007bc1;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:hover {
+      background: #006ba1;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+```
+
+### Modal Customization
+
+The modal uses `@plone/components` Modal component:
+
+```scss
+.modal {
+  &__overlay {
+    background: rgba(0, 0, 0, 0.7);
+  }
+
+  &__content {
+    // Editor takes full viewport
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+  }
+}
+```
+
+---
+
+## Integration Examples
+
+### Volto Block
+
+```tsx
+import React from 'react';
+import ImageEditorWrapper from '@plone-collective/volto-image-editor';
+
+const ImageBlock = ({ data, onChangeBlock, block }) => {
+  return (
+    <div className="image-block">
+      {data.image?.download && (
+        <img src={data.image.download} alt={data.alt || ''} />
+      )}
+
+      <ImageEditorWrapper
+        value={data.image}
+        setData={(newImage) => {
+          onChangeBlock(block, {
+            ...data,
+            image: newImage,
+          });
+        }}
+      />
+    </div>
+  );
+};
+```
+
+### Content Type Field
+
+```tsx
+import { Field } from '@plone/volto/components';
+import ImageEditorWrapper from '@plone-collective/volto-image-editor';
+
+const ImageFieldWidget = (props) => {
+  return (
+    <Field
+      {...props}
+      widget={(fieldProps) => (
+        <div>
+          {fieldProps.value?.download && (
+            <div className="preview">
+              <img src={fieldProps.value.download} alt="" />
+            </div>
+          )}
+          <ImageEditorWrapper
+            value={fieldProps.value}
+            setData={(val) => fieldProps.onChange(fieldProps.id, val)}
+          />
+        </div>
+      )}
+    />
+  );
+};
+```
+
+### With Validation
+
+```tsx
+function ValidatedImageEditor({ value, onChange }) {
+  const [error, setError] = useState(null);
+
+  const handleSetData = (newValue) => {
+    // Validate image size
+    const sizeInMB = (newValue.data.length * 0.75) / 1024 / 1024;
+
+    if (sizeInMB > 5) {
+      setError('Image too large (max 5MB)');
+      return;
+    }
+
+    setError(null);
+    onChange(newValue);
+  };
+
+  return (
+    <div>
+      <ImageEditorWrapper value={value} setData={handleSetData} />
+      {error && <div className="error">{error}</div>}
+    </div>
+  );
+}
+```
+
+---
+
+## Advanced Usage
+
+### With Loading State
+
+```tsx
+function ImageEditorWithLoading() {
+  const [value, setValue] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchImage().then((img) => {
+      setValue(img);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) {
+    return <Spinner />;
+  }
+
+  return <ImageEditorWrapper value={value} setData={setValue} />;
+}
+```
+
+### With Undo/Redo
+
+```tsx
+function ImageEditorWithHistory() {
+  const [value, setValue] = useState(initialValue);
+  const [history, setHistory] = useState([initialValue]);
+  const [historyIndex, setHistoryIndex] = useState(0);
+
+  const handleSetData = (newValue) => {
+    const newHistory = history.slice(0, historyIndex + 1);
+    newHistory.push(newValue);
+    setHistory(newHistory);
+    setHistoryIndex(newHistory.length - 1);
+    setValue(newValue);
+  };
+
+  const undo = () => {
+    if (historyIndex > 0) {
+      setHistoryIndex(historyIndex - 1);
+      setValue(history[historyIndex - 1]);
+    }
+  };
+
+  const redo = () => {
+    if (historyIndex < history.length - 1) {
+      setHistoryIndex(historyIndex + 1);
+      setValue(history[historyIndex + 1]);
+    }
+  };
+
+  return (
+    <div>
+      <button onClick={undo} disabled={historyIndex === 0}>
+        Undo
+      </button>
+      <button onClick={redo} disabled={historyIndex === history.length - 1}>
+        Redo
+      </button>
+      <ImageEditorWrapper value={value} setData={handleSetData} />
+    </div>
+  );
+}
+```
+
+---
+
+## Accessibility
+
+### Implemented
+
+- ✅ Button with proper label
+- ✅ Modal with focus trap
+- ✅ ESC key to close
+- ✅ Keyboard navigation in editor
+- ✅ ARIA attributes on modal
+
+### Recommendations
+
+```tsx
+<div role="group" aria-label="Image editor">
+  <label id="editor-label">Profile Photo</label>
+  <ImageEditorWrapper
+    value={value}
+    setData={setValue}
+    aria-labelledby="editor-label"
+  />
+</div>
+```
+
+---
+
+## Troubleshooting
+
+### Image doesn't load
+
+```tsx
+// Problem: CORS issue with external images
+value={{ download: 'http://other-domain.com/img.jpg' }}
+
+// Solution: Ensure server sends CORS headers or proxy the image
+value={{ download: '/api/proxy?url=http://other-domain.com/img.jpg' }}
+```
+
+### Modal doesn't open
+
+```tsx
+// Problem: Missing Modal component
+// Solution: Ensure @plone/components is installed
+npm install @plone/components
+```
+
+### Saved image is huge
+
+```tsx
+// Problem: High quality setting
+// Solution: Adjust JPEG quality in ImageEditor
+
+// In ImageEditor.tsx, change:
+canvas.toDataURL('image/jpeg', 0.9); // 90% quality
+// To:
+canvas.toDataURL('image/jpeg', 0.8); // 80% quality (smaller file)
+```
+
+### Value doesn't update in form
+
+```tsx
+// ❌ Problem: Not calling setData correctly
+<ImageEditorWrapper
+  value={value}
+  setData={(v) => console.log(v)} // Only logs
+/>
+
+// ✅ Solution: Actually update the value
+<ImageEditorWrapper
+  value={value}
+  setData={(v) => onChange('image', v)} // Updates form
+/>
+```
+
+---
+
+## Related Components
+
+- **ImageEditor**: The core editor component wrapped by this
+- **Modal**: `@plone/components` Modal used for the dialog
+- **Navigation**: Editor toolbar for controls
+- **SettingsModal**: Advanced crop settings
+
+---
+
+## Migration from Old Editor
+
+### Before (Old Editor)
+
+```tsx
+<ImageCropper
+  src={value.download}
+  onSave={(blob) => {
+    // Manual blob conversion
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      onChange('image', {
+        data: reader.result,
+        filename: value.filename,
+      });
+    };
+    reader.readAsDataURL(blob);
+  }}
+/>
+```
+
+### After (New Editor)
+
+```tsx
+<ImageEditorWrapper
+  value={value}
+  setData={(newValue) => onChange('image', newValue)}
+/>
+```
+
+**Benefits:**
+
+- ✅ Automatic data format conversion
+- ✅ Modal integration included
+- ✅ Color adjustments included
+- ✅ Better mobile experience
+- ✅ Settings modal for aspect ratios
+- ✅ Preview mode

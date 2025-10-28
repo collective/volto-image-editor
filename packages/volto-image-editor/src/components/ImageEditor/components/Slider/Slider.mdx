@@ -1,0 +1,380 @@
+import { Meta, Canvas, Story } from '@storybook/blocks';
+import * as SliderStories from './Slider.stories';
+
+<Meta of={SliderStories} />
+
+# Slider
+
+Accessible slider control used for numeric adjustments in the image editor. Offers full keyboard, mouse and touch support, with snapping to specific values.
+
+## Overview
+
+The `Slider` is an interactive component that allows adjusting values within a defined range. It is primarily used for brightness, contrast, saturation and hue controls in the editor.
+
+---
+
+## Examples
+
+### Interactive
+
+Standard slider with range from -1 to 1, ideal for color adjustments.
+
+<Canvas of={SliderStories.Interactive} />
+
+### Disabled
+
+Slider in disabled state, keeps value visible but doesn't allow interaction.
+
+<Canvas of={SliderStories.Disabled} />
+
+### Custom Range
+
+Demonstrates slider with custom range (0-100).
+
+<Canvas of={SliderStories.CustomRange} />
+
+### Hidden Value
+
+Slider without internal value display, useful when you show the value externally.
+
+<Canvas of={SliderStories.HiddenValue} />
+
+---
+
+## How to Use
+
+### Basic
+
+```tsx
+import { Slider } from '@plone-collective/volto-image-editor/components/ImageEditor/components/Slider';
+
+function BrightnessControl() {
+  const [brightness, setBrightness] = useState(0);
+
+  return (
+    <Slider
+      value={brightness}
+      onChange={setBrightness}
+      min={-1}
+      max={1}
+      step={0.01}
+    />
+  );
+}
+```
+
+### With Custom Display
+
+```tsx
+function ContrastControl() {
+  const [contrast, setContrast] = useState(0);
+
+  return (
+    <div>
+      <label>Contrast: {Math.round(contrast * 100)}%</label>
+      <Slider value={contrast} onChange={setContrast} showValue={false} />
+    </div>
+  );
+}
+```
+
+### Custom Range
+
+```tsx
+function OpacityControl() {
+  const [opacity, setOpacity] = useState(100);
+
+  return (
+    <Slider value={opacity} onChange={setOpacity} min={0} max={100} step={1} />
+  );
+}
+```
+
+---
+
+## Keyboard Navigation
+
+The Slider has full keyboard support for accessibility:
+
+| Key               | Action                 |
+| ----------------- | ---------------------- |
+| `←` `↓`           | Decrease 1 step        |
+| `→` `↑`           | Increase 1 step        |
+| `Page Down`       | Decrease 10 steps      |
+| `Page Up`         | Increase 10 steps      |
+| `Home`            | Go to minimum value    |
+| `End`             | Go to maximum value    |
+| `Space` / `Enter` | Reset to zero (center) |
+
+### Usage Example
+
+```tsx
+<Slider
+  value={value}
+  onChange={setValue}
+  min={-1}
+  max={1}
+  step={0.01}
+  // ← → moves 0.01 at a time
+  // Page Down/Up moves 0.1 at a time (10 steps)
+  // Home = -1, End = 1
+/>
+```
+
+---
+
+## Mouse/Touch Interaction
+
+### Mouse
+
+- **Click on line**: Moves handle to clicked position
+- **Drag handle**: Drags to adjust value
+- **Visual feedback**: Handle enlarges when active
+
+### Touch
+
+- **Tap on line**: Moves to tapped position
+- **Drag**: Drags to adjust
+- **Multi-touch**: Not supported (uses first touch)
+
+---
+
+## Visual Anatomy
+
+```
+┌─────────────────────────────────────────┐
+│              [-50]                       │  ← Displayed value (if showValue=true)
+│   ┌──────────────┬──────────────┐       │
+│   │   Fill       │   Handle     │       │  ← Colored fill from center to handle
+│ ● ├──────────────●──────────────┤ ●     │  ← Ticks (min, center, max)
+│  -1              0              +1       │  ← Tick labels
+└─────────────────────────────────────────┘
+```
+
+### Elements
+
+- **Line**: Base slider line
+- **Fill**: Filled area between center and handle
+- **Handle**: Draggable circle
+- **Ticks**: Visual markers (min, center, max)
+- **Value Display**: Formatted current value (optional)
+
+---
+
+## Snapping and Steps
+
+The slider always "snaps" to values that are multiples of `step`:
+
+```tsx
+// With step=0.1
+<Slider min={0} max={1} step={0.1} value={0.35} />
+// Possible values: 0.0, 0.1, 0.2, 0.3, 0.4, 0.5...
+
+// With step=0.01 (default for color adjustments)
+<Slider min={-1} max={1} step={0.01} value={0.327} />
+// Possible values: -1.00, -0.99, -0.98, ... 0.32, 0.33...
+```
+
+### Snapping Benefits
+
+- Consistent and predictable values
+- Makes it easier to return to specific values
+- Improves accessibility (keyboard moves in steps)
+
+---
+
+## Performance
+
+### Implemented Optimizations
+
+1. **Debounced Callbacks**: onChange only calls after user stops dragging
+2. **RAF (RequestAnimationFrame)**: Uses smooth animations via browser
+3. **Event Delegation**: Efficient listeners for global drag
+
+### Recommendations
+
+```tsx
+// Good: External debounce for heavy actions
+const debouncedApplyFilter = useMemo(
+  () => debounce((value) => applyFilter(value), 100),
+  []
+);
+
+<Slider onChange={debouncedApplyFilter} />
+
+// Avoid: Process changes instantly if they're expensive
+<Slider onChange={(v) => heavyImageProcessing(v)} />
+```
+
+---
+
+## Accessibility
+
+### ARIA Attributes
+
+```html
+<div
+  role="slider"
+  aria-valuemin="-100"
+  aria-valuemax="100"
+  aria-valuenow="50"
+  aria-disabled="false"
+  tabindex="0"
+/>
+```
+
+### Implementations
+
+- `role="slider"` with correct values
+- Complete keyboard navigation
+- Visible focus indicator
+- Descriptive labels via `aria-label`
+- Disabled states clearly indicated
+
+### Recommendation: Add Labels
+
+```tsx
+<label htmlFor="brightness-slider">
+  Brightness
+</label>
+<Slider
+  id="brightness-slider"
+  value={brightness}
+  onChange={setBrightness}
+/>
+```
+
+---
+
+## Props
+
+### value
+
+- **Type**: `number`
+- **Required**: ✅
+- **Description**: Current slider value
+
+### onChange
+
+- **Type**: `(value: number) => void`
+- **Description**: Callback called when value changes
+
+### min
+
+- **Type**: `number`
+- **Default**: `-1`
+- **Description**: Minimum range value
+
+### max
+
+- **Type**: `number`
+- **Default**: `1`
+- **Description**: Maximum range value
+
+### step
+
+- **Type**: `number`
+- **Default**: `0.01`
+- **Description**: Increment between possible values (snapping)
+
+### showValue
+
+- **Type**: `boolean`
+- **Default**: `true`
+- **Description**: Shows current value above slider
+
+### disabled
+
+- **Type**: `boolean`
+- **Default**: `false`
+- **Description**: Disables interaction
+
+### className
+
+- **Type**: `string`
+- **Description**: Additional CSS classes
+
+---
+
+## Styling
+
+### CSS Customization
+
+```scss
+.image-editor-slider {
+  // Main container
+  padding: 16px;
+
+  &__line {
+    // Base line
+    height: 2px;
+    background: #e5e7eb;
+  }
+
+  &__fill {
+    // Colored fill
+    background: #3b82f6;
+  }
+
+  &__handle {
+    // Draggable circle
+    width: 16px;
+    height: 16px;
+    background: white;
+    border: 2px solid #3b82f6;
+
+    .image-editor-slider--active & {
+      transform: scale(1.2);
+    }
+  }
+
+  &--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+```
+
+---
+
+## Troubleshooting
+
+### Value doesn't change
+
+```tsx
+// Problem: fixed value without onChange
+<Slider value={0} />;
+
+// Solution: Add onChange
+const [val, setVal] = useState(0);
+<Slider value={val} onChange={setVal} />;
+```
+
+### Steps too small
+
+```tsx
+// Problem: step too small makes it slow
+<Slider min={0} max={100} step={0.0001} />
+
+// Solution: Use appropriate step for range
+<Slider min={0} max={100} step={1} />
+```
+
+### Width not responsive
+
+```tsx
+// Problem: fixed width in pixels
+<Slider style={{ width: 300 }} />
+
+// Solution: Use responsive width
+<div style={{ width: '100%', maxWidth: 360 }}>
+  <Slider />
+</div>
+```
+
+---
+
+## Related Components
+
+- **ImageEditor**: Uses Slider for all color adjustments
+- **AdjustableImage**: Receives values from Sliders
