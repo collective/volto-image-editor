@@ -1,0 +1,1 @@
+Update README to include a small demo of @plone-collective/volto-image-editor. @humanaice

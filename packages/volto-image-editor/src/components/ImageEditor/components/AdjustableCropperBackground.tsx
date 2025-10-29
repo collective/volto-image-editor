@@ -5,7 +5,7 @@ import type {
   CropperState,
 } from 'react-advanced-cropper';
 import { getBackgroundStyle } from 'advanced-cropper';
-import { AdjustableImage } from './AdjustableImage';
+import { AdjustableImage } from './AdjustableImage/AdjustableImage';
 
 interface DesiredCropperRef {
   getState: () => CropperState;

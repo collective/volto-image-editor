@@ -1,0 +1,565 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as SettingsModalStories from './SettingsModal.stories';
+
+<Meta of={SettingsModalStories} />
+
+# SettingsModal
+
+Advanced settings modal for the image editor, allowing customization of aspect ratio, restrictions, stencil type and crop dimensions.
+
+## Overview
+
+The `SettingsModal` provides an intuitive interface to adjust cropper parameters that affect how the user can interact with the image.
+
+---
+
+## Examples
+
+### Default
+
+Default configuration with free aspect ratio and rectangular stencil.
+
+<Canvas of={SettingsModalStories.Default} />
+
+### With Square Aspect
+
+Pre-configured for square crops (1:1) with grid enabled.
+
+<Canvas of={SettingsModalStories.WithSquareAspect} />
+
+### With Circle Stencil
+
+Demonstrates circular stencil, ideal for avatars and profile photos.
+
+<Canvas of={SettingsModalStories.WithCircleStencil} />
+
+---
+
+## How to Use
+
+### Basic
+
+```tsx
+import { SettingsModal } from '@plone-collective/volto-image-editor/components/ImageEditor/components/SettingsModal';
+
+function EditorSettings() {
+  const [open, setOpen] = useState(false);
+  const [settings, setSettings] = useState({
+    aspectRatio: 'free',
+    imageRestriction: 'fit-area',
+    stencilType: 'rectangle',
+    minWidth: 50,
+    minHeight: 50,
+    scalable: true,
+    stencilGrid: false,
+    minScale: 0.1,
+    maxScale: 3,
+  });
+
+  return (
+    <SettingsModal
+      isOpen={open}
+      onToggle={() => setOpen(!open)}
+      settings={settings}
+      onChange={setSettings}
+    />
+  );
+}
+```
+
+### With Persistence
+
+```tsx
+function EditorWithPersistentSettings() {
+  const [settings, setSettings] = useLocalStorage('editor-settings', defaults);
+
+  const handleSettingsChange = (newSettings) => {
+    setSettings(newSettings);
+    applySettingsToCropper(newSettings);
+  };
+
+  return <SettingsModal settings={settings} onChange={handleSettingsChange} />;
+}
+```
+
+---
+
+## Available Settings
+
+### Aspect Ratio
+
+Defines the width/height ratio of the crop.
+
+| Value  | Ratio         | Common Use               |
+| ------ | ------------- | ------------------------ |
+| `free` | Free          | Flexible crop            |
+| `1:1`  | Square        | Instagram posts, avatars |
+| `3:4`  | Vertical      | Portrait photos          |
+| `4:3`  | Horizontal    | Old monitors             |
+| `16:9` | Widescreen    | Videos, banners          |
+| `9:16` | Vertical      | Stories, Reels           |
+| `2:1`  | Panoramic     | Headers                  |
+| `21:9` | Ultra-wide    | Cinemas                  |
+| `1:2`  | Tall vertical | Infographics             |
+
+```tsx
+// Force square crop
+<SettingsModal
+  settings={{ ...settings, aspectRatio: '1:1' }}
+/>
+
+// Free for any ratio
+<SettingsModal
+  settings={{ ...settings, aspectRatio: 'free' }}
+/>
+```
+
+---
+
+### Image Restriction
+
+Controls how the image can be positioned relative to the stencil.
+
+#### Fit Area
+
+- **Behavior**: Image must always cover the visible area
+- **Use**: Prevents empty areas in view
+- **When to use**: General editors, when complete context matters
+
+```tsx
+settings={{ imageRestriction: 'fit-area' }}
+```
+
+#### Fill Area
+
+- **Behavior**: Image must completely fill the stencil area
+- **Use**: Ensures crop has no empty borders
+- **When to use**: Avatar crops, thumbnails
+
+```tsx
+settings={{ imageRestriction: 'fill-area' }}
+```
+
+#### Stencil
+
+- **Behavior**: Image cannot be smaller than stencil
+- **Use**: Maintains minimum crop quality
+- **When to use**: When minimum size is critical
+
+```tsx
+settings={{ imageRestriction: 'stencil' }}
+```
+
+#### Free (None)
+
+- **Behavior**: No restrictions, allows any position
+- **Use**: Maximum flexibility, can create crops with borders
+- **When to use**: Advanced editors, special effects
+
+```tsx
+settings={{ imageRestriction: 'none' }}
+```
+
+---
+
+### Stencil Type
+
+Defines the crop stencil shape.
+
+#### Rectangle
+
+- Standard rectangular shape
+- Supports all aspect ratios
+- 4 resize handles (corners)
+- Independent resize if `aspectRatio: 'free'`
+
+```tsx
+settings={{ stencilType: 'rectangle' }}
+```
+
+#### Circle
+
+- Circular shape
+- **Important**: Automatically forces `aspectRatio: '1:1'`
+- Ideal for avatars, circular logos
+- Proportional resize (maintains circle)
+
+```tsx
+settings={{
+  stencilType: 'circle',
+  aspectRatio: '1:1' // Required for circle
+}}
+```
+
+---
+
+### Minimum Dimensions
+
+Defines minimum crop size in pixels.
+
+```tsx
+settings={{
+  minWidth: 100,   // Minimum 100px width
+  minHeight: 100,  // Minimum 100px height
+}}
+```
+
+**Typical use:**
+
+- **Avatars**: `minWidth: 200, minHeight: 200`
+- **Thumbnails**: `minWidth: 150, minHeight: 150`
+- **Banners**: `minWidth: 800, minHeight: 200`
+
+**Behavior:**
+
+- Stencil cannot be resized below these values
+- Prevents too small crops (low quality)
+
+---
+
+### Maximum Crop Dimensions
+
+Limits maximum crop size (optional).
+
+```tsx
+settings={{
+  maxCropWidth: 2000,   // Maximum 2000px width
+  maxCropHeight: 2000,  // Maximum 2000px height
+}}
+```
+
+**When to use:**
+
+- Limit upload size
+- Optimize performance
+- Respect server limits
+
+**Note:** Leave `undefined` for no limit.
+
+---
+
+### Stencil Grid
+
+Shows composition grid in stencil (rule of thirds).
+
+```tsx
+settings={{ stencilGrid: true }}
+```
+
+**Benefits:**
+
+- Assists photographic composition
+- Visual guide for alignment
+- Improves crop quality
+
+---
+
+### Scale Limits
+
+Controls minimum and maximum image zoom.
+
+```tsx
+settings={{
+  minScale: 0.1,  // 10% of original size
+  maxScale: 3,    // 300% of original size
+  scalable: true, // Allows zoom
+}}
+```
+
+**Behavior:**
+
+- `scalable: false` completely disables zoom
+- Lower values allow more zoom out
+- Higher values allow more zoom in
+
+---
+
+## Modal Interface
+
+### Layout
+
+```
+┌─────────────────────────────────────┐
+│  Editor Settings              [✕]   │
+├─────────────────────────────────────┤
+│                                     │
+│  Aspect Ratio                       │
+│  [Free] [1:1] [3:4] [4:3] ...       │
+│                                     │
+│  Image Restriction                  │
+│  [Fit] [Fill] [Stencil] [Free]      │
+│                                     │
+│  Stencil Type                       │
+│  [Rectangle] [Circle]               │
+│                                     │
+│  Minimum Dimensions                 │
+│  Min Width:  [  50  ]               │
+│  Min Height: [  50  ]               │
+│                                     │
+│  Maximum Crop Dimensions            │
+│  Max Width:  [     ]                │
+│  Max Height: [     ]                │
+│                                     │
+│  ☑ Stencil Grid                     │
+│                                     │
+└─────────────────────────────────────┘
+```
+
+### Interaction
+
+- **Click outside**: Closes modal
+- **ESC**: Closes modal
+- **Click on ✕**: Closes modal
+- **Click on gear icon**: Opens/closes
+
+---
+
+## Useful Presets
+
+### Avatar / Profile Picture
+
+```tsx
+{
+  aspectRatio: '1:1',
+  stencilType: 'circle',
+  imageRestriction: 'fill-area',
+  minWidth: 200,
+  minHeight: 200,
+  maxCropWidth: 800,
+  maxCropHeight: 800,
+  stencilGrid: false,
+  scalable: true,
+}
+```
+
+### Instagram Post
+
+```tsx
+{
+  aspectRatio: '1:1',
+  stencilType: 'rectangle',
+  imageRestriction: 'fit-area',
+  minWidth: 320,
+  minHeight: 320,
+  maxCropWidth: 1080,
+  maxCropHeight: 1080,
+  stencilGrid: true,
+  scalable: true,
+}
+```
+
+### YouTube Thumbnail
+
+```tsx
+{
+  aspectRatio: '16:9',
+  stencilType: 'rectangle',
+  imageRestriction: 'fill-area',
+  minWidth: 640,
+  minHeight: 360,
+  maxCropWidth: 1920,
+  maxCropHeight: 1080,
+  stencilGrid: true,
+  scalable: true,
+}
+```
+
+### Blog Header
+
+```tsx
+{
+  aspectRatio: '2:1',
+  stencilType: 'rectangle',
+  imageRestriction: 'fit-area',
+  minWidth: 800,
+  minHeight: 400,
+  stencilGrid: true,
+  scalable: true,
+}
+```
+
+### Flexible Crop
+
+```tsx
+{
+  aspectRatio: 'free',
+  stencilType: 'rectangle',
+  imageRestriction: 'none',
+  minWidth: 50,
+  minHeight: 50,
+  stencilGrid: false,
+  scalable: true,
+}
+```
+
+---
+
+## Props
+
+### settings
+
+- **Type**: `ImageSettings`
+- **Required**: ✅
+- **Description**: Object with all current settings
+
+```tsx
+interface ImageSettings {
+  aspectRatio:
+    | 'free'
+    | '1:1'
+    | '1:2'
+    | '2:1'
+    | '3:4'
+    | '4:3'
+    | '16:9'
+    | '9:16'
+    | '21:9';
+  imageRestriction: 'fit-area' | 'fill-area' | 'stencil' | 'none';
+  stencilType: 'rectangle' | 'circle';
+  minWidth: number;
+  minHeight: number;
+  maxCropWidth?: number;
+  maxCropHeight?: number;
+  scalable: boolean;
+  stencilGrid: boolean;
+  minScale: number;
+  maxScale: number;
+}
+```
+
+### onChange
+
+- **Type**: `(settings: ImageSettings) => void`
+- **Required**: ✅
+- **Description**: Callback when settings change
+
+### isOpen
+
+- **Type**: `boolean`
+- **Required**: ✅
+- **Description**: Controls modal visibility
+
+### onToggle
+
+- **Type**: `() => void`
+- **Required**: ✅
+- **Description**: Callback to open/close modal
+
+### className
+
+- **Type**: `string`
+- **Description**: Additional CSS classes
+
+---
+
+## Styling
+
+### Customization
+
+```scss
+.image-editor-settings-modal {
+  &__toggle {
+    // Gear button
+  }
+
+  &__overlay {
+    // Dark background behind modal
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  &__content {
+    // Modal container
+    background: white;
+    border-radius: 8px;
+    max-width: 700px;
+  }
+
+  &__header {
+    // Header with title and close button
+  }
+
+  &__body {
+    // Modal content
+  }
+
+  &__section {
+    // Each settings section
+    margin-bottom: 24px;
+  }
+
+  &__label {
+    // Section labels
+    font-weight: 600;
+  }
+
+  &__icon-scroll {
+    // Container for option buttons
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+  }
+}
+```
+
+---
+
+## Accessibility
+
+### Implemented
+
+- Modal with `role="dialog"` and `aria-modal="true"`
+- ESC closes modal
+- Click outside closes modal
+- Focus trap in modal when open
+
+### Suggested Improvements
+
+```tsx
+<SettingsModal
+  aria-labelledby="settings-title"
+  // Internally:
+  <h2 id="settings-title">Editor Settings</h2>
+/>
+```
+
+---
+
+## Troubleshooting
+
+### Modal won't close
+
+```tsx
+// ❌ Problem: onToggle not implemented
+<SettingsModal onToggle={() => {}} />;
+
+// Solution: Implement toggle correctly
+const [open, setOpen] = useState(false);
+<SettingsModal onToggle={() => setOpen(!open)} />;
+```
+
+### Settings don't apply
+
+```tsx
+// ❌ Problem: onChange doesn't update state
+<SettingsModal onChange={(s) => console.log(s)} />
+
+// Solution: Update state
+<SettingsModal onChange={(s) => setSettings(s)} />
+```
+
+### Circle stencil doesn't work
+
+```tsx
+// Problem: Incompatible aspect ratio
+settings={{ stencilType: 'circle', aspectRatio: '16:9' }}
+
+// Solution: Use 1:1 for circles
+settings={{ stencilType: 'circle', aspectRatio: '1:1' }}
+```
+
+---
+
+## Related Components
+
+- **ImageEditor**: Uses SettingsModal for advanced settings
+- **Button**: Used for modal toggle

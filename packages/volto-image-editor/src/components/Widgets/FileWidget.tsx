@@ -17,7 +17,7 @@ import { validateFileUploadSize } from '@plone/volto/helpers/FormValidation/Form
 import { defineMessages, useIntl } from 'react-intl';
 import Image from '@plone/volto/components/theme/Image/Image';
 import { toast } from 'react-toastify';
-import ImageEditorWrapper from '../ImageEditor/ImageEditorWrapper';
+import ImageEditorWrapper from '../ImageEditor/Wrapper/ImageEditorWrapper';
 import './FileWidget.scss';
 import { useUpdateEffect } from 'react-advanced-cropper';
 

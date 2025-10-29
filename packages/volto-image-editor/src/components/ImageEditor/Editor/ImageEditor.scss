@@ -1,0 +1,59 @@
+@import '~react-advanced-cropper/dist/style.css';
+@import '../../../theme/constants';
+
+.image-editor {
+  width: 100%;
+  border: solid 1px #2b2a30;
+  color: $theme-color;
+  &__preview {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 45px;
+    height: 45px;
+    border: solid 1px #2b2a30;
+    border-radius: 50%;
+    background: black;
+  }
+  &__cropper {
+    position: relative;
+    display: flex;
+    height: 500px;
+    max-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    background: #0f0e13;
+  }
+  &__slider {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    width: 100%;
+    transform: translateX(-50%);
+  }
+  &__cropper-overlay {
+    transition: 0.5s;
+    &--faded {
+      color: rgba(black, 0.9);
+    }
+  }
+  &__service {
+    position: absolute;
+    left: -100%;
+    pointer-events: none;
+  }
+  &__reset-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(white, 0.1);
+    &:hover {
+      background: rgba(white, 0.2);
+      fill: $theme-color;
+    }
+    &--hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+}

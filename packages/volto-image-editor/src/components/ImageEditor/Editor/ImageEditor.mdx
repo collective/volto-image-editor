@@ -1,0 +1,217 @@
+import { Meta, Canvas, Story, Controls, ArgTypes } from '@storybook/blocks';
+import * as ImageEditorStories from './ImageEditor.stories';
+
+<Meta of={ImageEditorStories} />
+
+# ImageEditor
+
+The `ImageEditor` is the main component that provides a complete interface for image editing, including crop, rotation, color adjustments and advanced settings.
+
+## Overview
+
+This component combines several features:
+
+- **Interactive cropper** with rectangular and circular stencils
+- **Transformations**: rotation (90°), horizontal/vertical flip
+- **Color adjustments**: brightness, contrast, saturation and hue
+- **Advanced settings**: aspect ratio, restrictions, dimensions
+
+---
+
+## Examples
+
+### Landscape (Horizontal)
+
+Most common format for landscape photos, screenshots and banners.
+
+<Canvas of={ImageEditorStories.Landscape} />
+
+### Portrait (Vertical)
+
+Ideal for profile photos, stories and mobile content.
+
+<Canvas of={ImageEditorStories.Portrait} />
+
+### Compact (Small)
+
+Demonstrates the editor in reduced dimensions, useful for modals or sidebars.
+
+<Canvas of={ImageEditorStories.Compact} />
+
+---
+
+## How to Use
+
+### Basic
+
+```tsx
+import ImageEditor from '@plone-collective/volto-image-editor/components/ImageEditor/ImageEditor';
+
+function MyEditor() {
+  const handleSave = (dataUrl: string) => {
+    // dataUrl is the edited image in base64 format
+    console.log('Image saved:', dataUrl);
+  };
+
+  const handleCancel = () => {
+    console.log('Edit cancelled');
+  };
+
+  return (
+    <ImageEditor
+      src="https://example.com/image.jpg"
+      onImageSave={handleSave}
+      onCancel={handleCancel}
+    />
+  );
+}
+```
+
+### With Data URL
+
+```tsx
+const imageDataUrl = 'data:image/jpeg;base64,/9j/4AAQ...';
+
+<ImageEditor
+  src={imageDataUrl}
+  onImageSave={(newDataUrl) => {
+    // Save the edited image
+    uploadImage(newDataUrl);
+  }}
+  onCancel={() => closeEditor()}
+/>;
+```
+
+---
+
+## Features
+
+### Edit Modes
+
+The editor has different modes accessible via the navigation bar:
+
+- **Crop**: Allows cropping the image with the configured stencil
+- **Brightness**: Adjusts image brightness (-100% to +100%)
+- **Contrast**: Adjusts contrast (-100% to +100%)
+- **Saturation**: Adjusts color saturation (-100% to +100%)
+- **Hue**: Adjusts hue/tone (360° rotation)
+
+### Transformations
+
+Actions available regardless of mode:
+
+- **Rotate Left**: Rotates 90° counterclockwise
+- **Rotate Right**: Rotates 90° clockwise
+- **Flip Horizontal**: Mirrors horizontally
+- **Flip Vertical**: Mirrors vertically
+- **Reset Rotation**: Undoes all transformations (appears after applying rotations/flips)
+
+### Settings
+
+Accessible via gear icon:
+
+- **Aspect Ratio**: Free, 1:1, 3:4, 4:3, 16:9, 9:16, 2:1, 21:9, 1:2
+- **Image Restriction**: Fit, Fill, Stencil, Free
+- **Stencil Type**: Rectangle, Circle
+- **Minimum dimensions**: Min Width/Height for crop
+- **Maximum dimensions**: Max Width/Height of crop (optional)
+- **Stencil Grid**: Shows grid in stencil to assist composition
+
+---
+
+## Keyboard Navigation
+
+### In Cropper
+
+- **Arrow keys**: Move stencil
+- **Shift + Arrow keys**: Move faster
+- **Alt + Arrow keys**: Resize stencil
+
+### In Sliders (Adjustments)
+
+- **Arrow Left/Down**: Decrease value
+- **Arrow Right/Up**: Increase value
+- **Page Down**: Decrease 10 steps
+- **Page Up**: Increase 10 steps
+- **Home**: Minimum value
+- **End**: Maximum value
+- **Space/Enter**: Reset to zero
+
+---
+
+## Performance
+
+### Implemented Optimizations
+
+1. **Canvas Rendering**: Filters applied via Canvas API (hardware-accelerated)
+2. **Debounced Updates**: Preview updates efficiently during adjustments
+3. **Lazy Loading**: Configuration components loaded on demand
+
+### Recommendations
+
+- **Image size**: Ideal between 800x600 and 2000x1500 pixels
+- **Format**: JPEG or PNG (WebP supported in modern browsers)
+- **File size**: Up to 5MB for better performance
+
+---
+
+## Accessibility
+
+- All buttons have descriptive labels
+- Complete keyboard navigation
+- ARIA attributes on sliders (role="slider", aria-valuemin, etc)
+- Visible focus indicators
+- Adequate contrast in all states
+
+---
+
+## Troubleshooting
+
+### Image won't load
+
+- Check CORS if image is from external domain
+- Use `crossOrigin="anonymous"` if necessary
+- Confirm that URL/dataURL is valid
+
+### Crop too small
+
+- Adjust `minWidth` and `minHeight` in settings
+- Check `imageRestriction` (may be limiting)
+
+### Slow performance
+
+- Reduce image size before loading
+- Avoid too frequent adjustments (debounce)
+- Use JPEG format for photos (smaller than PNG)
+
+---
+
+## Props
+
+### src
+
+- **Type**: `string`
+- **Required**: ✅
+- **Description**: URL or data URL of the image to be edited
+
+### onImageSave
+
+- **Type**: `(dataUrl: string) => void`
+- **Required**: ✅
+- **Description**: Callback called on save, receives the edited image as data URL
+
+### onCancel
+
+- **Type**: `() => void`
+- **Required**: ✅
+- **Description**: Callback called when editing is cancelled
+
+---
+
+## Related Components
+
+- **ImageEditorWrapper**: Wrapper with modal for use in widgets
+- **Navigation**: Editor toolbar
+- **SettingsModal**: Advanced settings panel
+- **Slider**: Control for color adjustments
+- **AdjustableImage**: Image renderer with filters
