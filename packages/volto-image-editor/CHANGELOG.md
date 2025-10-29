@@ -8,6 +8,13 @@
 
 <!-- towncrier release notes start -->
 
+## 1.0.0-alpha.2 (2025-10-29)
+
+### Feature
+
+- Update README to include a small demo of @plone-collective/volto-image-editor. @humanaice [#4](https://github.com/collective/volto-image-editor/issue/4)
+- Add Storybook stories for all components. @humanaice [#5](https://github.com/collective/volto-image-editor/issue/5)
+
 ## 1.0.0-alpha.1 (2025-10-20)
 
 ### Feature
