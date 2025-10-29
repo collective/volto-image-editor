@@ -10,11 +10,21 @@
     "plone",
     "react"
   ],
-  "author": "Simples Consultoria",
+  "author": {
+    "name": "Simples Consultoria",
+    "url": "https://simplesconsultoria.com.br/"
+  },
   "homepage": "https://github.com/collective/volto-image-editor#readme",
   "repository": {
     "type": "git",
     "url": "git@github.com:collective/volto-image-editor"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/plone"
+  },
+  "bugs": {
+    "url": "https://github.com/collective/volto-image-edito/issues"
   },
   "publishConfig": {
     "access": "public"
