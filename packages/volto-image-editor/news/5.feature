@@ -1,1 +1,1 @@
-Add Storybooks to all components. @humanaice
+Add Storybook stories for all components. @humanaice
