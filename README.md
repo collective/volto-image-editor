@@ -3,7 +3,7 @@
 An image editor, based on [React Advanced Image Cropper](https://www.npmjs.com/package/react-advanced-cropper), to be used with Plone and Volto.
 
 [![npm](https://img.shields.io/npm/v/@plone-collective/volto-image-editor)](https://www.npmjs.com/package/@plone-collective/volto-image-editor)
-[![](https://img.shields.io/badge/-Storybook-ff4785?logo=Storybook&logoColor=white&style=flat-square)](https://simplesconsultoria.github.io/volto-image-editor/)
+[![](https://img.shields.io/badge/-Storybook-ff4785?logo=Storybook&logoColor=white&style=flat-square)](https://collective.github.io/volto-image-editor/)
 [![Code analysis checks](https://github.com/collective/volto-image-editor/actions/workflows/main.yml/badge.svg)](https://github.com/collective/volto-image-editor/actions/workflows/main.yml)
 
 ## ✨ Features
