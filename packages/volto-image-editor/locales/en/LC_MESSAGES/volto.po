@@ -12,7 +12,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. Default: "Aspect Ratio"
-#: components/ImageEditor/components/SettingsModal
+#: components/ImageEditor/components/SettingsModal/SettingsModal
 msgid "Aspect Ratio"
 msgstr ""
 
@@ -22,7 +22,7 @@ msgid "Choose a file"
 msgstr ""
 
 #. Default: "Circle"
-#: components/ImageEditor/components/SettingsModal
+#: components/ImageEditor/components/SettingsModal/SettingsModal
 msgid "Circle"
 msgstr ""
 
@@ -42,12 +42,12 @@ msgid "Drop files here ..."
 msgstr ""
 
 #. Default: "Edit image"
-#: components/ImageEditor/ImageEditorWrapper
+#: components/ImageEditor/Wrapper/ImageEditorWrapper
 msgid "Edit image"
 msgstr ""
 
 #. Default: "Editor Settings"
-#: components/ImageEditor/components/SettingsModal
+#: components/ImageEditor/components/SettingsModal/SettingsModal
 msgid "Editor Settings"
 msgstr ""
 
@@ -57,87 +57,87 @@ msgid "File is not of the accepted type {accept}"
 msgstr ""
 
 #. Default: "Fill"
-#: components/ImageEditor/components/SettingsModal
+#: components/ImageEditor/components/SettingsModal/SettingsModal
 msgid "Fill Area"
 msgstr ""
 
 #. Default: "Fit"
-#: components/ImageEditor/components/SettingsModal
+#: components/ImageEditor/components/SettingsModal/SettingsModal
 msgid "Fit Area"
 msgstr ""
 
 #. Default: "Free"
-#: components/ImageEditor/components/SettingsModal
+#: components/ImageEditor/components/SettingsModal/SettingsModal
 msgid "Free aspect ratio"
 msgstr ""
 
 #. Default: "Image Restriction"
-#: components/ImageEditor/components/SettingsModal
+#: components/ImageEditor/components/SettingsModal/SettingsModal
 msgid "Image Restriction"
 msgstr ""
 
 #. Default: "2:1"
-#: components/ImageEditor/components/SettingsModal
+#: components/ImageEditor/components/SettingsModal/SettingsModal
 msgid "Landscape (2:1)"
 msgstr ""
 
 #. Default: "Max height"
-#: components/ImageEditor/components/SettingsModal
+#: components/ImageEditor/components/SettingsModal/SettingsModal
 msgid "Max height"
 msgstr ""
 
 #. Default: "Max width"
-#: components/ImageEditor/components/SettingsModal
+#: components/ImageEditor/components/SettingsModal/SettingsModal
 msgid "Max width"
 msgstr ""
 
 #. Default: "Maximum Crop Dimensions"
-#: components/ImageEditor/components/SettingsModal
+#: components/ImageEditor/components/SettingsModal/SettingsModal
 msgid "Maximum Crop Dimensions"
 msgstr ""
 
 #. Default: "Min height"
-#: components/ImageEditor/components/SettingsModal
+#: components/ImageEditor/components/SettingsModal/SettingsModal
 msgid "Min height"
 msgstr ""
 
 #. Default: "Min width"
-#: components/ImageEditor/components/SettingsModal
+#: components/ImageEditor/components/SettingsModal/SettingsModal
 msgid "Min width"
 msgstr ""
 
 #. Default: "Minimum Dimensions"
-#: components/ImageEditor/components/SettingsModal
+#: components/ImageEditor/components/SettingsModal/SettingsModal
 msgid "Minimum Dimensions"
 msgstr ""
 
 #. Default: "9:16"
-#: components/ImageEditor/components/SettingsModal
+#: components/ImageEditor/components/SettingsModal/SettingsModal
 msgid "Mobile (9:16)"
 msgstr ""
 
 #. Default: "4:3"
-#: components/ImageEditor/components/SettingsModal
+#: components/ImageEditor/components/SettingsModal/SettingsModal
 msgid "Monitor (4:3)"
 msgstr ""
 
 #. Default: "Free"
-#: components/ImageEditor/components/SettingsModal
+#: components/ImageEditor/components/SettingsModal/SettingsModal
 msgid "No Restriction"
 msgstr ""
 
 #. Default: "3:4"
-#: components/ImageEditor/components/SettingsModal
+#: components/ImageEditor/components/SettingsModal/SettingsModal
 msgid "Photo (3:4)"
 msgstr ""
 
 #. Default: "1:2"
-#: components/ImageEditor/components/SettingsModal
+#: components/ImageEditor/components/SettingsModal/SettingsModal
 msgid "Portrait (1:2)"
 msgstr ""
 
 #. Default: "Rectangle"
-#: components/ImageEditor/components/SettingsModal
+#: components/ImageEditor/components/SettingsModal/SettingsModal
 msgid "Rectangle"
 msgstr ""
 
@@ -147,27 +147,27 @@ msgid "Replace existing file"
 msgstr ""
 
 #. Default: "Reset rotation and flip"
-#: components/ImageEditor/components/Navigation
+#: components/ImageEditor/components/Navigation/Navigation
 msgid "Reset rotation and flip"
 msgstr ""
 
 #. Default: "1:1"
-#: components/ImageEditor/components/SettingsModal
+#: components/ImageEditor/components/SettingsModal/SettingsModal
 msgid "Square (1:1)"
 msgstr ""
 
 #. Default: "Stencil"
-#: components/ImageEditor/components/SettingsModal
+#: components/ImageEditor/components/SettingsModal/SettingsModal
 msgid "Stencil"
 msgstr ""
 
 #. Default: "Stencil Grid"
-#: components/ImageEditor/components/SettingsModal
+#: components/ImageEditor/components/SettingsModal/SettingsModal
 msgid "Stencil Grid"
 msgstr ""
 
 #. Default: "Stencil Type"
-#: components/ImageEditor/components/SettingsModal
+#: components/ImageEditor/components/SettingsModal/SettingsModal
 msgid "Stencil Type"
 msgstr ""
 
@@ -177,11 +177,11 @@ msgid "The file you uploaded exceeded the maximum allowed size of {size} bytes"
 msgstr ""
 
 #. Default: "21:9"
-#: components/ImageEditor/components/SettingsModal
+#: components/ImageEditor/components/SettingsModal/SettingsModal
 msgid "Ultra Wide (21:9)"
 msgstr ""
 
 #. Default: "16:9"
-#: components/ImageEditor/components/SettingsModal
+#: components/ImageEditor/components/SettingsModal/SettingsModal
 msgid "Widescreen (16:9)"
 msgstr ""
