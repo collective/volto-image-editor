@@ -1,20 +1,23 @@
+@import '../../../../theme/variables';
+@import '../../../../theme/mixins';
+
 .image-editor-settings-modal {
   &__toggle {
     position: absolute;
-    z-index: 100;
-    top: 20px;
+    z-index: $image-editor-z-navigation;
+    top: $image-editor-spacing-xl;
     left: 80px;
-    padding: 8px 12px;
-    border: 1px solid rgba(white, 0.2);
-    border-radius: 4px;
-    background: rgba(white, 0.1);
-    color: white;
+    padding: $image-editor-spacing-sm $image-editor-spacing-md;
+    border-radius: $image-editor-border-radius-sm;
+    background: $editor-button-bg;
+    color: $editor-button-color;
     cursor: pointer;
     font-size: 16px;
-    transition: all 0.2s ease;
+    transition: all $image-editor-transition-fast ease;
 
     &:hover {
-      background: rgba(white, 0.2);
+      background: $editor-button-bg-hover;
+      color: $editor-button-color-hover;
     }
 
     &.active {
@@ -24,7 +27,7 @@
 
   &__overlay {
     position: absolute;
-    z-index: 9999;
+    z-index: $image-editor-z-overlay;
     top: 0;
     left: 0;
     display: flex;
@@ -32,8 +35,8 @@
     height: 100%;
     align-items: center;
     justify-content: center;
-    animation: fadeIn 0.2s ease-out;
-    background: rgba(0, 0, 0, 0.8);
+    animation: fadeIn $image-editor-transition-fast ease-out;
+    background: $image-editor-bg-overlay;
   }
 
   &__content {
@@ -42,8 +45,8 @@
     width: 100%;
     max-height: 100%;
     flex-direction: column;
-    animation: scaleIn 0.2s ease-out;
-    background: #2b2a3050;
+    animation: scaleIn $image-editor-transition-fast ease-out;
+    background: $settings-body-bg;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   }
 
@@ -51,96 +54,97 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 24px;
-    border-bottom: 1px solid rgba(white, 0.1);
-    background: #1f1e24;
+    padding: $image-editor-spacing-xl $image-editor-modal-padding;
+    border-bottom: 1px solid $image-editor-border-color;
+    background: $settings-header-bg;
   }
 
   &__title {
     margin: 0;
-    color: white;
+    color: $settings-header-color;
     font-size: 20px;
     font-weight: 600;
   }
 
   &__close {
-    padding: 4px 8px;
+    padding: $image-editor-spacing-xs $image-editor-spacing-sm;
     border: none;
-    border-radius: 4px;
+    border-radius: $image-editor-border-radius-sm;
     background: transparent;
-    color: rgba(white, 0.7);
+    color: $nav-button-close-color;
     cursor: pointer;
     font-size: 24px;
-    transition: all 0.2s ease;
+    transition: all $image-editor-transition-fast ease;
 
     &:hover {
-      background: rgba(white, 0.1);
-      color: white;
+      background: rgba($nav-button-close-color, 0.1);
+      color: $nav-button-close-color;
     }
   }
 
   &__body {
     flex: 1;
-    padding: 24px;
+    padding: $image-editor-modal-padding;
     overflow-y: auto;
   }
 
   &__footer {
-    padding: 16px 24px;
-    border-top: 1px solid rgba(white, 0.1);
-    background: #1f1e24;
+    padding: $image-editor-spacing-lg $image-editor-modal-padding;
+    border-top: 1px solid $image-editor-border-color;
+    background: $settings-header-bg;
   }
 
   &__apply {
     width: 100%;
-    padding: 12px 20px;
+    padding: $image-editor-spacing-md $image-editor-spacing-xl;
     border: none;
-    border-radius: 6px;
-    background: #4caf50;
-    color: white;
+    border-radius: $image-editor-border-radius-md;
+    background: $nav-button-bg-active;
+    color: $nav-button-color-active;
     cursor: pointer;
     font-size: 16px;
     font-weight: 500;
-    transition: all 0.2s ease;
+    transition: all $image-editor-transition-fast ease;
 
     &:hover {
-      background: #45a049;
+      background: $nav-button-bg-hover;
+      color: $settings-header-color;
     }
   }
 
   &__section {
-    margin-bottom: 20px;
+    margin-bottom: $image-editor-spacing-xl;
   }
 
   &__label {
     display: block;
-    margin-bottom: 8px;
-    color: rgba(white, 0.9);
+    margin-bottom: $image-editor-spacing-sm;
+    color: $settings-body-color;
     font-size: 14px;
     font-weight: 500;
 
     input[type='checkbox'] {
-      margin-right: 8px;
+      margin-right: $image-editor-spacing-sm;
     }
   }
 
   &__select {
     width: 100%;
     padding: 10px 14px;
-    border: 1px solid rgba(white, 0.2);
-    border-radius: 6px;
-    background: #1f1e24;
-    color: white;
+    border: 1px solid $image-editor-border-color;
+    border-radius: $image-editor-border-radius-md;
+    background: rgba($color-black, 0.3);
+    color: $settings-body-color;
     cursor: pointer;
     font-size: 14px;
 
     option {
-      background: #2b2a30;
-      color: white;
+      background: $color-gray-dark;
+      color: $settings-body-color;
     }
 
     &:focus {
-      border-color: #4caf50;
+      border-color: $settings-body-color;
       outline: none;
     }
   }
@@ -148,50 +152,51 @@
   &__input {
     width: 100%;
     padding: 10px 14px;
-    border: 1px solid rgba(white, 0.2);
-    border-radius: 6px;
+    border: 1px solid $image-editor-border-color;
+    border-radius: $image-editor-border-radius-md;
     -moz-appearance: textfield;
     appearance: textfield;
-    background: transparent;
-    color: white;
+    background: rgba($color-black, 0.3);
+    color: $settings-body-color;
     font-size: 14px;
+
     &::-webkit-inner-spin-button {
       margin: 0;
       -webkit-appearance: none;
     }
 
     &::placeholder {
-      color: rgba(white, 0.5);
+      color: rgba($settings-body-color, 0.5);
     }
 
     &:focus {
-      border-color: #4caf50;
+      border-color: $settings-body-color;
       outline: none;
     }
   }
 
   &__checkbox {
-    accent-color: #4caf50;
+    accent-color: $settings-body-color;
     transform: scale(1.2);
   }
 
   &__range {
     width: 100%;
     height: 6px;
-    border-radius: 3px;
-    background: rgba(white, 0.2);
+    border-radius: $image-editor-border-radius-sm;
+    background: rgba($settings-body-color, 0.2);
     cursor: pointer;
     outline: none;
 
     &::-webkit-slider-thumb {
       width: 20px;
       height: 20px;
-      border-radius: 50%;
+      border-radius: $image-editor-border-radius-circle;
       appearance: none;
-      background: #4caf50;
+      background: $settings-body-color;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all $image-editor-transition-fast ease;
 
       &:hover {
         transform: scale(1.1);
@@ -202,8 +207,8 @@
       width: 20px;
       height: 20px;
       border: none;
-      border-radius: 50%;
-      background: #4caf50;
+      border-radius: $image-editor-border-radius-circle;
+      background: $settings-body-color;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
       cursor: pointer;
     }
@@ -211,19 +216,19 @@
 
   &__row {
     display: grid;
-    gap: 12px;
+    gap: $image-editor-spacing-md;
     grid-template-columns: 1fr 1fr;
   }
 
   &__divider {
     height: 1px;
-    margin: 24px 0;
-    background: rgba(white, 0.1);
+    margin: $image-editor-modal-padding 0;
+    background: $image-editor-border-color;
   }
 
   &__subtitle {
-    margin: 0 0 16px 0;
-    color: rgba(white, 0.9);
+    margin: 0 0 $image-editor-spacing-lg 0;
+    color: $settings-body-color;
     font-size: 16px;
     font-weight: 600;
   }
@@ -248,23 +253,23 @@
     }
   }
 
-  @media (max-width: 768px) {
+  @include tablet() {
     &__body {
-      padding: 20px;
+      padding: $image-editor-spacing-xl;
     }
 
     &__header,
     &__footer {
-      padding: 16px 20px;
+      padding: $image-editor-spacing-lg $image-editor-spacing-xl;
     }
 
     &__row {
-      gap: 8px;
+      gap: $image-editor-spacing-sm;
       grid-template-columns: 1fr;
     }
 
     &__icon-scroll {
-      gap: 12px;
+      gap: $image-editor-spacing-md;
     }
 
     &__icon-option {
@@ -285,11 +290,12 @@
 
   &__icon-scroll {
     display: flex;
-    padding: 8px 0;
-    margin-top: 12px;
-    gap: 16px;
+    padding: $image-editor-spacing-sm 0;
+    margin-top: $image-editor-spacing-md;
+    gap: $image-editor-spacing-lg;
     overflow-x: auto;
-    scrollbar-color: rgba(white, 0.3) rgba(white, 0.1);
+    scrollbar-color: rgba($settings-body-color, 0.3)
+      rgba($settings-body-color, 0.1);
     scrollbar-width: thin;
 
     &::-webkit-scrollbar {
@@ -297,36 +303,38 @@
     }
 
     &::-webkit-scrollbar-track {
-      border-radius: 3px;
-      background: rgba(white, 0.1);
+      border-radius: $image-editor-border-radius-sm;
+      background: rgba($settings-body-color, 0.1);
     }
 
     &::-webkit-scrollbar-thumb {
-      border-radius: 3px;
-      background: rgba(white, 0.3);
+      border-radius: $image-editor-border-radius-sm;
+      background: rgba($settings-body-color, 0.3);
     }
   }
 
   &__icon-option {
     display: flex;
-    min-width: 80px;
+    min-width: $image-editor-settings-icon-size + 32px;
     flex-direction: column;
     align-items: center;
-    padding: 12px 8px 8px;
-    border-radius: 8px;
+    padding: $image-editor-spacing-md $image-editor-spacing-sm
+      $image-editor-spacing-sm;
+    border-radius: $image-editor-border-radius-md;
+    background: $settings-button-bg;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all $image-editor-transition-fast ease;
 
     svg {
       width: 32px;
       height: 32px;
-      margin-bottom: 8px;
-      color: rgba(white, 0.6);
-      transition: all 0.2s ease;
+      margin-bottom: $image-editor-spacing-sm;
+      color: $settings-button-color;
+      transition: all $image-editor-transition-fast ease;
     }
 
     span {
-      color: rgba(white, 0.7);
+      color: $settings-button-color;
       font-size: 12px;
       font-weight: 500;
       text-align: center;
@@ -334,34 +342,34 @@
     }
 
     &:hover {
-      background: rgba(white, 0.05);
+      background: rgba($settings-body-color, 0.05);
 
       svg {
-        color: rgba(white, 0.9);
+        color: $settings-button-color-hover;
         transform: scale(1.1);
       }
 
       span {
-        color: rgba(white, 0.9);
+        color: $settings-button-color-hover;
       }
     }
 
     &.active {
       svg {
-        color: #4caf50;
+        color: $settings-button-color-active;
       }
 
       span {
-        color: #4caf50;
+        color: $settings-button-color-active;
       }
 
       &:hover {
         svg {
-          color: #66bb6a;
+          color: $settings-button-color-active;
         }
 
         span {
-          color: #66bb6a;
+          color: $settings-button-color-active;
         }
       }
     }

@@ -1,20 +1,22 @@
 @import '~react-advanced-cropper/dist/style.css';
+@import '../../../theme/variables';
 @import '../../../theme/constants';
 
 .image-editor {
   width: 100%;
-  border: solid 1px #2b2a30;
-  color: $theme-color;
+  color: $settings-header-color;
+
   &__preview {
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: $image-editor-spacing-xl;
+    left: $image-editor-spacing-xl;
     width: 45px;
     height: 45px;
-    border: solid 1px #2b2a30;
-    border-radius: 50%;
-    background: black;
+    border: solid 1px $image-editor-border-color;
+    border-radius: $image-editor-border-radius-circle;
+    background: $settings-header-bg;
   }
+
   &__cropper {
     position: relative;
     display: flex;
@@ -22,35 +24,44 @@
     max-height: 100vh;
     align-items: center;
     justify-content: center;
-    background: #0f0e13;
+    background: $color-gray-dark;
   }
+
   &__slider {
     position: absolute;
-    bottom: 20px;
+    bottom: $image-editor-spacing-xl;
     left: 50%;
     width: 100%;
     transform: translateX(-50%);
   }
+
   &__cropper-overlay {
-    transition: 0.5s;
+    transition: $image-editor-transition-slow;
+
     &--faded {
-      color: rgba(black, 0.9);
+      color: $image-editor-bg-overlay;
     }
   }
+
   &__service {
     position: absolute;
     left: -100%;
     pointer-events: none;
   }
+
   &__reset-button {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    background: rgba(white, 0.1);
+    top: $image-editor-spacing-xl;
+    right: $image-editor-spacing-xl;
+    background: $editor-button-bg;
+    color: $editor-button-color;
+
     &:hover {
-      background: rgba(white, 0.2);
-      fill: $theme-color;
+      background: $editor-button-bg-hover;
+      color: $editor-button-color-hover;
+      fill: $editor-button-color-hover;
     }
+
     &--hidden {
       opacity: 0;
       visibility: hidden;
