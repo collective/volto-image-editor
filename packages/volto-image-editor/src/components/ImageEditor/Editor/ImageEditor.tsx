@@ -121,12 +121,35 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
       if (canvas) {
         let finalCanvas = canvas;
 
+        if (imageSettings.stencilType === 'circle') {
+          const circleCanvas = document.createElement('canvas');
+          const ctx = circleCanvas.getContext('2d');
+
+          if (ctx) {
+            circleCanvas.width = canvas.width;
+            circleCanvas.height = canvas.height;
+
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = Math.min(canvas.width, canvas.height) / 2;
+
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            ctx.closePath();
+            ctx.clip();
+
+            ctx.drawImage(canvas, 0, 0);
+
+            finalCanvas = circleCanvas;
+          }
+        }
+
         if (imageSettings.maxWidth || imageSettings.maxHeight) {
           const tempCanvas = document.createElement('canvas');
           const ctx = tempCanvas.getContext('2d');
 
           if (ctx) {
-            let { width, height } = canvas;
+            let { width, height } = finalCanvas;
 
             if (imageSettings.maxWidth && width > imageSettings.maxWidth) {
               const ratio = imageSettings.maxWidth / width;
@@ -144,7 +167,7 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
 
             tempCanvas.width = width;
             tempCanvas.height = height;
-            ctx.drawImage(canvas, 0, 0, width, height);
+            ctx.drawImage(finalCanvas, 0, 0, width, height);
             finalCanvas = tempCanvas;
           }
         }

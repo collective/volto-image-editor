@@ -139,15 +139,17 @@ export const Navigation: FC<Props> = ({
           <HueIcon />
         </Button>
       </div>
-      <Button
-        className={'image-editor-navigation__button cancel'}
-        onClick={onCancel}
-      >
-        <CancelIcon />
-      </Button>
-      <Button className={'image-editor-navigation__button'} onClick={onSave}>
-        <SaveIcon />
-      </Button>
+      <div className="image-editor-navigation__action-buttons">
+        <Button
+          className={'image-editor-navigation__button cancel'}
+          onClick={onCancel}
+        >
+          <CancelIcon />
+        </Button>
+        <Button className={'image-editor-navigation__button'} onClick={onSave}>
+          <SaveIcon />
+        </Button>
+      </div>
     </div>
   );
 };

@@ -1,30 +1,57 @@
+@import '../../../../theme/variables';
 @import '../../../../theme/mixins';
 
 .image-editor-button {
   display: flex;
-  width: 46px;
-  height: 46px;
+  width: $image-editor-button-size-desktop;
+  height: $image-editor-button-size-desktop;
   align-items: center;
   justify-content: center;
   padding: 0;
   border: none;
-  border-radius: 50%;
-  background: transparent;
-  color: currentColor;
+  border-radius: $image-editor-button-border-radius;
+  background: $nav-button-bg;
+  color: $nav-button-color;
   cursor: pointer;
-  fill: #88888b;
+  fill: $nav-button-color;
   outline: none;
-  transition: 0.5s;
-  &--active {
-    background: rgba(white, 0.03);
-    fill: currentColor;
-  }
+  transition: $image-editor-transition-slow;
+
   &:hover,
   &:focus {
-    background: rgba(white, 0.03);
+    background: $nav-button-bg-hover;
+    color: $nav-button-color-hover;
+    fill: $nav-button-color-hover;
   }
+
+  &--active,
+  &--active:hover,
+  &--active:focus {
+    background: $nav-button-bg-active;
+    color: $nav-button-color-active;
+    fill: $nav-button-color-active;
+  }
+
+  &--close {
+    color: $nav-button-close-color;
+    fill: $nav-button-close-color;
+  }
+
+  &--editor {
+    background: $editor-button-bg;
+    color: $editor-button-color;
+    fill: $editor-button-color;
+
+    &:hover,
+    &:focus {
+      background: $editor-button-bg-hover;
+      color: $editor-button-color-hover;
+      fill: $editor-button-color-hover;
+    }
+  }
+
   @include small-mobile() {
-    width: 32px;
-    height: 32px;
+    width: $image-editor-button-size-mobile;
+    height: $image-editor-button-size-mobile;
   }
 }

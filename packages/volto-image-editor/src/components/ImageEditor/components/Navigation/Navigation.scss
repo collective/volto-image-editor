@@ -1,3 +1,4 @@
+@import '../../../../theme/variables';
 @import '../../../../theme/mixins';
 
 .image-editor-navigation {
@@ -5,34 +6,55 @@
   height: 100%;
   align-items: center;
   justify-content: space-between;
-  padding: 16px;
-  border-top: solid 1px #2b2a30;
-  background: #1b1a21;
+  padding: $image-editor-spacing-lg;
+  border-top: solid 1px $image-editor-border-color;
+  background: $settings-header-bg;
+
   &__button {
     &--disabled {
       cursor: not-allowed;
-      opacity: 0.4;
+      opacity: $image-editor-opacity-disabled;
       pointer-events: none;
     }
   }
 
   &__reset-rotation {
-    border-left: 1px solid rgba(white, 0.1);
-    margin-left: 12px;
+    margin-left: $image-editor-spacing-md;
   }
+
   &__buttons {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: $image-editor-spacing-sm;
+
+    svg {
+      width: $image-editor-icon-size-desktop;
+      height: $image-editor-icon-size-desktop;
+    }
+
+    @include small-mobile() {
+      svg {
+        width: $image-editor-icon-size-mobile;
+        height: $image-editor-icon-size-mobile;
+      }
+    }
   }
+
+  &__action-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: $image-editor-spacing-xl;
+  }
+
   &__upload-input {
     display: none;
   }
 
   @include small-mobile() {
-    padding-right: 8px;
-    padding-left: 8px;
+    padding-right: $image-editor-spacing-sm;
+    padding-left: $image-editor-spacing-sm;
   }
 }

@@ -1,0 +1,75 @@
+$color-white: #ffffff !default;
+$color-black: #000000 !default;
+$color-gray-light: #e0e0e0 !default;
+$color-gray-medium: #7d7d7d !default;
+$color-gray-dark: #2b2a30 !default;
+$color-red: #ff0000 !default;
+
+$nav-button-bg: transparent !default;
+$nav-button-color: $color-black !default;
+$nav-button-bg-hover: $color-gray-light !default;
+$nav-button-color-hover: $color-black !default;
+$nav-button-bg-active: $color-black !default;
+$nav-button-color-active: $color-white !default;
+
+$nav-button-close-color: $color-red !default;
+
+$editor-button-bg: $color-gray-dark !default;
+$editor-button-color: $color-white !default;
+$editor-button-bg-hover: $color-gray-medium !default;
+$editor-button-color-hover: $color-white !default;
+
+$settings-header-bg: $color-white !default;
+$settings-header-color: $color-black !default;
+
+$settings-body-bg: rgba($color-white, 0.1) !default;
+$settings-body-color: $color-white !default;
+
+$settings-button-bg: transparent !default;
+$settings-button-color: $color-gray-medium !default;
+$settings-button-color-hover: $color-gray-light !default;
+$settings-button-color-active: $color-white !default;
+
+$image-editor-bg-overlay: rgba($color-black, 0.85) !default;
+$image-editor-border-color: $color-gray-dark !default;
+
+$image-editor-spacing-xs: 4px !default;
+$image-editor-spacing-sm: 8px !default;
+$image-editor-spacing-md: 12px !default;
+$image-editor-spacing-lg: 16px !default;
+$image-editor-spacing-xl: 20px !default;
+$image-editor-spacing-xxl: 24px !default;
+
+$image-editor-button-size-desktop: 46px !default;
+$image-editor-button-size-mobile: 32px !default;
+$image-editor-button-border-radius: 50% !default;
+
+$image-editor-icon-size-desktop: 20px !default;
+$image-editor-icon-size-mobile: 15px !default;
+$image-editor-icon-size-large: 24px !default;
+$image-editor-icon-size-small: 18px !default;
+
+$image-editor-modal-max-width: 500px !default;
+$image-editor-modal-padding: 24px !default;
+$image-editor-modal-border-radius: 12px !default;
+
+$image-editor-settings-icon-size: 48px !default;
+$image-editor-settings-icon-gap: 12px !default;
+
+$image-editor-transition-fast: 0.15s !default;
+$image-editor-transition-normal: 0.3s !default;
+$image-editor-transition-slow: 0.5s !default;
+
+$image-editor-z-base: 1 !default;
+$image-editor-z-navigation: 10 !default;
+$image-editor-z-modal: 1000 !default;
+$image-editor-z-overlay: 999 !default;
+
+$image-editor-border-radius-sm: 4px !default;
+$image-editor-border-radius-md: 8px !default;
+$image-editor-border-radius-lg: 12px !default;
+$image-editor-border-radius-circle: 50% !default;
+
+$image-editor-opacity-disabled: 0.4 !default;
+$image-editor-opacity-hover: 0.8 !default;
+$image-editor-opacity-overlay: 0.85 !default;

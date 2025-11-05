@@ -1,13 +1,18 @@
+@import '../../theme/variables';
+
 .ui.grid.image-widget-grid {
   margin: 0 !important;
+
   .image-editor-cta {
     display: flex;
     align-items: center;
     justify-content: center;
+
     .image-widget {
       width: 100%;
+
       .image-widget-cropper {
-        margin-top: 20px;
+        margin-top: $image-editor-spacing-xl;
       }
     }
   }
