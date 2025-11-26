@@ -1,8 +1,14 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions, jsx-a11y/label-has-associated-control */
 import React, { FC } from 'react';
 import cn from 'classnames';
 import { defineMessages, useIntl } from 'react-intl';
-import { Button } from '../Button/Button';
+import {
+  Button,
+  Icon,
+  NumberField,
+  Checkbox,
+  RadioGroup,
+} from '@plone/components';
+import { Radio } from 'react-aria-components';
 import { SettingsIcon } from '@plone-collective/volto-image-editor/icons/SettingsIcon';
 import type { ImageSettings } from '../../types/ImageSettings';
 import {
@@ -151,7 +157,6 @@ export const SettingsModal: FC<Props> = ({
   onToggle,
 }) => {
   const intl = useIntl();
-
   const handleSettingChange = (key: keyof ImageSettings, value: any) => {
     onChange({
       ...settings,
@@ -159,37 +164,34 @@ export const SettingsModal: FC<Props> = ({
     });
   };
 
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      onToggle();
-    }
-  };
-
   return (
     <>
       <Button
         className={cn('image-editor-settings-modal__toggle', className)}
         onClick={onToggle}
-        active={isOpen}
       >
         <SettingsIcon />
       </Button>
 
       {isOpen && (
         <div
-          className="image-editor-settings-modal__overlay"
-          tabIndex={-1}
-          onClick={handleBackdropClick}
+          className={cn('image-editor-settings-modal__overlay')}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              onToggle();
+            }
+          }}
           onKeyDown={(e) => {
             if (e.key === 'Escape') {
               onToggle();
             }
           }}
+          role="button"
+          tabIndex={0}
+          aria-label="Close settings modal"
         >
           <div
             className="image-editor-settings-modal__content"
-            role="dialog"
-            aria-modal="true"
             aria-labelledby="settings-modal-title"
           >
             <div className="image-editor-settings-modal__header">
@@ -208,370 +210,331 @@ export const SettingsModal: FC<Props> = ({
             </div>
 
             <div className="image-editor-settings-modal__body">
-              {/* Aspect Ratio */}
               <div className="image-editor-settings-modal__section">
-                <div
-                  className="image-editor-settings-modal__label"
-                  id="aspect-ratio-label"
-                >
+                <div className="image-editor-settings-modal__label">
                   {intl.formatMessage(messages.aspectRatio)}
                 </div>
-                <div
+                <RadioGroup
+                  aria-label={intl.formatMessage(messages.aspectRatio)}
+                  value={settings.aspectRatio}
+                  onChange={(val) => handleSettingChange('aspectRatio', val)}
                   className="image-editor-settings-modal__icon-scroll"
-                  role="group"
-                  aria-labelledby="aspect-ratio-label"
                 >
-                  <div
+                  <Radio
+                    value="free"
                     className={cn(
                       'image-editor-settings-modal__icon-option',
                       settings.aspectRatio === 'free' && 'active',
                     )}
-                    role="button"
-                    tabIndex={0}
-                    aria-label={intl.formatMessage(messages.freeAspectRatio)}
-                    aria-pressed={settings.aspectRatio === 'free'}
-                    onClick={() => handleSettingChange('aspectRatio', 'free')}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        handleSettingChange('aspectRatio', 'free');
-                      }
-                    }}
                   >
-                    <FreeIcon />
+                    <Icon
+                      aria-label={intl.formatMessage(messages.freeAspectRatio)}
+                      size="base"
+                    >
+                      <FreeIcon />
+                    </Icon>
                     <span>{intl.formatMessage(messages.freeAspectRatio)}</span>
-                  </div>
-                  <div
+                  </Radio>
+                  <Radio
+                    value="1:1"
                     className={cn(
                       'image-editor-settings-modal__icon-option',
                       settings.aspectRatio === '1:1' && 'active',
                     )}
-                    role="button"
-                    tabIndex={0}
-                    aria-label={intl.formatMessage(messages.square)}
-                    aria-pressed={settings.aspectRatio === '1:1'}
-                    onClick={() => handleSettingChange('aspectRatio', '1:1')}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        handleSettingChange('aspectRatio', '1:1');
-                      }
-                    }}
                   >
-                    <SquareIcon />
+                    <Icon
+                      aria-label={intl.formatMessage(messages.square)}
+                      size="base"
+                    >
+                      <SquareIcon />
+                    </Icon>
                     <span>{intl.formatMessage(messages.square)}</span>
-                  </div>
-                  <div
+                  </Radio>
+                  <Radio
+                    value="3:4"
                     className={cn(
                       'image-editor-settings-modal__icon-option',
                       settings.aspectRatio === '3:4' && 'active',
                     )}
-                    role="button"
-                    tabIndex={0}
-                    aria-label={intl.formatMessage(messages.photo)}
-                    aria-pressed={settings.aspectRatio === '3:4'}
-                    onClick={() => handleSettingChange('aspectRatio', '3:4')}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        handleSettingChange('aspectRatio', '3:4');
-                      }
-                    }}
                   >
-                    <PhotoIcon />
+                    <Icon
+                      aria-label={intl.formatMessage(messages.photo)}
+                      size="base"
+                    >
+                      <PhotoIcon />
+                    </Icon>
                     <span>{intl.formatMessage(messages.photo)}</span>
-                  </div>
-                  <div
+                  </Radio>
+                  <Radio
+                    value="4:3"
                     className={cn(
                       'image-editor-settings-modal__icon-option',
                       settings.aspectRatio === '4:3' && 'active',
                     )}
-                    role="button"
-                    tabIndex={0}
-                    aria-label={intl.formatMessage(messages.monitor)}
-                    aria-pressed={settings.aspectRatio === '4:3'}
-                    onClick={() => handleSettingChange('aspectRatio', '4:3')}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        handleSettingChange('aspectRatio', '4:3');
-                      }
-                    }}
                   >
-                    <MonitorIcon />
+                    <Icon
+                      aria-label={intl.formatMessage(messages.monitor)}
+                      size="base"
+                    >
+                      <MonitorIcon />
+                    </Icon>
                     <span>{intl.formatMessage(messages.monitor)}</span>
-                  </div>
-                  <div
+                  </Radio>
+                  <Radio
+                    value="16:9"
                     className={cn(
                       'image-editor-settings-modal__icon-option',
                       settings.aspectRatio === '16:9' && 'active',
                     )}
-                    role="button"
-                    tabIndex={0}
-                    aria-label={intl.formatMessage(messages.widescreen)}
-                    aria-pressed={settings.aspectRatio === '16:9'}
-                    onClick={() => handleSettingChange('aspectRatio', '16:9')}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        handleSettingChange('aspectRatio', '16:9');
-                      }
-                    }}
                   >
-                    <WidescreenIcon />
+                    <Icon
+                      aria-label={intl.formatMessage(messages.widescreen)}
+                      size="base"
+                    >
+                      <WidescreenIcon />
+                    </Icon>
                     <span>{intl.formatMessage(messages.widescreen)}</span>
-                  </div>
-                  <div
+                  </Radio>
+                  <Radio
+                    value="9:16"
                     className={cn(
                       'image-editor-settings-modal__icon-option',
                       settings.aspectRatio === '9:16' && 'active',
                     )}
-                    role="button"
-                    tabIndex={0}
-                    aria-label={intl.formatMessage(messages.mobile)}
-                    aria-pressed={settings.aspectRatio === '9:16'}
-                    onClick={() => handleSettingChange('aspectRatio', '9:16')}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        handleSettingChange('aspectRatio', '9:16');
-                      }
-                    }}
                   >
-                    <MobileIcon />
+                    <Icon
+                      aria-label={intl.formatMessage(messages.mobile)}
+                      size="base"
+                    >
+                      <MobileIcon />
+                    </Icon>
                     <span>{intl.formatMessage(messages.mobile)}</span>
-                  </div>
-                  <div
+                  </Radio>
+                  <Radio
+                    value="2:1"
                     className={cn(
                       'image-editor-settings-modal__icon-option',
                       settings.aspectRatio === '2:1' && 'active',
                     )}
-                    role="button"
-                    tabIndex={0}
-                    aria-label={intl.formatMessage(messages.landscape)}
-                    aria-pressed={settings.aspectRatio === '2:1'}
-                    onClick={() => handleSettingChange('aspectRatio', '2:1')}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        handleSettingChange('aspectRatio', '2:1');
-                      }
-                    }}
                   >
-                    <LandscapeIcon />
+                    <Icon
+                      aria-label={intl.formatMessage(messages.landscape)}
+                      size="base"
+                    >
+                      <LandscapeIcon />
+                    </Icon>
                     <span>{intl.formatMessage(messages.landscape)}</span>
-                  </div>
-                  <div
+                  </Radio>
+                  <Radio
+                    value="21:9"
                     className={cn(
                       'image-editor-settings-modal__icon-option',
                       settings.aspectRatio === '21:9' && 'active',
                     )}
-                    role="button"
-                    tabIndex={0}
-                    aria-label={intl.formatMessage(messages.ultraWide)}
-                    aria-pressed={settings.aspectRatio === '21:9'}
-                    onClick={() => handleSettingChange('aspectRatio', '21:9')}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        handleSettingChange('aspectRatio', '21:9');
-                      }
-                    }}
                   >
-                    <UltraWideIcon />
+                    <Icon
+                      aria-label={intl.formatMessage(messages.ultraWide)}
+                      size="base"
+                    >
+                      <UltraWideIcon />
+                    </Icon>
                     <span>{intl.formatMessage(messages.ultraWide)}</span>
-                  </div>
-                  <div
+                  </Radio>
+                  <Radio
+                    value="1:2"
                     className={cn(
                       'image-editor-settings-modal__icon-option',
                       settings.aspectRatio === '1:2' && 'active',
                     )}
-                    role="button"
-                    tabIndex={0}
-                    aria-label={intl.formatMessage(messages.portrait)}
-                    aria-pressed={settings.aspectRatio === '1:2'}
-                    onClick={() => handleSettingChange('aspectRatio', '1:2')}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        handleSettingChange('aspectRatio', '1:2');
-                      }
-                    }}
                   >
-                    <PortraitIcon />
+                    <Icon
+                      aria-label={intl.formatMessage(messages.portrait)}
+                      size="base"
+                    >
+                      <PortraitIcon />
+                    </Icon>
                     <span>{intl.formatMessage(messages.portrait)}</span>
-                  </div>
-                </div>
+                  </Radio>
+                </RadioGroup>
               </div>
 
               <div className="image-editor-settings-modal__section">
-                <label className="image-editor-settings-modal__label">
+                <div className="image-editor-settings-modal__label">
                   {intl.formatMessage(messages.imageRestriction)}
-                </label>
-                <div className="image-editor-settings-modal__icon-scroll">
-                  <div
+                </div>
+                <RadioGroup
+                  aria-label={intl.formatMessage(messages.imageRestriction)}
+                  value={settings.imageRestriction}
+                  onChange={(val) =>
+                    handleSettingChange('imageRestriction', val)
+                  }
+                  className="image-editor-settings-modal__icon-scroll"
+                >
+                  <Radio
+                    value="fit-area"
                     className={cn(
                       'image-editor-settings-modal__icon-option',
                       settings.imageRestriction === 'fit-area' && 'active',
                     )}
-                    onClick={() =>
-                      handleSettingChange('imageRestriction', 'fit-area')
-                    }
                   >
-                    <FitAreaIcon />
+                    <Icon
+                      aria-label={intl.formatMessage(messages.fitArea)}
+                      size="base"
+                    >
+                      <FitAreaIcon />
+                    </Icon>
                     <span>{intl.formatMessage(messages.fitArea)}</span>
-                  </div>
-                  <div
+                  </Radio>
+                  <Radio
+                    value="fill-area"
                     className={cn(
                       'image-editor-settings-modal__icon-option',
                       settings.imageRestriction === 'fill-area' && 'active',
                     )}
-                    onClick={() =>
-                      handleSettingChange('imageRestriction', 'fill-area')
-                    }
                   >
-                    <FillAreaIcon />
+                    <Icon
+                      aria-label={intl.formatMessage(messages.fillArea)}
+                      size="base"
+                    >
+                      <FillAreaIcon />
+                    </Icon>
                     <span>{intl.formatMessage(messages.fillArea)}</span>
-                  </div>
-                  <div
+                  </Radio>
+                  <Radio
+                    value="stencil"
                     className={cn(
                       'image-editor-settings-modal__icon-option',
                       settings.imageRestriction === 'stencil' && 'active',
                     )}
-                    onClick={() =>
-                      handleSettingChange('imageRestriction', 'stencil')
-                    }
                   >
-                    <StencilIcon />
+                    <Icon
+                      aria-label={intl.formatMessage(
+                        messages.stencilRestriction,
+                      )}
+                      size="base"
+                    >
+                      <StencilIcon />
+                    </Icon>
                     <span>
                       {intl.formatMessage(messages.stencilRestriction)}
                     </span>
-                  </div>
-                  <div
+                  </Radio>
+                  <Radio
+                    value="none"
                     className={cn(
                       'image-editor-settings-modal__icon-option',
                       settings.imageRestriction === 'none' && 'active',
                     )}
-                    onClick={() =>
-                      handleSettingChange('imageRestriction', 'none')
-                    }
                   >
-                    <NoRestrictionIcon />
+                    <Icon
+                      aria-label={intl.formatMessage(messages.noRestriction)}
+                      size="base"
+                    >
+                      <NoRestrictionIcon />
+                    </Icon>
                     <span>{intl.formatMessage(messages.noRestriction)}</span>
-                  </div>
-                </div>
+                  </Radio>
+                </RadioGroup>
               </div>
 
               <div className="image-editor-settings-modal__section">
-                <label className="image-editor-settings-modal__label">
+                <div className="image-editor-settings-modal__label">
                   {intl.formatMessage(messages.stencilType)}
-                </label>
-                <div className="image-editor-settings-modal__icon-scroll">
-                  <div
+                </div>
+                <RadioGroup
+                  aria-label={intl.formatMessage(messages.stencilType)}
+                  value={settings.stencilType}
+                  onChange={(val) => handleSettingChange('stencilType', val)}
+                  className="image-editor-settings-modal__icon-scroll"
+                >
+                  <Radio
+                    value="rectangle"
                     className={cn(
                       'image-editor-settings-modal__icon-option',
                       settings.stencilType === 'rectangle' && 'active',
                     )}
-                    onClick={() =>
-                      handleSettingChange('stencilType', 'rectangle')
-                    }
                   >
-                    <RectangleStencilIcon />
+                    <Icon
+                      aria-label={intl.formatMessage(messages.rectangle)}
+                      size="base"
+                    >
+                      <RectangleStencilIcon />
+                    </Icon>
                     <span>{intl.formatMessage(messages.rectangle)}</span>
-                  </div>
-                  <div
+                  </Radio>
+                  <Radio
+                    value="circle"
                     className={cn(
                       'image-editor-settings-modal__icon-option',
                       settings.stencilType === 'circle' && 'active',
                     )}
-                    onClick={() => handleSettingChange('stencilType', 'circle')}
                   >
-                    <CircleStencilIcon />
+                    <Icon
+                      aria-label={intl.formatMessage(messages.circle)}
+                      size="base"
+                    >
+                      <CircleStencilIcon />
+                    </Icon>
                     <span>{intl.formatMessage(messages.circle)}</span>
-                  </div>
-                </div>
+                  </Radio>
+                </RadioGroup>
               </div>
 
               <div className="image-editor-settings-modal__section">
-                <label className="image-editor-settings-modal__label">
+                <div className="image-editor-settings-modal__label">
                   {intl.formatMessage(messages.minDimensions)}
-                </label>
+                </div>
                 <div className="image-editor-settings-modal__row">
-                  <input
-                    type="number"
+                  <NumberField
+                    label={intl.formatMessage(messages.minWidth)}
                     value={settings.minWidth}
-                    onChange={(e) =>
-                      handleSettingChange(
-                        'minWidth',
-                        parseInt(e.target.value) || 0,
-                      )
-                    }
-                    className="image-editor-settings-modal__input"
-                    placeholder={intl.formatMessage(messages.minWidth)}
-                    min="0"
+                    minValue={0}
+                    onChange={(value) => handleSettingChange('minWidth', value)}
                   />
-                  <input
-                    type="number"
+                  <NumberField
+                    label={intl.formatMessage(messages.minHeight)}
                     value={settings.minHeight}
-                    onChange={(e) =>
-                      handleSettingChange(
-                        'minHeight',
-                        parseInt(e.target.value) || 0,
-                      )
+                    minValue={0}
+                    onChange={(value) =>
+                      handleSettingChange('minHeight', value)
                     }
-                    className="image-editor-settings-modal__input"
-                    placeholder={intl.formatMessage(messages.minHeight)}
-                    min="0"
                   />
                 </div>
               </div>
 
               <div className="image-editor-settings-modal__section">
-                <label className="image-editor-settings-modal__label">
+                <div className="image-editor-settings-modal__label">
                   {intl.formatMessage(messages.maxCropDimensions)}
-                </label>
+                </div>
                 <div className="image-editor-settings-modal__row">
-                  <input
-                    type="number"
-                    value={settings.maxCropWidth || ''}
-                    onChange={(e) =>
-                      handleSettingChange(
-                        'maxCropWidth',
-                        e.target.value ? parseInt(e.target.value) : undefined,
-                      )
+                  <NumberField
+                    label={intl.formatMessage(messages.maxWidth)}
+                    value={settings.maxCropWidth ?? 0}
+                    minValue={0}
+                    onChange={(value) =>
+                      handleSettingChange('maxCropWidth', value || 0)
                     }
-                    className="image-editor-settings-modal__input"
-                    placeholder={intl.formatMessage(messages.maxWidth)}
-                    min="1"
                   />
-                  <input
-                    type="number"
-                    value={settings.maxCropHeight || ''}
-                    onChange={(e) =>
-                      handleSettingChange(
-                        'maxCropHeight',
-                        e.target.value ? parseInt(e.target.value) : undefined,
-                      )
+                  <NumberField
+                    label={intl.formatMessage(messages.maxHeight)}
+                    value={settings.maxCropHeight ?? 0}
+                    minValue={0}
+                    onChange={(value) =>
+                      handleSettingChange('maxCropHeight', value || 0)
                     }
-                    className="image-editor-settings-modal__input"
-                    placeholder={intl.formatMessage(messages.maxHeight)}
-                    min="1"
                   />
                 </div>
               </div>
 
               <div className="image-editor-settings-modal__section">
-                <label className="image-editor-settings-modal__label">
-                  <input
-                    type="checkbox"
-                    checked={settings.stencilGrid}
-                    onChange={(e) =>
-                      handleSettingChange('stencilGrid', e.target.checked)
-                    }
-                    className="image-editor-settings-modal__checkbox"
-                  />
-                  {intl.formatMessage(messages.stencilGrid)}
-                </label>
+                <Checkbox
+                  isSelected={settings.stencilGrid}
+                  onChange={(isSelected) =>
+                    handleSettingChange('stencilGrid', isSelected)
+                  }
+                >
+                  <p>{intl.formatMessage(messages.stencilGrid)}</p>
+                </Checkbox>
               </div>
             </div>
           </div>

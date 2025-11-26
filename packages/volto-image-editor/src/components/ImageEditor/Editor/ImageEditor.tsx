@@ -10,9 +10,8 @@ import {
 import type { CropperRef, CropperPreviewRef } from 'react-advanced-cropper';
 import { AdjustablePreviewBackground } from '../components/AdjustablePreviewBackground';
 import { Navigation } from '../components/Navigation/Navigation';
-import { Slider } from '../components/Slider/Slider';
 import { AdjustableCropperBackground } from '../components/AdjustableCropperBackground';
-import { Button } from '../components/Button/Button';
+import { Button, Icon, Slider } from '@plone/components';
 import { SettingsModal } from '../components/SettingsModal/SettingsModal';
 import type { ImageSettings } from '../types/ImageSettings';
 import { ResetIcon } from '@plone-collective/volto-image-editor/icons/ResetIcon';
@@ -268,12 +267,21 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
           }}
         />
         {mode !== 'crop' && mode && mode in adjustments && (
-          <Slider
-            className="image-editor__slider"
-            value={adjustments[mode as keyof typeof adjustments]}
-            onChange={onChangeValue}
-          />
+          <div className={'image-editor__slider'}>
+            <Slider
+              value={Math.round(
+                adjustments[mode as keyof typeof adjustments] * 100,
+              )}
+              onChange={(val: number) => onChangeValue(val / 100)}
+              minValue={-100}
+              maxValue={100}
+              step={1}
+              formatOptions={{ maximumFractionDigits: 0 }}
+              label={mode.charAt(0).toUpperCase() + mode.slice(1)}
+            />
+          </div>
         )}
+
         <CropperPreview
           className={'image-editor__preview'}
           ref={previewRef}
@@ -282,12 +290,15 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
         />
         <Button
           className={cn(
+            'image-editor-button',
             'image-editor__reset-button',
             !changed && 'image-editor__reset-button--hidden',
           )}
           onClick={onReset}
         >
-          <ResetIcon />
+          <Icon size="lg">
+            <ResetIcon />
+          </Icon>
         </Button>
 
         <SettingsModal

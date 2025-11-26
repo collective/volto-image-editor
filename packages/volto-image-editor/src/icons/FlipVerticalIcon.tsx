@@ -1,4 +1,7 @@
 import React from 'react';
-import { TbFlipVertical } from 'react-icons/tb';
+import FlipVerticalSVG from './svg/flipVertical.svg';
+import { VoltoIconWrapper } from './IconWrapper';
 
-export const FlipVerticalIcon = () => <TbFlipVertical />;
+export const FlipVerticalIcon = () => (
+  <VoltoIconWrapper svg={FlipVerticalSVG} fill="none" />
+);

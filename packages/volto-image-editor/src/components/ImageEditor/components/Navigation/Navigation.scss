@@ -58,3 +58,22 @@
     padding-left: $image-editor-spacing-sm;
   }
 }
+.image-editor-button {
+  @include image-editor-button();
+
+  &--close {
+    color: $nav-button-close-color;
+    fill: $nav-button-close-color;
+  }
+
+  &--editor {
+    @include image-editor-button(
+      $bg: $editor-button-bg,
+      $color: $editor-button-color,
+      $bg-hover: $editor-button-bg-hover,
+      $color-hover: $editor-button-color-hover,
+      $bg-active: $editor-button-bg,
+      $color-active: $editor-button-color
+    );
+  }
+}

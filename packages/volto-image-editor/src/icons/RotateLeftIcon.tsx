@@ -1,4 +1,5 @@
 import React from 'react';
-import { TbRotate2 } from 'react-icons/tb';
+import { VoltoIconWrapper } from './IconWrapper';
+import RotateLeftSVG from '@plone/volto/icons/reset.svg';
 
-export const RotateLeftIcon = () => <TbRotate2 />;
+export const RotateLeftIcon = () => <VoltoIconWrapper svg={RotateLeftSVG} />;

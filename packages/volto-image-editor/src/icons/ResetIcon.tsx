@@ -1,4 +1,5 @@
 import React from 'react';
-import { TbRefresh } from 'react-icons/tb';
+import RefreshSVG from '@plone/volto/icons/repeat.svg';
+import { VoltoIconWrapper } from './IconWrapper';
 
-export const ResetIcon = () => <TbRefresh />;
+export const ResetIcon = () => <VoltoIconWrapper svg={RefreshSVG} />;

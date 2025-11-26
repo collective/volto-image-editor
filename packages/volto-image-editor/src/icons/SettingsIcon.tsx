@@ -1,4 +1,5 @@
 import React from 'react';
-import { TbSettings } from 'react-icons/tb';
+import { VoltoIconWrapper } from './IconWrapper';
+import SettingsSVG from '@plone/volto/icons/configuration.svg';
 
-export const SettingsIcon = () => <TbSettings />;
+export const SettingsIcon = () => <VoltoIconWrapper svg={SettingsSVG} />;

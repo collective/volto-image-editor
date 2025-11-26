@@ -4,6 +4,9 @@ $color-gray-light: #e0e0e0 !default;
 $color-gray-medium: #7d7d7d !default;
 $color-gray-dark: #2b2a30 !default;
 $color-red: #ff0000 !default;
+$color-dark-visible-background: #1a1a1a80 !default;
+
+$editor-width: 70vw !default;
 
 $nav-button-bg: transparent !default;
 $nav-button-color: $color-black !default;
@@ -19,6 +22,13 @@ $editor-button-color: $color-white !default;
 $editor-button-bg-hover: $color-gray-medium !default;
 $editor-button-color-hover: $color-white !default;
 
+$editor-text-color: $color-white !default;
+$editor-highlight-background: $color-gray-medium !default;
+$editor-highlight-background-pressed: $color-gray-dark !default;
+$editor-background-color: $color-white !default;
+$editor-input-border-color: $color-gray-light !default;
+$slider-background-color: $color-dark-visible-background !default;
+
 $settings-header-bg: $color-white !default;
 $settings-header-color: $color-black !default;
 
@@ -29,6 +39,11 @@ $settings-button-bg: transparent !default;
 $settings-button-color: $color-gray-medium !default;
 $settings-button-color-hover: $color-gray-light !default;
 $settings-button-color-active: $color-white !default;
+
+$settings-input-bg: rgba($color-white, 0.1) !default;
+$settings-input-color: $color-white !default;
+$settings-input-border-color: $color-gray-light !default;
+$settings-input-disabled: $color-gray-medium !default;
 
 $image-editor-bg-overlay: rgba($color-black, 0.85) !default;
 $image-editor-border-color: $color-gray-dark !default;
