@@ -1,4 +1,7 @@
 import React from 'react';
-import { TbBrightness } from 'react-icons/tb';
+import BrightnessSVG from './svg/brightness.svg';
+import { VoltoIconWrapper } from './IconWrapper';
 
-export const BrightnessIcon = () => <TbBrightness />;
+export const BrightnessIcon = () => (
+  <VoltoIconWrapper svg={BrightnessSVG} fill="none" />
+);

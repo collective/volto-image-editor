@@ -19,12 +19,34 @@
 
   &__cropper {
     position: relative;
-    display: flex;
     height: 500px;
     max-height: 100vh;
-    align-items: center;
-    justify-content: center;
     background: $color-gray-dark;
+
+    .advanced-cropper.advanced-cropper-wrapper {
+      width: 100%;
+      height: 100%;
+
+      .advanced-cropper-boundary.advanced-cropper__boundary {
+        width: 100%;
+        height: 100%;
+
+        .advanced-cropper-boundary__stretcher {
+          width: 100% !important;
+          height: 100% !important;
+        }
+
+        .advanced-cropper-boundary__content {
+          width: 100%;
+          height: 100%;
+
+          .advanced-cropper__background-wrapper {
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
+    }
   }
 
   &__slider {
@@ -32,7 +54,21 @@
     bottom: $image-editor-spacing-xl;
     left: 50%;
     width: 100%;
+    padding: 0 10%;
     transform: translateX(-50%);
+    .react-aria-Slider {
+      width: 100%;
+      max-width: 100%;
+      padding: $image-editor-spacing-sm $image-editor-spacing-xl;
+      border-radius: $image-editor-border-radius-lg;
+      background-color: $slider-background-color;
+      --text-color: #{$editor-text-color};
+      --highlight-background: #{$editor-highlight-background};
+      --highlight-background-pressed: #{$editor-highlight-background-pressed};
+      --background-color: #{$editor-background-color};
+      --border-color: #{$editor-input-border-color};
+      --focus-ring-color: #{$editor-input-border-color};
+    }
   }
 
   &__cropper-overlay {

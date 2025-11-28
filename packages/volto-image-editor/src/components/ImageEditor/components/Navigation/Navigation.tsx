@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
 import { defineMessages, useIntl } from 'react-intl';
-import Icon from '@plone/volto/components/theme/Icon/Icon';
+import { Button, Icon } from '@plone/components';
+import VoltoIcon from '@plone/volto/components/theme/Icon/Icon';
 import CancelSVG from '@plone/volto/icons/clear.svg';
 import SaveSVG from '@plone/volto/icons/save.svg';
 import { CropIcon } from '@plone-collective/volto-image-editor/icons/CropIcon';
@@ -14,7 +15,6 @@ import { RotateRightIcon } from '@plone-collective/volto-image-editor/icons/Rota
 import { FlipHorizontalIcon } from '@plone-collective/volto-image-editor/icons/FlipHorizontalIcon';
 import { FlipVerticalIcon } from '@plone-collective/volto-image-editor/icons/FlipVerticalIcon';
 import { ResetRotationIcon } from '@plone-collective/volto-image-editor/icons/ResetRotationIcon';
-import { Button } from '../Button/Button';
 import './Navigation.scss';
 
 const messages = defineMessages({
@@ -37,11 +37,11 @@ interface Props {
 }
 
 const CancelIcon = () => {
-  return <Icon name={CancelSVG} />;
+  return <VoltoIcon name={CancelSVG} />;
 };
 
 const SaveIcon = () => {
-  return <Icon name={SaveSVG} />;
+  return <VoltoIcon name={SaveSVG} />;
 };
 
 export const Navigation: FC<Props> = ({
@@ -68,85 +68,143 @@ export const Navigation: FC<Props> = ({
     <div className={cn('image-editor-navigation', className)}>
       <div className="image-editor-navigation__buttons">
         <Button
-          className={'image-editor-navigation__button'}
-          active={mode === 'crop'}
+          className={cn(
+            'image-editor-button',
+            'image-editor-navigation__button',
+            mode === 'crop' && 'image-editor-button--active',
+          )}
           onClick={setMode('crop')}
         >
-          <CropIcon />
-        </Button>
-        <Button
-          className={'image-editor-navigation__button'}
-          onClick={handleAction('rotate-left')}
-        >
-          <RotateLeftIcon />
-        </Button>
-        <Button
-          className={'image-editor-navigation__button'}
-          onClick={handleAction('rotate-right')}
-        >
-          <RotateRightIcon />
-        </Button>
-        <Button
-          className={'image-editor-navigation__button'}
-          onClick={handleAction('flip-horizontal')}
-        >
-          <FlipHorizontalIcon />
-        </Button>
-        <Button
-          className={'image-editor-navigation__button'}
-          onClick={handleAction('flip-vertical')}
-        >
-          <FlipVerticalIcon />
+          <Icon size="lg">
+            <CropIcon />
+          </Icon>
         </Button>
         <Button
           className={cn(
+            'image-editor-button',
+            'image-editor-navigation__button',
+          )}
+          onClick={handleAction('rotate-left')}
+        >
+          <Icon size="lg">
+            <RotateLeftIcon />
+          </Icon>
+        </Button>
+        <Button
+          className={cn(
+            'image-editor-button',
+            'image-editor-navigation__button',
+          )}
+          onClick={handleAction('rotate-right')}
+        >
+          <Icon size="lg">
+            <RotateRightIcon />
+          </Icon>
+        </Button>
+        <Button
+          className={cn(
+            'image-editor-button',
+            'image-editor-navigation__button',
+          )}
+          onClick={handleAction('flip-horizontal')}
+        >
+          <Icon size="lg">
+            <FlipHorizontalIcon />
+          </Icon>
+        </Button>
+        <Button
+          className={cn(
+            'image-editor-button',
+            'image-editor-navigation__button',
+          )}
+          onClick={handleAction('flip-vertical')}
+        >
+          <Icon size="lg">
+            <FlipVerticalIcon />
+          </Icon>
+        </Button>
+        <Button
+          className={cn(
+            'image-editor-button',
             'image-editor-navigation__button',
             'image-editor-navigation__reset-rotation',
             !hasRotationChanges && 'image-editor-navigation__button--disabled',
           )}
           onClick={onResetRotation}
-          disabled={!hasRotationChanges}
-          title={intl.formatMessage(messages.resetRotationAndFlip)}
+          isDisabled={!hasRotationChanges}
+          aria-label={intl.formatMessage(messages.resetRotationAndFlip)}
         >
-          <ResetRotationIcon />
+          <Icon size="lg">
+            <ResetRotationIcon />
+          </Icon>
         </Button>
         <Button
-          className={'image-editor-navigation__button'}
-          active={mode === 'saturation'}
+          className={cn(
+            'image-editor-button',
+            'image-editor-navigation__button',
+            mode === 'saturation' && 'image-editor-button--active',
+          )}
           onClick={setMode('saturation')}
         >
-          <SaturationIcon />
+          <Icon size="lg">
+            <SaturationIcon />
+          </Icon>
         </Button>
         <Button
-          className={'image-editor-navigation__button'}
-          active={mode === 'brightness'}
+          className={cn(
+            'image-editor-button',
+            'image-editor-navigation__button',
+            mode === 'brightness' && 'image-editor-button--active',
+          )}
           onClick={setMode('brightness')}
         >
-          <BrightnessIcon />
+          <Icon size="lg">
+            <BrightnessIcon />
+          </Icon>
         </Button>
         <Button
-          className={'image-editor-navigation__button'}
-          active={mode === 'contrast'}
+          className={cn(
+            'image-editor-button',
+            'image-editor-navigation__button',
+            mode === 'contrast' && 'image-editor-button--active',
+          )}
           onClick={setMode('contrast')}
         >
-          <ContrastIcon />
+          <Icon size="lg">
+            <ContrastIcon />
+          </Icon>
         </Button>
         <Button
-          className={'image-editor-navigation__button'}
-          active={mode === 'hue'}
+          className={cn(
+            'image-editor-button',
+            'image-editor-navigation__button',
+            mode === 'hue' && 'image-editor-button--active',
+          )}
           onClick={setMode('hue')}
         >
-          <HueIcon />
+          <Icon size="lg">
+            <HueIcon />
+          </Icon>
         </Button>
       </div>
       <div className="image-editor-navigation__action-buttons">
         <Button
-          className={'image-editor-navigation__button cancel'}
+          className={cn(
+            'image-editor-button',
+            'image-editor-navigation__button',
+            'cancel',
+          )}
           onClick={onCancel}
         >
           <CancelIcon />
         </Button>
-        <Button className={'image-editor-navigation__button'} onClick={onSave}>
+        <Button
+          className={cn(
+            'image-editor-button',
+            'image-editor-navigation__button',
+          )}
+          onClick={onSave}
+        >
           <SaveIcon />
         </Button>
       </div>

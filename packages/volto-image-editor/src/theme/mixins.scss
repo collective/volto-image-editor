@@ -45,6 +45,50 @@
   }
 }
 
+@mixin image-editor-button(
+  $bg: $nav-button-bg,
+  $color: $nav-button-color,
+  $bg-hover: $nav-button-bg-hover,
+  $color-hover: $nav-button-color-hover,
+  $bg-active: $nav-button-bg-active,
+  $color-active: $nav-button-color-active
+) {
+  display: flex;
+  width: $image-editor-button-size-desktop;
+  height: $image-editor-button-size-desktop;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: $image-editor-button-border-radius;
+  background: $bg;
+  color: $color;
+  cursor: pointer;
+  fill: $color;
+  outline: none;
+  transition: $image-editor-transition-slow;
+
+  &:hover,
+  &:focus {
+    background: $bg-hover;
+    color: $color-hover;
+    fill: $color-hover;
+  }
+
+  &--active,
+  &--active:hover,
+  &--active:focus {
+    background: $bg-active;
+    color: $color-active;
+    fill: $color-active;
+  }
+
+  @include small-mobile() {
+    width: $image-editor-button-size-mobile;
+    height: $image-editor-button-size-mobile;
+  }
+}
+
 @mixin reset-browsers-input-styles {
   border: none;
   background: none;

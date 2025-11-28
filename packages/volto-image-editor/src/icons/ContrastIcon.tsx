@@ -1,4 +1,7 @@
 import React from 'react';
-import { TbContrast } from 'react-icons/tb';
+import ContrastSVG from './svg/contrast.svg';
+import { VoltoIconWrapper } from './IconWrapper';
 
-export const ContrastIcon = () => <TbContrast />;
+export const ContrastIcon = () => (
+  <VoltoIconWrapper svg={ContrastSVG} fill="none" />
+);

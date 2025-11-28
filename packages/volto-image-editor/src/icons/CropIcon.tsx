@@ -1,4 +1,5 @@
 import React from 'react';
-import { TbCrop } from 'react-icons/tb';
+import CropSVG from './svg/crop.svg';
+import { VoltoIconWrapper } from './IconWrapper';
 
-export const CropIcon = () => <TbCrop />;
+export const CropIcon = () => <VoltoIconWrapper fill="none" svg={CropSVG} />;
