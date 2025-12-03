@@ -1,27 +1,10 @@
 import type { ConfigType } from '@plone/registry';
-import installSettings from './config/settings';
+import { registerWidgets } from './config/widgets';
 
 function applyConfig(config: ConfigType) {
-  installSettings(config);
+  registerWidgets(config);
 
   return config;
 }
 
 export default applyConfig;
-
-export {
-  defaultEditorModes,
-  editorModeGroups,
-  getEditorModesByType,
-  getEditorModesByGroup,
-  getEditorModeById,
-  type EditorMode,
-} from './config/editorModes';
-
-export * from './icons';
-
-export { default as ImageEditor } from './components/ImageEditor/Editor/ImageEditor';
-export { Navigation } from './components/ImageEditor/components/Navigation/Navigation';
-export { SettingsModal } from './components/ImageEditor/components/SettingsModal/SettingsModal';
-
-export type { ImageSettings } from './components/ImageEditor/types/ImageSettings';
