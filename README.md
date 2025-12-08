@@ -41,6 +41,80 @@ To install this add-on, edit the `package.json` of your policy package (usually 
 
 After editing, follow your project's standard process to update dependencies and rebuild.
 
+## ⚙️ Configure Default Settings
+
+This add-on allows you to customize the image editor's behavior by modifying default settings. All settings are optional and can be configured in your Volto project's add-on configuration.
+
+### Available Settings
+
+The following table describes all available settings for the image editor:
+
+| Setting | Description | Type | Default Value |
+|---------|-------------|------|----------------|
+| aspectRatio | The aspect ratio constraint for cropping (width:height format) | `string` | `'16:9'` |
+| imageRestriction | How the image should be restricted within the crop area | `string` | `'fit-area'` |
+| stencilType | The shape of the crop stencil/box | `string` | `'rectangle'` |
+| minWidth | Minimum width for the crop area in pixels | `number` | `50` |
+| minHeight | Minimum height for the crop area in pixels | `number` | `50` |
+| maxCropWidth | Maximum width for the crop area in pixels | `undefined \| number` | `undefined` |
+| maxCropHeight | Maximum height for the crop area in pixels | `undefined \| number` | `undefined` |
+| scalable | Whether the image can be scaled/zoomed | `boolean` | `true` |
+| stencilGrid | Whether to display a grid overlay on the crop stencil | `boolean` | `true` |
+| minScale | Minimum scale factor for zooming | `number` | `0.1` |
+| maxScale | Maximum scale factor for zooming | `number` | `3` |
+
+### Configuration Examples
+
+#### Single Setting Modification
+
+To modify a single setting, update `config.settings.imageEditor` in your add-on's configuration file:
+
+```typescript
+import type { ConfigType } from '@plone/registry';
+
+function applyConfig(config: ConfigType) {
+  // Modify the default aspect ratio to 1:1
+  config.settings.imageEditor.aspectRatio = '1:1';
+
+  return config;
+}
+
+export default applyConfig;
+```
+
+#### Multiple Settings Modification
+
+If you need to modify multiple settings, we recommend using the `ImageSettings` type definition for type safety and better code documentation:
+
+```typescript
+import type { ConfigType } from '@plone/registry';
+import type { ImageSettings } from '@plone-collective/volto-image-editor/types/ImageSettings';
+
+function applyConfig(config: ConfigType) {
+  // Define your custom image editor settings
+  const imageEditorSettings: ImageSettings = {
+    aspectRatio: '1:1',
+    imageRestriction: 'fit-area',
+    stencilType: 'rectangle',
+    minWidth: 100,
+    minHeight: 100,
+    maxCropWidth: undefined,
+    maxCropHeight: undefined,
+    scalable: true,
+    stencilGrid: true,
+    minScale: 0.1,
+    maxScale: 3,
+  };
+
+  // Apply the custom settings
+  config.settings.imageEditor = imageEditorSettings;
+
+  return config;
+}
+
+export default applyConfig;
+```
+
 ## 🧪 Test Installation
 
 Visit http://localhost:3000/ in a browser, log in, and verify that the image editor features are available in the File widget.

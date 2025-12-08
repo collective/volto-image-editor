@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { SettingsModal } from './SettingsModal';
-import type { ImageSettings } from '../../types/ImageSettings';
+import type { ImageSettings } from '../../../../types/ImageSettings';
 
 const meta: Meta = {
   title: 'ImageEditor/Controls/SettingsModal',
