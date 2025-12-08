@@ -8,12 +8,13 @@ import {
   ImageRestriction,
 } from 'react-advanced-cropper';
 import type { CropperRef, CropperPreviewRef } from 'react-advanced-cropper';
-import { AdjustablePreviewBackground } from '../components/AdjustablePreviewBackground';
-import { Navigation } from '../components/Navigation/Navigation';
-import { AdjustableCropperBackground } from '../components/AdjustableCropperBackground';
+import config from '@plone/volto/registry';
 import { Button, Icon, Slider } from '@plone/components';
-import { SettingsModal } from '../components/SettingsModal/SettingsModal';
-import type { ImageSettings } from '../types/ImageSettings';
+import { AdjustablePreviewBackground } from '@plone-collective/volto-image-editor/components/ImageEditor/components/AdjustablePreviewBackground';
+import { Navigation } from '@plone-collective/volto-image-editor/components/ImageEditor/components/Navigation/Navigation';
+import { AdjustableCropperBackground } from '@plone-collective/volto-image-editor/components/ImageEditor/components/AdjustableCropperBackground';
+import { SettingsModal } from '@plone-collective/volto-image-editor/components/ImageEditor/components/SettingsModal/SettingsModal';
+import type { ImageSettings } from '@plone-collective/volto-image-editor/types/ImageSettings';
 import { ResetIcon } from '@plone-collective/volto-image-editor/icons/ResetIcon';
 import './ImageEditor.scss';
 
@@ -36,19 +37,9 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
     contrast: 0,
   });
 
-  const [imageSettings, setImageSettings] = useState<ImageSettings>({
-    aspectRatio: 'free',
-    imageRestriction: 'fit-area',
-    stencilType: 'rectangle',
-    minWidth: 50,
-    minHeight: 50,
-    maxCropWidth: undefined,
-    maxCropHeight: undefined,
-    scalable: true,
-    stencilGrid: false,
-    minScale: 0.1,
-    maxScale: 3,
-  });
+  const defaultImageSettings = config.settings.imageEditor as ImageSettings;
+  const [imageSettings, setImageSettings] =
+    useState<ImageSettings>(defaultImageSettings);
 
   const onAction = (action: string) => {
     switch (action) {

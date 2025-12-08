@@ -10,7 +10,7 @@ import {
 } from '@plone/components';
 import { Radio } from 'react-aria-components';
 import { SettingsIcon } from '@plone-collective/volto-image-editor/icons/SettingsIcon';
-import type { ImageSettings } from '../../types/ImageSettings';
+import type { ImageSettings } from '../../../../types/ImageSettings';
 import {
   FreeIcon,
   SquareIcon,
