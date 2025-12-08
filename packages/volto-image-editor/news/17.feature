@@ -1,1 +1,0 @@
-DE translations. @sneridagh

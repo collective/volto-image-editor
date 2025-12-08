@@ -8,6 +8,23 @@
 
 <!-- towncrier release notes start -->
 
+## 1.0.0 (2025-12-08)
+
+### Feature
+
+- CA, ES translations. @sneridagh [#16](https://github.com/collective/volto-image-editor/issue/16)
+- DE translations. @sneridagh [#17](https://github.com/collective/volto-image-editor/issue/17)
+- Allow overriding the default settings for an ImageEditor per project. @ericof [#18](https://github.com/collective/volto-image-editor/issue/18)
+
+### Internal
+
+- Added portuguese translation & Update translation files. @humanaice [#3](https://github.com/collective/volto-image-editor/issue/3)
+- Fixed circle crop. @humanaice [#8](https://github.com/collective/volto-image-editor/issue/8)
+- Updated to use plone/components and removed react-icons + add cypress. @humanaice [#12](https://github.com/collective/volto-image-editor/issue/12)
+- Registering as custom widget and removing shadow. @humanaice [#14](https://github.com/collective/volto-image-editor/issue/14)
+- Changed the CSS to facilitate future modifications, with variables and new icons. @humanaice 
+- Updated Slider to make it more simple and intuitive. @humanaice 
+
 ## 1.0.0-alpha.2 (2025-10-29)
 
 ### Feature

@@ -1,1 +1,0 @@
-CA, ES translations. @sneridagh
