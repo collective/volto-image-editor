@@ -4,7 +4,7 @@ const path = require('path');
 
 const projectRootPath = path.resolve('.');
 const lessPlugin = require('@plone/volto/webpack-plugins/webpack-less-plugin');
-const scssPlugin = require('@plone/volto/webpack-plugins/razzle-plugin-scss');
+const scssPlugin = require('@plone/volto/webpack-plugins/webpack-scss-plugin');
 const RelativeResolverPlugin = require('@plone/volto/webpack-plugins/webpack-relative-resolver');
 
 const createConfig = require('@plone/razzle/config/createConfigAsync.js');
