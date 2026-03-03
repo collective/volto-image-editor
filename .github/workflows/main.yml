@@ -47,58 +47,11 @@ jobs:
 
   acceptance:
     name: 'Run acceptance tests'
-    runs-on: ubuntu-latest
+    uses: plone/meta/.github/workflows/frontend-acceptance.yml@2.x
     needs:
       - config
-      - code-analysis
-      - unit
-      - i18n
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ needs.config.outputs.node-version }}
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Build Volto workspace dependencies
-        run: make build-deps
-
-      - name: Start acceptance backend
-        run: docker run -d --name backend -p 55001:55001 plone/server-acceptance:6
-
-      - name: Wait for backend
-        run: pnpm dlx wait-on http://127.0.0.1:55001/plone
-
-      - name: Start acceptance frontend
-        run: |
-          nohup make acceptance-frontend-dev-start > /tmp/frontend.log 2>&1 &
-
-      - name: Wait for frontend
-        run: pnpm dlx wait-on http://127.0.0.1:3000
-
-      - name: Run acceptance tests
-        run: make ci-acceptance-test
-
-      - name: Backend logs on failure
-        if: ${{ failure() }}
-        run: docker logs backend
-
-      - name: Frontend logs on failure
-        if: ${{ failure() }}
-        run: cat /tmp/frontend.log
-
-      - name: Stop backend
-        if: ${{ always() }}
-        run: docker rm -f backend
+    with:
+      node-version: ${{ needs.config.outputs.node-version }}
 
   report:
     name: 'Final report'
