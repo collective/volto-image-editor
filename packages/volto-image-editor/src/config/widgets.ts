@@ -1,5 +1,5 @@
 import type { ConfigType } from '@plone/registry';
-import FileWidget from '../components/Widgets/FileWidget';
+import { FileWidget } from '../components/Widgets';
 
 export const registerWidgets = (config: ConfigType) => {
   config.widgets.widget.file = FileWidget;
