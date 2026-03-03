@@ -8,6 +8,17 @@
 
 <!-- towncrier release notes start -->
 
+## 1.0.1 (2026-03-03)
+
+### Feature
+
+- Added support for lazyload the widget. @sneridagh 
+
+### Internal
+
+- Fixed Acceptance Tests and added them to main.yml. @humanaice [#23](https://github.com/collective/volto-image-editor/issue/23)
+- Use Volto 19a27. @sneridagh 
+
 ## 1.0.0 (2025-12-08)
 
 ### Feature

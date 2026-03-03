@@ -10,3 +10,5 @@ node_modules
 results
 yarn.lock
 /public
+temp_auto_push.bat
+temp_interactive_push.bat
