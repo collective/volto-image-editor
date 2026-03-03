@@ -1,53 +1,60 @@
-name: "Main CI"
+name: 'Main CI'
 
 on:
   push:
   workflow_dispatch:
 
-
 jobs:
   config:
-    name: "Config: Compute values used in workflow"
+    name: 'Config: Compute values used in workflow'
     uses: ./.github/workflows/config.yml
 
   code-analysis:
-    name: "Code analysis checks"
+    name: 'Code analysis checks'
     uses: plone/meta/.github/workflows/frontend-code.yml@2.x
     needs:
-        - config
+      - config
     with:
-        node-version: ${{ needs.config.outputs.node-version }}
+      node-version: ${{ needs.config.outputs.node-version }}
 
   unit:
-    name: "Run unit tests"
+    name: 'Run unit tests'
     uses: plone/meta/.github/workflows/frontend-unit.yml@2.x
     needs:
-        - config
+      - config
     with:
-        node-version: ${{ needs.config.outputs.node-version }}
+      node-version: ${{ needs.config.outputs.node-version }}
 
   i18n:
-    name: "Run i18n checks"
+    name: 'Run i18n checks'
     uses: plone/meta/.github/workflows/frontend-i18n.yml@2.x
     needs:
-        - config
+      - config
     with:
-        node-version: ${{ needs.config.outputs.node-version }}
+      node-version: ${{ needs.config.outputs.node-version }}
 
   storybook:
-    name: "Storybook"
+    name: 'Storybook'
     uses: plone/meta/.github/workflows/frontend-storybook.yml@2.x
     needs:
-        - config
-        - code-analysis
-        - unit
-        - i18n
+      - config
+      - code-analysis
+      - unit
+      - i18n
     with:
-        node-version: ${{ needs.config.outputs.node-version }}
-        deploy: true
+      node-version: ${{ needs.config.outputs.node-version }}
+      deploy: true
+
+  acceptance:
+    name: 'Run acceptance tests'
+    uses: plone/meta/.github/workflows/frontend-acceptance.yml@2.x
+    needs:
+      - config
+    with:
+      node-version: ${{ needs.config.outputs.node-version }}
 
   report:
-    name: "Final report"
+    name: 'Final report'
     if: ${{ always() }}
     runs-on: ubuntu-latest
     needs:
@@ -56,6 +63,7 @@ jobs:
       - unit
       - i18n
       - storybook
+      - acceptance
     steps:
       - name: Write report
         run: |
@@ -67,3 +75,4 @@ jobs:
           echo '| unit | ${{ needs.unit.result }} |' >> $GITHUB_STEP_SUMMARY
           echo '| i18n | ${{ needs.i18n.result }} |' >> $GITHUB_STEP_SUMMARY
           echo '| storybook | ${{ needs.storybook.result }} |' >> $GITHUB_STEP_SUMMARY
+          echo '| acceptance | ${{ needs.acceptance.result }} |' >> $GITHUB_STEP_SUMMARY

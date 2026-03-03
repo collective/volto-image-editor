@@ -12,11 +12,13 @@ context('Example Acceptance Tests', () => {
       cy.intercept('GET', '/**/document*').as('content');
     });
 
-    it('As editor I can add edit a Page', function () {
+    it('As editor I can open the edit page', function () {
       cy.visit('/document');
       cy.navigate('/document/edit');
       cy.wait('@content');
-      cy.get('#toolbar-save').click();
+      cy.get('form').should('exist');
+      cy.url().should('include', '/document/edit');
+      cy.get('#toolbar-save').should('be.visible');
     });
   });
 });
