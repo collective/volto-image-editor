@@ -150,6 +150,8 @@ const FileWidget = (props) => {
       <Grid className="image-widget-grid">
         <Grid.Row stretched>
           <Grid.Column stretched width={mainColumnWidth}>
+            {isImage && <ImageEditorWrapper value={value} setData={setData} />}
+
             <Dropzone
               onDrop={onDrop}
               {...(props.size ? { maxSize: props.size } : {})}
@@ -225,11 +227,6 @@ const FileWidget = (props) => {
               )}
             </div>
           </Grid.Column>
-          {isImage && (
-            <Grid.Column stretched width="2" className={'image-editor-cta'}>
-              <ImageEditorWrapper value={value} setData={setData} />
-            </Grid.Column>
-          )}
         </Grid.Row>
       </Grid>
     </FormFieldWrapper>

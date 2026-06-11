@@ -83,7 +83,7 @@ const ImageEditorWrapper: React.FC<ImageEditorWrapperProps> = ({
     <div className={`image-widget ${className || ''}`}>
       <div className="image-widget-cropper">
         <DialogTrigger>
-          <Button onPress={() => setOpen(true)}>
+          <Button download={false} onPress={() => setOpen(true)}>
             {buttonText || (
               <FormattedMessage id="Edit image" defaultMessage="Edit image" />
             )}

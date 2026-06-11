@@ -4,6 +4,7 @@
 .image-editor-navigation {
   display: flex;
   height: 100%;
+  align-self: flex-end;
   align-items: center;
   justify-content: space-between;
   padding: $image-editor-spacing-lg;
