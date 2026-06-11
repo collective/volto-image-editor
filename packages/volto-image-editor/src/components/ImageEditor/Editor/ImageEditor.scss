@@ -3,17 +3,17 @@
 @import '../../../theme/constants';
 
 body.view-editview .react-aria-Modal.image-cropper-modal {
-  max-width: unset;
   width: 70vw;
+  max-width: unset;
   height: 70vh;
 }
 
 .image-widget .image-widget-cropper {
   button {
-    border: none;
-    text-decoration: underline;
     padding: 20px 0px;
+    border: none;
     color: rgba(0, 0, 0, 0.9);
+    text-decoration: underline;
   }
 }
 
@@ -22,10 +22,10 @@ body.view-editview .react-aria-Modal.image-cropper-modal {
 }
 
 .image-editor {
+  display: grid;
   width: 100%;
   height: 100%;
   color: $settings-header-color;
-  display: grid;
   grid-template-columns: 100%;
   grid-template-rows: 1fr 80px;
 

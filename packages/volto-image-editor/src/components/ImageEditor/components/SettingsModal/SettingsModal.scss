@@ -34,8 +34,6 @@
 
   &__content {
     display: grid;
-    grid-template-columns: 100%;
-    grid-template-rows: 80px 1fr;
     overflow: hidden;
     width: 100%;
     height: 100%;
@@ -43,6 +41,8 @@
     animation: scaleIn $image-editor-transition-fast ease-out;
     background: $settings-body-bg;
     box-shadow: 0 0px 60px rgba(0, 0, 0, 0.5);
+    grid-template-columns: 100%;
+    grid-template-rows: 80px 1fr;
   }
 
   &__header {

@@ -4,8 +4,8 @@
 .image-editor-navigation {
   display: flex;
   height: 100%;
-  align-self: flex-end;
   align-items: center;
+  align-self: flex-end;
   justify-content: space-between;
   padding: $image-editor-spacing-lg;
   border-top: solid 1px $image-editor-border-color;
