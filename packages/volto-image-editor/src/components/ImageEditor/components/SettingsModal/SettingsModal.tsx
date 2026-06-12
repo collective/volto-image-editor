@@ -32,6 +32,7 @@ import {
   RectangleStencilIcon,
   CircleStencilIcon,
 } from '@plone-collective/volto-image-editor/icons/StencilIcons';
+import BackSVG from '@plone/volto/icons/back.svg';
 import './SettingsModal.scss';
 
 const messages = defineMessages({
@@ -205,7 +206,12 @@ export const SettingsModal: FC<Props> = ({
                 className="image-editor-settings-modal__close"
                 onClick={onToggle}
               >
-                ✕
+                <Icon size="base">
+                  <svg
+                    {...BackSVG.attributes}
+                    dangerouslySetInnerHTML={{ __html: BackSVG.content }}
+                  />
+                </Icon>
               </Button>
             </div>
 
