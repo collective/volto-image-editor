@@ -2,11 +2,6 @@
 @import '../../../theme/variables';
 @import '../../../theme/constants';
 
-body.view-editview .react-aria-Modal.image-cropper-modal {
-  width: 70vw;
-  max-width: unset;
-  height: 70vh;
-}
 
 .image-widget .image-widget-cropper {
   button {
