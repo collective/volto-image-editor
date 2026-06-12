@@ -1,8 +1,11 @@
 @import '../../../theme/variables';
 
 .react-aria-ModalOverlay {
+  z-index: 150;
   .react-aria-Modal.image-cropper-modal {
-    width: 100%;
+    width: 70vw;
+    max-width: unset;
+    height: 70vh;
     border: 0;
     background-color: $settings-header-bg;
 
