@@ -8,6 +8,12 @@
 
 <!-- towncrier release notes start -->
 
+## 1.1.0 (2026-10-07)
+
+### Internal
+
+- Updated according to the figma-design and improved styles for usage with the distributions @TimoBroeskamp 
+
 ## 1.0.1 (2026-03-03)
 
 ### Feature
