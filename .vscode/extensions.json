@@ -1,10 +1,13 @@
 {
-    "recommendations": [
-        "dbaeumer.vscode-eslint",
-        "editorconfig.editorconfig",
-        "esbenp.prettier-vscode",
-        "github.vscode-github-actions",
-        "stylelint.vscode-stylelint",
-        "plone.plone-vs-utilities"
-    ]
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "stylelint.vscode-stylelint",
+    "esbenp.prettier-vscode",
+    "ExecutableBookProject.myst-highlight",
+    "ms-vscode-remote.remote-containers",
+    "redhat.vscode-yaml",
+    "editorconfig.editorconfig",
+    "github.vscode-github-actions",
+    "plone.plone-vs-utilities"
+  ]
 }
