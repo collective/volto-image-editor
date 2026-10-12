@@ -1,0 +1,17 @@
+version: 2
+updates:
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      # Check for updates to GitHub Actions every week
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+    # Dependabot never writes news fragments, so exempt its pull requests from
+    # the changelog check. The label is spelled the way changelog.yml reads it,
+    # with a space. Both labels must exist in the repository, otherwise they
+    # are silently ignored.
+    labels:
+      - "dependencies"
+      - "skip changelog"

@@ -16,6 +16,9 @@ import { AdjustableCropperBackground } from '@plone-collective/volto-image-edito
 import { SettingsModal } from '@plone-collective/volto-image-editor/components/ImageEditor/components/SettingsModal/SettingsModal';
 import type { ImageSettings } from '@plone-collective/volto-image-editor/types/ImageSettings';
 import { ResetIcon } from '@plone-collective/volto-image-editor/icons/ResetIcon';
+// Plain CSS must not go through the SCSS loader chain: resolve-url-loader 5
+// (Volto 19.5) fails the CI build when an upstream loader gives no source map.
+import 'react-advanced-cropper/dist/style.css';
 import './ImageEditor.scss';
 
 if (typeof window !== 'undefined') {
