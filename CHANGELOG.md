@@ -8,6 +8,14 @@
 
 <!-- towncrier release notes start -->
 
+## 1.2.0 (2026-10-12)
+
+
+### Internal
+
+- Fixed the image being displaced on first edit. @TimoBroeskamp [#27](https://github.com/collective/volto-image-editor/issues/27)
+- Updated the add-on boilerplate to the latest cookieplone-templates frontend add-on template: Volto 19.5.0, pnpm 10, Vitest for unit tests, and updated GitHub workflows. @ericof [#29](https://github.com/collective/volto-image-editor/issues/29)
+
 ## 1.1.0 (2026-10-07)
 
 ### Internal
