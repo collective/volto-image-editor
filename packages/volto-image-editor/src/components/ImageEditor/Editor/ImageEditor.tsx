@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect } from 'react';
+import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
 import cn from 'classnames';
 import {
   Cropper,
@@ -24,6 +24,7 @@ if (typeof window !== 'undefined') {
 
 const ImageEditor = ({ src, onImageSave, onCancel }) => {
   const cropperRef = useRef<CropperRef>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const previewRef = useRef<CropperPreviewRef>(null);
 
   const [mode, setMode] = useState('crop');
@@ -104,6 +105,14 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
 
     return () => clearTimeout(timer);
   }, [src]);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => cropperRef.current?.refresh());
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   const onSave = () => {
     if (cropperRef.current) {
@@ -213,7 +222,7 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
 
   return (
     <div className={'image-editor'}>
-      <div className="image-editor__cropper">
+      <div ref={containerRef} className="image-editor__cropper">
         <Cropper
           src={src}
           ref={cropperRef}
