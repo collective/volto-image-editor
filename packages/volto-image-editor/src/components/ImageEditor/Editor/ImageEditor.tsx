@@ -100,13 +100,9 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
   };
 
   const roRef = useRef<ResizeObserver | null>(null);
-  const timerRef = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
-    return () => {
-      roRef.current?.disconnect();
-      clearTimeout(timerRef.current);
-    };
+    return () => roRef.current?.disconnect();
   }, []);
 
   const onSave = () => {
