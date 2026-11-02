@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import cn from 'classnames';
 import {
   Cropper,
@@ -99,22 +99,14 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
     setHasRotationChanges(false);
   };
 
-  useLayoutEffect(() => {
-    const timer = setTimeout(() => {
-      if (cropperRef.current) {
-        onResetRotation();
-      }
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, [src]);
+  const roRef = useRef<ResizeObserver | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver(() => cropperRef.current?.refresh());
-    ro.observe(el);
-    return () => ro.disconnect();
+    return () => {
+      roRef.current?.disconnect();
+      clearTimeout(timerRef.current);
+    };
   }, []);
 
   const onSave = () => {
@@ -264,8 +256,17 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
           backgroundProps={adjustments}
           onUpdate={onUpdate}
           onReady={() => {
-            if (cropperRef.current) {
-              cropperRef.current.refresh();
+            cropperRef.current?.refresh();
+
+            const target = containerRef.current?.querySelector(
+              '.advanced-cropper',
+            ) as HTMLElement | null;
+            if (target) {
+              roRef.current?.disconnect();
+              roRef.current = new ResizeObserver(() =>
+                cropperRef.current?.refresh(),
+              );
+              roRef.current.observe(target);
             }
           }}
         />
@@ -284,7 +285,6 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
             />
           </div>
         )}
-
         <CropperPreview
           className={'image-editor__preview'}
           ref={previewRef}
@@ -303,7 +303,6 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
             <ResetIcon />
           </Icon>
         </Button>
-
         <SettingsModal
           settings={imageSettings}
           onChange={setImageSettings}
