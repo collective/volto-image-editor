@@ -254,6 +254,19 @@ const ImageEditor = ({ src, onImageSave, onCancel }) => {
           onReady={() => {
             cropperRef.current?.refresh();
 
+            // The cropper measures its boundary with getBoundingClientRect,
+            // so while the modal zooms in, an image that is already loaded
+            // is laid out in the scaled-down box. The end of a transform does
+            // not resize anything, so lay the image out again once the
+            // modal's animations have finished.
+            const modal = containerRef.current?.closest('.react-aria-Modal');
+            const animations = modal?.getAnimations?.() ?? [];
+            if (animations.length) {
+              Promise.all(animations.map((animation) => animation.finished))
+                .then(() => cropperRef.current?.reset())
+                .catch(() => {});
+            }
+
             const target = containerRef.current?.querySelector(
               '.advanced-cropper',
             ) as HTMLElement | null;

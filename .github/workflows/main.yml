@@ -35,7 +35,7 @@ jobs:
 
   acceptance:
     name: "Run acceptance tests"
-    uses: plone/meta/.github/workflows/frontend-acceptance.yml@2.x
+    uses: ./.github/workflows/acceptance.yml
     needs:
         - config
     with:

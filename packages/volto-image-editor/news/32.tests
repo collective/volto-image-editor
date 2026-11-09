@@ -1,0 +1,1 @@
+Moved the acceptance tests from Cypress to Playwright, and added tests for saving, cancelling, adjustments, rotation, aspect ratio, editing a stored image, and the cropper layout when the editor opens. @ericof

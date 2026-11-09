@@ -179,8 +179,9 @@ acceptance-frontend-dev-start    Start acceptance frontend in development mode
 acceptance-frontend-prod-start   Start acceptance frontend in production mode
 acceptance-backend-start         Start backend acceptance server
 ci-acceptance-backend-start      Start backend acceptance server in headless mode for CI
-acceptance-test                  Start Cypress in interactive mode
-ci-acceptance-test               Run cypress tests in headless mode for CI
+install-acceptance               Install the Playwright browsers used by the acceptance tests
+acceptance-test                  Start the acceptance tests in interactive (UI) mode
+ci-acceptance-test               Run the acceptance tests in headless mode for CI
 ```
 
 ### 🏗️ Development Environment Setup
@@ -237,9 +238,16 @@ Run unit tests:
 make test
 ```
 
-### 🧪 Run Cypress Tests
+### 🧪 Acceptance Tests
 
-Run each of these steps in separate terminal sessions:
+The acceptance tests use [Playwright](https://playwright.dev/) and live in `acceptance/tests`.
+The first time, install the browser they use:
+
+```shell
+make install-acceptance
+```
+
+Then run each of these steps in separate terminal sessions:
 
 In the first session, start the frontend in development mode:
 
@@ -253,10 +261,22 @@ In the second session, start the backend acceptance server:
 make acceptance-backend-start
 ```
 
-In the third session, start the Cypress interactive test runner:
+In the third session, start the Playwright interactive test runner:
 
 ```shell
 make acceptance-test
+```
+
+Or run the suite headless, as CI does:
+
+```shell
+make ci-acceptance-test
+```
+
+The switch from Cypress changed a pnpm hoist pattern, so an existing checkout needs one install that rebuilds `node_modules`:
+
+```shell
+pnpm install --config.confirmModulesPurge=false
 ```
 
 
