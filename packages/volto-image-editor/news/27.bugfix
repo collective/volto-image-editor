@@ -1,1 +1,0 @@
-Fixed the image shown smaller than the cropper and off its centre when it was ready before the editor's modal had finished opening. @ericof

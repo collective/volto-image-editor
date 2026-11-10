@@ -8,6 +8,23 @@
 
 <!-- towncrier release notes start -->
 
+## 1.3.0 (2026-11-10)
+
+
+### Bugfix
+
+- Fixed the image shown smaller than the cropper and off its centre when it was ready before the editor's modal had finished opening. @ericof [#27](https://github.com/collective/volto-image-editor/issues/27)
+
+
+### Internal
+
+- Corrected the observer to watch the correct element and attached it to onReady. @TimoBroeskamp [#27](https://github.com/collective/volto-image-editor/issues/27)
+
+
+### Tests
+
+- Moved the acceptance tests from Cypress to Playwright, and added tests for saving, cancelling, adjustments, rotation, aspect ratio, editing a stored image, and the cropper layout when the editor opens. @ericof [#32](https://github.com/collective/volto-image-editor/issues/32)
+
 ## 1.2.0 (2026-10-12)
 
 
